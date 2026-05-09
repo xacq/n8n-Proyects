@@ -1,0 +1,152 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.greenpc.dev/assets/img/portada.png",
+        "options": {
+          "response": {
+            "responseFormat": "file"
+          }
+        }
+      },
+      "id": "1",
+      "name": "HTTP Request Imagen Claro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const key = Object.keys($input.item.binary)[0];\nconst buffer = $input.item.binary[key].data;\nconst base64Image = buffer.toString('base64');\n\nreturn [{\n  json: {\n    content: base64Image,\n    mimeType: $input.item.binary[key].mimeType,\n    fileName: $input.item.binary[key].fileName\n  }\n}];"
+      },
+      "id": "2",
+      "name": "Convertir a base64",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v17.0/1234567890/media",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer <TU_TOKEN>"
+            },
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "form-data",
+        "formDataParameters": {
+          "parameters": [
+            {
+              "name": "file",
+              "value": "={{$binary.data}}",
+              "type": "binary"
+            },
+            {
+              "name": "type",
+              "value": "image/png"
+            },
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Subir imagen a WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v17.0/1234567890/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer <TU_TOKEN>"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": {
+          "messaging_product": "whatsapp",
+          "to": "573001112222",
+          "type": "image",
+          "image": {
+            "id": "={{ $json.id }}",
+            "caption": "Claro Empresas te da la bienvenida \ud83d\ude80"
+          }
+        }
+      },
+      "id": "4",
+      "name": "Enviar imagen con mensaje",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        800,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "HTTP Request Imagen Claro": {
+      "main": [
+        [
+          {
+            "node": "Convertir a base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convertir a base64": {
+      "main": [
+        [
+          {
+            "node": "Subir imagen a WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subir imagen a WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Enviar imagen con mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
