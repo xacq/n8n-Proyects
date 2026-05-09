@@ -1,0 +1,429 @@
+{
+  "name": "PAQTANA_SERVICE",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 2
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1440,
+        -340
+      ],
+      "id": "3097cb49-adc7-4b5a-ada8-ab12c718d098",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    T3.WhsName AS \"location\",\n    T1.ItemCode AS \"code\",\n    T0.DocDate AS \"date\",\n    T1.Quantity AS \"quantity\"\nFROM [DB_CORDOVEZ_PROD].dbo.OINV T0\nJOIN [DB_CORDOVEZ_PROD].dbo.INV1 T1 ON T1.DocEntry = T0.DocEntry\nJOIN [DB_CORDOVEZ_PROD].dbo.OITM T2 ON T2.ItemCode = T1.ItemCode\nJOIN [DB_CORDOVEZ_PROD].dbo.OWHS T3 ON T3.WhsCode = T1.WhsCode\nWHERE \nT0.U_DOC_DECLARABLE = 'S' AND\nT0.DocDate  BETWEEN '2023-01-01' AND CAST(GETDATE() as DATE)\nOrder By T1.WhsCode, T1.ItemCode, T0.DocDate"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -40,
+        -340
+      ],
+      "id": "9ac35d4c-b9fb-45cb-835c-efc2601cbff3",
+      "name": "SALIDAS CORDOVEZ",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    T3.WhsName AS \"location\",\n    T1.ItemCode AS \"code\",\n    T0.DocDate AS \"date\",\n    T1.Quantity AS \"quantity\"\nFROM [DB_VID_PROD].dbo.OINV T0\nJOIN [DB_VID_PROD].dbo.INV1 T1 ON T1.DocEntry = T0.DocEntry\nJOIN [DB_VID_PROD].dbo.OITM T2 ON T2.ItemCode = T1.ItemCode\nJOIN [DB_VID_PROD].dbo.OWHS T3 ON T3.WhsCode = T1.WhsCode\nWHERE \nT0.U_DOC_DECLARABLE = 'S' AND\nT0.DocDate  BETWEEN '2023-01-01' AND CAST(GETDATE() as DATE)\nOrder By T1.WhsCode, T1.ItemCode, T0.DocDate"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -40,
+        -20
+      ],
+      "id": "8d2d5c39-4732-467f-ba4c-54b7ee13003a",
+      "name": "SALIDAS VID",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    T3.WhsName AS \"location\",\n    T1.ItemCode AS \"code\",\n    T0.DocDate AS \"date\",\n    T1.Quantity AS \"quantity\"\nFROM [DB_IMNAC_PROD].dbo.OINV T0\nJOIN [DB_IMNAC_PROD].dbo.INV1 T1 ON T1.DocEntry = T0.DocEntry\nJOIN [DB_IMNAC_PROD].dbo.OITM T2 ON T2.ItemCode = T1.ItemCode\nJOIN [DB_IMNAC_PROD].dbo.OWHS T3 ON T3.WhsCode = T1.WhsCode\nWHERE \nT0.U_DOC_DECLARABLE = 'S' AND\nT0.DocDate  BETWEEN '2023-01-01' AND CAST(GETDATE() as DATE)\nOrder By T1.WhsCode, T1.ItemCode, T0.DocDate"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -40,
+        -620
+      ],
+      "id": "762283c7-88d2-487a-9e98-a898222e2ed4",
+      "name": "SALIDAS IMNAC",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n    T3.WhsName           AS \"location\",\n    T0.ItemCode          AS \"code\",\n    T0.ItemName          AS \"description\",\n    'finished'           AS \"materialType\",\n    CAST(T0.NumInBuy AS INT) AS \"multipleOrderQuantity\",\n    'USD'                AS \"currency\",\n    T0.AvgPrice          AS \"unitCost\",\n    CAST('1' AS INT)     AS \"minimumOrderQuantity\",\n    'units'              AS \"unitOfMeasure\",\n    CAST(ISNULL(T9.U_DIAS_PRODUCCION, 0) AS INT) AS \"supplyLeadTime\",\n    T1.OnHand            AS \"onHandStock\",\n    T1.OnOrder           AS \"transitStock\",\n    T1.IsCommited        AS \"openDemandOrders\",\n    T2.CompnyName        AS \"additionalColA\",\n    T6.ItmsGrpNam        AS \"additionalColB\",\n    T9.U_DIAS_TRANSITO AS transitDays,\n    T9.U_DIAS_NACIONALIZACION_PUERTO AS nationalGyeDays,\n    T9.U_DIAS_NACIONALIZACION_UIO AS nationalUioDays,\n    CASE \n        WHEN T8.CardCode = 'P20532416036' THEN 'P8300318491'\n        ELSE T8.CardCode\n    END AS CardCode,\n    CASE \n        WHEN T8.SuppName = 'PRATAC S.A.' THEN 'PERNOD RICARD COLOMBIA S.A.'\n        ELSE T8.SuppName\n    END AS SuppName\nFROM [DB_CORDOVEZ_PROD].dbo.OITM T0\nINNER JOIN [DB_CORDOVEZ_PROD].dbo.OITW T1 \n    ON T0.ItemCode = T1.ItemCode\nINNER JOIN [DB_CORDOVEZ_PROD].dbo.OITB T6 \n    ON T0.ItmsGrpCod = T6.ItmsGrpCod\nINNER JOIN [DB_CORDOVEZ_PROD].dbo.OWHS T3 \n    ON T1.WhsCode = T3.WhsCode\nCROSS JOIN [DB_CORDOVEZ_PROD].dbo.OADM T2\nLEFT JOIN (\n    SELECT \n        T7.ItemCode,\n        MAX(T8.DocEntry) AS LatestDocEntry\n    FROM [DB_CORDOVEZ_PROD].dbo.IPF1 T7\n    INNER JOIN [DB_CORDOVEZ_PROD].dbo.OIPF T8 \n        ON T7.DocEntry = T8.DocEntry\n    WHERE T8.DocDate > '2000-01-01'\n    GROUP BY T7.ItemCode\n) LatestIPF \n    ON T0.ItemCode = LatestIPF.ItemCode\nLEFT JOIN [DB_CORDOVEZ_PROD].dbo.OIPF T8 \n    ON LatestIPF.LatestDocEntry = T8.DocEntry\nLEFT JOIN [DB_CORDOVEZ_PROD].dbo.OCRD T9 ON (T8.CardCode  = T9.CardCode )\nWHERE  T1.WhsCode IN (\n SELECT WhsCode \n        FROM [DB_CORDOVEZ_PROD].dbo.OWHS \n        WHERE WhsName != 'VITRINA' and WhsName != 'BODEGA MAL ESTADO UIO'\n    )\n    AND T0.validFor = 'Y'\n    AND T8.CardCode IS NOT NULL\nUNION ALL \nSELECT\n    T3.WhsName           AS \"location\",\n    T0.ItemCode          AS \"code\",\n    T0.ItemName          AS \"description\",\n    'finished'           AS \"materialType\",\n    CAST(T0.NumInBuy AS INT) AS \"multipleOrderQuantity\",\n    'USD'                AS \"currency\",\n    T0.AvgPrice          AS \"unitCost\",\n    CAST('1' AS INT)     AS \"minimumOrderQuantity\",\n    'units'              AS \"unitOfMeasure\",\n    CAST(ISNULL(T9.U_DIAS_PRODUCCION, 0) AS INT) AS \"supplyLeadTime\",\n    T1.OnHand            AS \"onHandStock\",\n    T1.OnOrder           AS \"transitStock\",\n    T1.IsCommited        AS \"openDemandOrders\",\n    T2.CompnyName        AS \"additionalColA\",\n    T6.ItmsGrpNam        AS \"additionalColB\",\n    T9.U_DIAS_TRANSITO AS transitDays,\n    T9.U_DIAS_NACIONALIZACION_PUERTO AS nationalGyeDays,\n    T9.U_DIAS_NACIONALIZACION_UIO AS nationalUioDays,\n    CASE \n        WHEN T8.CardCode = 'P20532416036' THEN 'P8300318491'\n        ELSE T8.CardCode\n    END AS CardCode,\n    CASE \n        WHEN T8.SuppName = 'PRATAC S.A.' THEN 'PERNOD RICARD COLOMBIA S.A.'\n        ELSE T8.SuppName\n    END AS SuppName\nFROM [DB_IMNAC_PROD].dbo.OITM T0\nINNER JOIN [DB_IMNAC_PROD].dbo.OITW T1 \n    ON T0.ItemCode = T1.ItemCode\nINNER JOIN [DB_IMNAC_PROD].dbo.OITB T6 \n    ON T0.ItmsGrpCod = T6.ItmsGrpCod\nINNER JOIN [DB_IMNAC_PROD].dbo.OWHS T3 \n    ON T1.WhsCode = T3.WhsCode\nCROSS JOIN [DB_IMNAC_PROD].dbo.OADM T2\nLEFT JOIN (\n    SELECT \n        T7.ItemCode,\n        MAX(T8.DocEntry) AS LatestDocEntry\n    FROM [DB_IMNAC_PROD].dbo.IPF1 T7\n    INNER JOIN [DB_IMNAC_PROD].dbo.OIPF T8 \n        ON T7.DocEntry = T8.DocEntry\n    WHERE T8.DocDate > '2000-01-01'\n    GROUP BY T7.ItemCode\n) LatestIPF \n    ON T0.ItemCode = LatestIPF.ItemCode\nLEFT JOIN [DB_IMNAC_PROD].dbo.OIPF T8 \n    ON LatestIPF.LatestDocEntry = T8.DocEntry\nLEFT JOIN [DB_IMNAC_PROD].dbo.OCRD T9 ON (T8.CardCode  = T9.CardCode )\nWHERE  T1.WhsCode IN (\n SELECT WhsCode \n        FROM [DB_IMNAC_PROD].dbo.OWHS \n        WHERE WhsName != 'VITRINA' and WhsName != 'BODEGA MAL ESTADO UIO'\n    )\n    AND T0.validFor = 'Y'\n    AND T8.CardCode IS NOT NULL\nUNION ALL\nSELECT\n    T3.WhsName           AS \"location\",\n    T0.ItemCode          AS \"code\",\n    T0.ItemName          AS \"description\",\n    'finished'           AS \"materialType\",\n    CAST(T0.NumInBuy AS INT) AS \"multipleOrderQuantity\",\n    'USD'                AS \"currency\",\n    T0.AvgPrice          AS \"unitCost\",\n    CAST('1' AS INT)     AS \"minimumOrderQuantity\",\n    'units'              AS \"unitOfMeasure\",\n    CAST(ISNULL(T9.U_DIAS_PRODUCCION, 0) AS INT) AS \"supplyLeadTime\",\n    T1.OnHand            AS \"onHandStock\",\n    T1.OnOrder           AS \"transitStock\",\n    T1.IsCommited        AS \"openDemandOrders\",\n    T2.CompnyName        AS \"additionalColA\",\n    T6.ItmsGrpNam        AS \"additionalColB\",\n    T9.U_DIAS_TRANSITO AS transitDays,\n    T9.U_DIAS_NACIONALIZACION_PUERTO AS nationalGyeDays,\n    T9.U_DIAS_NACIONALIZACION_UIO AS nationalUioDays,\n    CASE \n        WHEN T8.CardCode = 'P20532416036' THEN 'P8300318491'\n        ELSE T8.CardCode\n    END AS CardCode,\n    CASE \n        WHEN T8.SuppName = 'PRATAC S.A.' THEN 'PERNOD RICARD COLOMBIA S.A.'\n        ELSE T8.SuppName\n    END AS SuppName\nFROM [DB_VID_PROD].dbo.OITM T0\nINNER JOIN [DB_VID_PROD].dbo.OITW T1 \n    ON T0.ItemCode = T1.ItemCode\nINNER JOIN [DB_VID_PROD].dbo.OITB T6 \n    ON T0.ItmsGrpCod = T6.ItmsGrpCod\nINNER JOIN [DB_VID_PROD].dbo.OWHS T3 \n    ON T1.WhsCode = T3.WhsCode\nCROSS JOIN [DB_VID_PROD].dbo.OADM T2\nLEFT JOIN (\n    SELECT \n        T7.ItemCode,\n        MAX(T8.DocEntry) AS LatestDocEntry\n    FROM [DB_VID_PROD].dbo.IPF1 T7\n    INNER JOIN [DB_VID_PROD].dbo.OIPF T8 \n        ON T7.DocEntry = T8.DocEntry\n    WHERE T8.DocDate > '2000-01-01'\n    GROUP BY T7.ItemCode\n) LatestIPF \n    ON T0.ItemCode = LatestIPF.ItemCode\nLEFT JOIN [DB_VID_PROD].dbo.OIPF T8 \n    ON LatestIPF.LatestDocEntry = T8.DocEntry\nLEFT JOIN [DB_VID_PROD].dbo.OCRD T9 ON (T8.CardCode  = T9.CardCode )\nWHERE  T1.WhsCode IN (\n SELECT WhsCode \n        FROM [DB_VID_PROD].dbo.OWHS \n        WHERE WhsName != 'VITRINA' and WhsName != 'BODEGA MAL ESTADO UIO'\n    )\n    AND T0.validFor = 'Y'\n    AND T8.CardCode IS NOT NULL"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -1160,
+        -340
+      ],
+      "id": "835460d9-168a-4fad-823c-3538d15dedb4",
+      "name": "TOTAL STOCKS",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Sección del flujo que permite la recuperacion de datos a traves del acceso a SQL Server sujeto a un Cron  ",
+        "height": 360,
+        "width": 1100,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1480,
+        -480
+      ],
+      "typeVersion": 1,
+      "id": "363530a1-b8a2-4203-901a-e6cbcd5720d6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.paqtana.com/v2/org/cvl/master_inventory",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -620,
+        -340
+      ],
+      "id": "cb02267c-58f3-4f9b-ba2e-9309881392ba",
+      "name": "HTTP Request PUT",
+      "notesInFlow": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "d2sKBry8BHvFrKlv",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const WORKPACE = '4trb';\nconst data = [];\n/** @type {{[key: string]: any}} */\nconst uniqueMap = {};\n\nfor (const item of $input.all()) {\n  const key = item['json']['location'] + '::' + item['json']['code'];\n  if (!uniqueMap[key]) {\n    const newItem = {\n      location: item['json']['location'],\n      code: item['json']['code'],\n      description: item['json']['description'],\n      materialType: 'finished',\n      multipleOrderQuantity: item['json']['multipleOrderQuantity'],\n      currency: 'USD',\n      unitCost: item['json']['unitCost'],\n      minimumOrderQuantity: 1,\n      unitOfMeasure: 'units',\n      supplyLeadTime: item['json']['supplyLeadTime'],\n      onHandStock: item['json']['onHandStock'],\n      transitStock: item['json']['transitStock'],\n      openDemandOrders: item['json']['openDemandOrders'],\n      additionalColumns: [\n        {\n          name: 'supplierName',\n          content: item['json']['SuppName'],\n        },\n        {\n          name: 'supplierCode',\n          content: item['json']['CardCode'],\n        },\n        {\n          name: 'nationalUioDays',\n          content: item['json']['nationalUioDays'],\n        },\n        {\n          name: 'nationalGyeDays',\n          content: item['json']['nationalGyeDays'],\n        },\n        {\n          name: 'transitDays',\n          content: item['json']['transitDays'],\n        },\n      ],\n      workspaceCode: WORKPACE,\n    };\n\n    uniqueMap[key] = newItem;\n  } else {\n    uniqueMap[key].onHandStock += item['json']['onHandStock'];\n    uniqueMap[key].transitStock += item['json']['transitStock'];\n    uniqueMap[key].openDemandOrders += item['json']['openDemandOrders'];\n  }\n}\n\ndata.push(...Object.values(uniqueMap));\n\nreturn {data: data}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -880,
+        -340
+      ],
+      "id": "5bb2c4dd-7262-453b-8cdf-d7178ba63372",
+      "name": "Script para manejo de formato JSON"
+    },
+    {
+      "parameters": {
+        "content": "## Sección del flujo que aplica Sentencias SQL para extraer la informacion requerida de las bases de datos",
+        "height": 880,
+        "width": 560,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -260,
+        -740
+      ],
+      "typeVersion": 1,
+      "id": "4df6a92a-1ace-4d37-8f2b-39f4b30e5833",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Sección del flujo que aplica Sentencias SQL para extraer la informacion requerida de las bases de datos",
+        "height": 400,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        380,
+        -500
+      ],
+      "typeVersion": 1,
+      "id": "9d00c43b-bcb1-4604-9717-57760bfbec0b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const WORKSPACECODE  = '4trb';\nfunction transformData(originalArray) {\n    const grouped = originalArray.reduce((acc, item) => {\n        const key = `${item.location}-${item.code}`;\n        \n        if (!acc[key]) {\n            acc[key] = {\n                location: item.location,\n                code: item.code,\n                items: []\n            };\n        }\n        \n        acc[key].items.push({\n            date: item.date.split('T')[0],\n            quantity: item.quantity\n        });\n        \n        return acc;\n    }, {});\n    \n    const result = {\n        data: Object.values(grouped).map(group => {\n            group.items.sort((a, b) => new Date(a.date) - new Date(b.date));\n            \n            return {\n                location: group.location,\n                code: group.code,\n                dates: group.items.map(item => item.date),\n                quantities: group.items.map(item => item.quantity),\n                workspaceCode:WORKSPACECODE\n            };\n        })\n    };\n    \n    return result;\n}\nconst base_data = $input.all().map(i => i.json);\nreturn transformData(base_data);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        -340
+      ],
+      "id": "14d4225b-f73b-49c6-b034-14bccc9f9ad5",
+      "name": "Formato a los resultados recibidos"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.paqtana.com/v2/org/cvl/historical_demand",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "auto_calculate",
+              "value": "True"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        -340
+      ],
+      "id": "986ba3de-2163-4954-9e06-413f800e0c92",
+      "name": "HTTP Request POST hacia el server destino",
+      "notesInFlow": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "d2sKBry8BHvFrKlv",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "escaner@vinesa.com.ec",
+        "toEmail": "Eduardo Villota <evillota@vinesa.com.ec>,Alex Santacrux <sistemas@vinesa.com.ec>>",
+        "subject": "Migración terminada",
+        "html": " <!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Migración Exitosa</title>\n  <style>\n    body {\n      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif;\n      background: #f8fafc;\n      margin: 0;\n      padding: 2rem;\n    }\n    .container {\n      max-width: 768px;\n      margin: 2rem auto;\n      background: linear-gradient(to bottom right, #ffffff, #f1f5f9, #f3f4f6);\n      padding: 2rem;\n      border-radius: 1rem;\n      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);\n      border: 1px solid #e5e7eb;\n    }\n    .header {\n      display: flex;\n      align-items: center;\n      gap: 0.75rem;\n      margin-bottom: 1.5rem;\n    }\n    .icon {\n      background-color: #dcfce7;\n      color: #16a34a;\n      padding: 0.75rem;\n      border-radius: 9999px;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n    }\n    .title {\n      font-size: 1.875rem;\n      font-weight: 800;\n      color: #1f2937;\n    }\n    .paragraph {\n      color: #374151;\n      font-size: 1.125rem;\n      line-height: 1.75rem;\n      margin-bottom: 1.5rem;\n    }\n    .highlight {\n      font-weight: 600;\n      color: #111827;\n    }\n    .highlight-alt {\n      color: #4f46e5;\n    }\n    .section {\n      display: grid;\n      grid-template-columns: 1fr;\n      gap: 2rem;\n    }\n    @media (min-width: 768px) {\n      .section {\n        grid-template-columns: 1fr 1fr;\n      }\n    }\n    .box h2 {\n      font-size: 1.25rem;\n      font-weight: 600;\n      color: #1f2937;\n      margin-bottom: 0.5rem;\n    }\n    .list {\n      list-style: disc;\n      padding-left: 1.25rem;\n      color: #4b5563;\n    }\n    .item {\n      background: white;\n      padding: 0.75rem;\n      border-radius: 0.5rem;\n      margin-bottom: 0.5rem;\n      border: 1px solid #f3f4f6;\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);\n    }\n    .footer {\n      margin-top: 2rem;\n      text-align: right;\n      font-size: 0.875rem;\n      color: #6b7280;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <div class=\"icon\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n          <path d=\"M5 13l4 4L19 7\" />\n        </svg>\n      </div>\n      <h1 class=\"title\">Migración completada con éxito</h1>\n    </div>\n\n    <p class=\"paragraph\">\n      Se ha completado correctamente la migración desde SAP de la empresa \n      <span class=\"highlight\">GRUPO CVL</span> hacia los servidores de \n      <span class=\"highlight highlight-alt\">Paqtana</span>. A continuación, se detalla la información migrada:\n    </p>\n\n    <div class=\"section\">\n      <div class=\"box\">\n        <h2>📦 Detalle de Stocks</h2>\n        <ul class=\"list\">\n          <li class=\"item\">AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.</li>\n          <li class=\"item\">IMANC IMPORTADORA NACIONAL CIA LTDA</li>\n          <li class=\"item\">VIDINTERNACIONAL S.A.</li>\n        </ul>\n      </div>\n      <div class=\"box\">\n        <h2>🚚 Salidas de Stocks</h2>\n        <ul class=\"list\">\n          <li class=\"item\">AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.</li>\n          <li class=\"item\">IMANC IMPORTADORA NACIONAL CIA LTDA</li>\n          <li class=\"item\">VIDINTERNACIONAL S.A.</li>\n        </ul>\n      </div>\n    </div>\n\n    <div class=\"footer\">\n      © 2025 CVL · Todos los derechos reservados\n    </div>\n  </div>\n</body>\n</html>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1340,
+        -340
+      ],
+      "id": "9326a1c2-8675-4a39-b272-394ae150c4ff",
+      "name": "Manejo de notificaciones por Email",
+      "webhookId": "a21e5399-2f9f-4864-957f-0d45b37fbc86",
+      "credentials": {
+        "smtp": {
+          "id": "dbktQxxwcUZ6P9mm",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Sección del flujo que replica  la acción a través de notificación por correo electrónico",
+        "height": 400,
+        "width": 440,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1160,
+        -500
+      ],
+      "typeVersion": 1,
+      "id": "bcb82b05-b682-4a96-8131-38a39cd39539",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-06-05T23:20:31.260-04:00",
+          "Readable date": "June 5th 2025, 11:20:31 pm",
+          "Readable time": "11:20:31 pm",
+          "Day of week": "Thursday",
+          "Year": "2025",
+          "Month": "June",
+          "Day of month": "05",
+          "Hour": "23",
+          "Minute": "20",
+          "Second": "31",
+          "Timezone": "America/New_York (UTC-04:00)"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "TOTAL STOCKS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SALIDAS CORDOVEZ": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SALIDAS VID": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SALIDAS IMNAC": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TOTAL STOCKS": {
+      "main": [
+        [
+          {
+            "node": "Script para manejo de formato JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request PUT": {
+      "main": [
+        [
+          {
+            "node": "SALIDAS CORDOVEZ",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SALIDAS IMNAC",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SALIDAS VID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Script para manejo de formato JSON": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request PUT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formato a los resultados recibidos": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request POST hacia el server destino",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request POST hacia el server destino": {
+      "main": [
+        [
+          {
+            "node": "Manejo de notificaciones por Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manejo de notificaciones por Email": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "31daa12c-ba5e-42c8-adc4-beaff371189c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7f356bb595c2c28dbe2d37bde19505221eb88b9272e8312aa6eda63c8d614fec"
+  },
+  "id": "od697mggJ64jgjeB",
+  "tags": []
+}
