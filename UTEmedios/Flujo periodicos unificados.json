@@ -1,0 +1,1450 @@
+{
+  "name": "Flujo periodicos unificados",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Si no existe información en el input (`$json.title` o `$json.content.rendered` están vacíos), no hagas nada y termina.\n\nEn caso contrario, realiza lo siguiente:\n\nReescribe el artículo de entrada respetando estas reglas:\n\n---\n\n1. CONSERVAR:\n- Todos los datos factuales (fechas, nombres, cifras, lugares).\n- El significado completo de la información.\n- Los enlaces del contenido original (excepto los que refieren al medio o fuente).\n- La imagen representativa (`source_url`).\n\n2. CAMBIAR:\n- Título {{ $json.title.rendered }}: modifícalo ligeramente, manteniendo el tema y sentido general.\n- Contenido {{ $json.content.rendered }}: parafrasea las frases, reordena si mejora la comprensión, usa sinónimos precisos.\n- Vocabulario neutro, sin expresiones sensacionalistas.\n- Evita repetir exactamente las frases originales.\n- Reemplaza cualquier link a imágenes del cuerpo del texto por {{ $json.source_url }}\n\n3. ESTILO:\n- Español neutro (España).\n- Tono objetivo, estilo periodístico.\n- Frases claras, párrafos breves (2–4 frases máximo).\n- Longitud final similar al texto original (±15%).\n\n4. CATEGORÍAS:\nTienes disponible el campo de entrada {{ $json.category_names }}, que contiene nombres de categorías. A partir de ese array, convierte cada nombre en su ID numérico correspondiente, según esta tabla:\n\nActualidad → 283\nPolítica → 284\nDeportes → 298\nSucesos → 290\nSociedad → 288\nInternacional → 2202\nEconomía → 37\nJusticia → 39\nSanidad → 43\nEducación → 333\nCultura → 289\nLaboral → 348\nDerechos Humanos → 264\nTecnología → 3098\nTendencias → 2479\nNacional → 1265\n\nReglas:\n- Devuelve solo las categorías que coincidan en la lista {{ $json.category_names }}.\n- Si alguna categoría no coincide, ignórala.\n- Devuelve el campo \"categories\" como un array plano de números enteros sin etiquetas ni claves, por ejemplo: \"categories\": [2202, 284, 29]\n- No uses estructuras tipo:\n  - \"categories\": { 0: 2202, 1: 284 }\n  - \"categories\": [ \"2202\", \"284\" ]\nSolo acepta el siguiente formato exacto:\n- Un array entre corchetes.\n- Sin comillas en los números.\n- En el mismo orden que aparecen las categorías originales en el campo \"category_names\".\n- Sin duplicados.\n---\n\n5. FORMATO DE SALIDA:\n\nDevuelve la respuesta en formato JSON válido para WordPress, así:\n\n```json\n{\n  \"title\": \"TÍTULO_REESCRITO\",\n  \"content\": \"CONTENIDO_PARAFRASEADO <p><a href='{{ $json.link }}'>Leer más</a></p>\",\n  \"link\": \"{{ $json.link }}\",\n  \"excerpt\": \"{{ $json.excerpt.rendered }}\",\n  \"source_url_img\": \"{{ $json.source_url }}\",\n  \"featuredMediaId\": {{ $json.id_img }},\n  \"categories\": [LISTA_DE_IDS]\n}\n\n"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -384,
+        864
+      ],
+      "id": "a0d0cf39-1220-45e2-9d74-9e413ab4a69a",
+      "name": "OpenAI MasqueAlDia",
+      "credentials": {
+        "openAiApi": {
+          "id": "5OGI8br51RcoQeoa",
+          "name": "OpenAi utemedios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "imagen_url",
+              "cssSelector": "meta[property=\"og:image\"]",
+              "returnValue": "attribute",
+              "attribute": "content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -1248,
+        688
+      ],
+      "id": "235ca746-7325-4394-b6e9-ea17e68bc99e",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -528,
+        864
+      ],
+      "id": "c1805203-12e5-4da7-9be3-0c5e048a581a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.imagen_url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -336,
+        672
+      ],
+      "id": "078471b8-41b3-48ea-b91d-f2b88e5badb3",
+      "name": "Obtiene las imagenes de los URL"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "065871c3-f364-4ea3-9c0d-78db7097197f",
+              "name": "id_img",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "813c3a25-6a9d-4b11-8216-398494ae6dda",
+              "name": "source_url",
+              "value": "={{ $json.source_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        672
+      ],
+      "id": "de67a44e-2e55-45c5-8081-6f33fe688de8",
+      "name": "Edicion del campo de id y de la url de la imagen"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://masquealdia.com/wp-json/wp/v2/media",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "Mi imagen"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -96,
+        672
+      ],
+      "id": "4f76ae7f-11d8-4967-abe8-61f5c9452323",
+      "name": "HTTP Request2",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "YKbsZuoNcDyKEuxe",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c964bd75-47ef-4089-a581-18e20d6bf06e",
+              "name": "title",
+              "value": "={{ $json.message.content.title }}",
+              "type": "string"
+            },
+            {
+              "id": "5afdc877-c146-4370-b5e4-0253269dc25d",
+              "name": "content",
+              "value": "={{ $json.message.content.content }}",
+              "type": "string"
+            },
+            {
+              "id": "3184b87f-9bba-46bf-938a-3627d0184189",
+              "name": "featuredMediaId",
+              "value": "={{ $('Merge').item.json.id_img }}",
+              "type": "string"
+            },
+            {
+              "id": "3fee6b86-cb57-42c0-ba44-bc132317b1b5",
+              "name": "source_url_img",
+              "value": "={{ $('Merge').item.json.source_url }}",
+              "type": "string"
+            },
+            {
+              "id": "9311ed28-76ee-4907-8037-7d4bce83e2b0",
+              "name": "excerpt",
+              "value": "={{ $json.message.content.excerpt }}",
+              "type": "string"
+            },
+            {
+              "id": "7b1d819b-efcd-41bc-bd19-c672996e981b",
+              "name": "categories",
+              "value": "={{ $json.message.content.categories }}",
+              "type": "array"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "message.content.tags",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        864
+      ],
+      "id": "495c13bd-abc6-4215-94c2-80b9a6a9b137",
+      "name": "Edita variables con los valores necsarios para wordpress"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://masquealdia.com/wp-json/wp/v2/posts/{{$json.id}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status\": \"publish\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        864
+      ],
+      "id": "e98339f8-6d13-4744-8f7b-86802b8e27f9",
+      "name": "Actualiza el post de draft a publish",
+      "credentials": {
+        "wordpressApi": {
+          "id": "jbcd5bdDvRQpAW4H",
+          "name": "Wordpress teleceuta.com"
+        },
+        "httpBasicAuth": {
+          "id": "YKbsZuoNcDyKEuxe",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://masquealdia.com/wp-json/wp/v2/posts/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.content }}"
+            },
+            {
+              "name": "status",
+              "value": "draft"
+            },
+            {
+              "name": "featured_media",
+              "value": "={{ $json.featuredMediaId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        128,
+        864
+      ],
+      "id": "b6c2293c-1199-4bbe-a6c8-ec94ab0fa891",
+      "name": "Actualiza el post a draft",
+      "credentials": {
+        "wordpressApi": {
+          "id": "jbcd5bdDvRQpAW4H",
+          "name": "Wordpress teleceuta.com"
+        },
+        "httpBasicAuth": {
+          "id": "YKbsZuoNcDyKEuxe",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "01f62054-94e1-440e-b7d6-ae4539efff6b",
+              "leftValue": "={{ !!$json.imagen_url && $json.imagen_url.startsWith('http') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -544,
+        688
+      ],
+      "id": "8b682c35-8b78-49c9-bea6-97f24cdad91c",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://masquealdia.com/wp-json/wp/v2/posts/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"categories\": {{$json.categories}}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        864
+      ],
+      "id": "44d35713-dccb-4669-9019-ca30409214c2",
+      "name": "Actualiza las categorias",
+      "credentials": {
+        "wordpressApi": {
+          "id": "jbcd5bdDvRQpAW4H",
+          "name": "Wordpress teleceuta.com"
+        },
+        "httpBasicAuth": {
+          "id": "YKbsZuoNcDyKEuxe",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e1cbec8b-6da3-4729-8bcc-8c6ce16592b5",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "2417358d-c5eb-49d6-8f3c-385aa2f11af5",
+              "name": "categories",
+              "value": "={{ $('Edita variables con los valores necsarios para wordpress').item.json.categories }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        864
+      ],
+      "id": "a417a803-4409-4da4-990e-75dbc615443d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "01f62054-94e1-440e-b7d6-ae4539efff6b",
+              "leftValue": "={{ !!$json.imagen_url && $json.imagen_url.startsWith('http') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -544,
+        1168
+      ],
+      "id": "d2d689b9-771f-4e33-b326-658deb948692",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "dedupeValue": "={{ $json.link }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -2064,
+        880
+      ],
+      "id": "4eeffc1d-0800-4f24-b1a7-fb415e21959c",
+      "name": "Solo ingresa nuevos links obtenidos del RSS"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://teleceuta.com/wp-json/wp/v2/posts/{{$json.id}}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"featured_media\": {{ $('Edita variables con los valores necsarios para wordpress1').item.json.featuredMediaId }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        1360
+      ],
+      "id": "6ce768e3-2a97-49cd-8c40-03562766008c",
+      "name": "Actualiza las graficas para los posts",
+      "credentials": {
+        "wordpressApi": {
+          "id": "jbcd5bdDvRQpAW4H",
+          "name": "Wordpress teleceuta.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2704,
+        368
+      ],
+      "id": "e0a67499-d50c-4df9-86bc-cda709c1c670",
+      "name": "Cron que busca cada 10 minutos"
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.message.content.title }}",
+        "additionalFields": {
+          "authorId": 4,
+          "content": "={{ $json.message.content.content }}",
+          "status": "draft",
+          "categories": "={{ $json.message.content.categories }}"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        80,
+        1360
+      ],
+      "id": "0c206c9f-3ee5-4125-8c63-5aeb4e15c67d",
+      "name": "Wordpress Creacion de Post en draft",
+      "notesInFlow": false,
+      "credentials": {
+        "wordpressApi": {
+          "id": "jbcd5bdDvRQpAW4H",
+          "name": "Wordpress teleceuta.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://teleceuta.com/wp-json/wp/v2/media",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "=Basic YnJ5YW0ubWFkZ2U6cVo0dyB6bjljIDh5Sm8gaTdjViBvalhaIGZDYms="
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "Mi imagen"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        1152
+      ],
+      "id": "c8480b51-1d24-464a-9d46-09d62ce79ef5",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -544,
+        1360
+      ],
+      "id": "914d4492-f80d-4a2d-8646-adecdb0811da",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c964bd75-47ef-4089-a581-18e20d6bf06e",
+              "name": "title",
+              "value": "={{ $json.message.content.title }}",
+              "type": "string"
+            },
+            {
+              "id": "5afdc877-c146-4370-b5e4-0253269dc25d",
+              "name": "content",
+              "value": "={{ $json.message.content.content }}",
+              "type": "string"
+            },
+            {
+              "id": "3184b87f-9bba-46bf-938a-3627d0184189",
+              "name": "featuredMediaId",
+              "value": "={{ $('Merge1').item.json.id_img }}",
+              "type": "string"
+            },
+            {
+              "id": "3fee6b86-cb57-42c0-ba44-bc132317b1b5",
+              "name": "source_url_img",
+              "value": "={{ $('Merge1').item.json.source_url }}",
+              "type": "string"
+            },
+            {
+              "id": "9311ed28-76ee-4907-8037-7d4bce83e2b0",
+              "name": "excerpt",
+              "value": "={{ $json.message.content.excerpt }}",
+              "type": "string"
+            },
+            {
+              "id": "4bd940ed-cbb3-4eb7-b269-ab5428d939d3",
+              "name": "categories",
+              "value": "={{ $json.message.content.categories }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -96,
+        1360
+      ],
+      "id": "14eddc6b-528f-45d1-a0d6-b284693115c0",
+      "name": "Edita variables con los valores necsarios para wordpress1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.imagen_url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        1152
+      ],
+      "id": "794a7211-c456-439e-9e54-48e43aa5ade2",
+      "name": "Obtiene las imagenes de los URL1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "065871c3-f364-4ea3-9c0d-78db7097197f",
+              "name": "id_img",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "813c3a25-6a9d-4b11-8216-398494ae6dda",
+              "name": "source_url",
+              "value": "={{ $json.source_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        1152
+      ],
+      "id": "40ce92da-0836-46ff-94bd-9ea9ea25a0cb",
+      "name": "Edicion del campo de id y de la url de la imagen1"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://teleceuta.com/wp-json/wp/v2/posts/{{$json.id}}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status\": \"publish\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        1360
+      ],
+      "id": "9a9124db-452b-4c4b-9ef9-6e7df882d1d5",
+      "name": "Actualiza el post de draft a publish1",
+      "credentials": {
+        "wordpressApi": {
+          "id": "jbcd5bdDvRQpAW4H",
+          "name": "Wordpress teleceuta.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const categorySet = new Set();\n\nfor (const item of items) {\n  const categories = item.json.categories || [];\n  for (const id of categories) {\n    categorySet.add(id);\n  }\n}\n\n// Convertimos el Set en un array de un solo item para la siguiente llamada HTTP\nreturn [{\n  json: {\n    ids: Array.from(categorySet).join(',')  // \"1,2,3\"\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2864,
+        832
+      ],
+      "id": "9e7e0b5c-bc56-4db7-acf3-5846029bf9bf",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Si no existe información en el input (`$json.title` o `$json.content.rendered` están vacíos), no hagas nada y termina.\n\nEn caso contrario, realiza lo siguiente:\n\nReescribe el artículo de entrada respetando estas reglas:\n\n---\n\n1. CONSERVAR:\n- Todos los datos factuales (fechas, nombres, cifras, lugares).\n- El significado completo de la información.\n- Los enlaces del contenido original (excepto los que refieren al medio o fuente).\n- La imagen representativa (`source_url`).\n\n2. CAMBIAR:\n- Título {{ $json.title.rendered }}: modifícalo ligeramente, manteniendo el tema y sentido general.\n- Contenido {{ $json.content.rendered }}: parafrasea las frases, reordena si mejora la comprensión, usa sinónimos precisos.\n- Vocabulario neutro, sin expresiones sensacionalistas.\n- Evita repetir exactamente las frases originales.\n- Reemplaza cualquier link a imágenes del cuerpo del texto por {{ $json.source_url }}\n\n3. ESTILO:\n- Español neutro (España).\n- Tono objetivo, estilo periodístico.\n- Frases claras, párrafos breves (2–4 frases máximo).\n- Longitud final similar al texto original (±15%).\n\n---\n\n4. CATEGORÍAS:\n\nTienes disponible el campo de entrada {{ $json.category_names }}, que contiene nombres de categorías.\n\nA partir de ese array, convierte cada nombre en su ID numérico correspondiente, según esta tabla:\n\n    Actualidad → 1\n    Política → 27\n    Ceuta → 8411\n    Deporte o Deportes → 24\n    Sucesos → 29\n    Sociedad → 28\n    Internacional → 3725\n    Economía → 25\n    Justicia → 31\n    Sanidad → 36\n    Educación → 26\n    Cultura → 23\n    Laboral → 2175\n    Derechos Humanos → 2163\n    Nacional → 2923\n    Tecnología → 4571\n    Tendencias → 3974\n\nReglas:\n- Devuelve solo las categorías que coincidan en la lista {{ $json.category_names }}.\n- Si alguna categoría no coincide, ignórala.\n- Devuelve el campo \"categories\" como un array plano de números enteros sin etiquetas ni claves, por ejemplo: \"categories\": [2202, 284, 29]\n- No uses estructuras tipo:\n  - \"categories\": { 0: 2202, 1: 284 }\n  - \"categories\": [ \"2202\", \"284\" ]\nSolo acepta el siguiente formato exacto:\n- Un array entre corchetes.\n- Sin comillas en los números.\n- En el mismo orden que aparecen las categorías originales en el campo \"category_names\".\n- Sin duplicados.\n---\n\n5. FORMATO DE SALIDA:\n\nDevuelve la respuesta en formato JSON válido para WordPress, así:\n\n```json\n{\n  \"title\": \"TÍTULO_REESCRITO\",\n  \"content\": \"CONTENIDO_PARAFRASEADO <p><a href='{{ $json.link }}'>Leer más</a></p>\",\n  \"link\": \"{{ $json.link }}\",\n  \"excerpt\": \"{{ $json.excerpt.rendered }}\",\n  \"source_url_img\": \"{{ $json.source_url }}\",\n  \"featuredMediaId\": {{ $json.id_img }},\n  \"categories\": [LISTA_DE_IDS]\n}\n\n\n\n"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -400,
+        1360
+      ],
+      "id": "fba68083-5199-497a-80a8-17717fbc3db2",
+      "name": "OpenAI Teleceuta",
+      "credentials": {
+        "openAiApi": {
+          "id": "5OGI8br51RcoQeoa",
+          "name": "OpenAi utemedios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Seccion de flujo que verifica el servidor y su funcionamiento \n",
+        "height": 280,
+        "width": 840
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2800,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "67fce856-bc41-4322-af9c-49fa0b0e9c2d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Seccion del flujo que analiza las categorias y filtra posts repetidos",
+        "height": 320,
+        "width": 1000,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2896,
+        720
+      ],
+      "typeVersion": 1,
+      "id": "af8858a6-8612-4e6d-84b9-30a32712720b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Seccion del flujo que recupera las imagenes de los nuevos posts",
+        "height": 300,
+        "width": 940,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1680,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "4a3d1cd2-f0fc-4964-91bb-6c5ef9769954",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Seccion del flujo que replica la imagen recibida, junta con el post a clonar, interviene la IA y postea la noticia a Wordpress por medio de una clave app",
+        "height": 440,
+        "width": 1420,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -608,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "68d8ed63-a75a-41df-8950-6ee6e3d6aa48",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Seccion del flujo que replica la imagen recibida, junta con el post a clonar, interviene la IA y postea la noticia a Wordpress",
+        "height": 500,
+        "width": 1240,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -608,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "fc427883-aa84-401c-9f65-d85c4e1fc8ae",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "timeout": 50000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1568,
+        688
+      ],
+      "id": "1b7ce165-f687-48a1-9d2c-8496a77f87b8",
+      "name": "HTTP Request Acceso a los posts"
+    },
+    {
+      "parameters": {
+        "url": "=https://elperiodicodeceuta.es/wp-json/wp/v2/categories?include={{$json.ids}}",
+        "options": {
+          "timeout": 40000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2688,
+        832
+      ],
+      "id": "f1ba5f0a-6e08-4a51-ba46-1cf7b3d53d08",
+      "name": "HTTP Request Verifica las categorias"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener los datos originales\nconst posts = $items('HTTP Request verificar noticias existentes');\nconst categories = $items('HTTP Request Verifica las categorias');\n\n// Mapeamos ID -> nombre para búsqueda rápida\nconst categoryMap = {};\nfor (const cat of categories) {\n  categoryMap[cat.json.id] = cat.json.name;\n}\n\nconst results = [];\n\n// Para cada post, mapeamos sus IDs de categorías a nombres\nfor (const post of posts) {\n  const catIds = post.json.categories || [];\n  const catNames = catIds.map(id => categoryMap[id] || 'Desconocida');\n\n  results.push({\n    json: {\n      ...post.json,\n      category_names: catNames\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2256,
+        880
+      ],
+      "id": "57ed064e-947d-4af3-b3c4-71e7c763f314",
+      "name": "Almacena las categorias recultantes"
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1488,
+        224
+      ],
+      "id": "0d513f9b-7cc3-4d23-8507-cf8a39de56b1",
+      "name": "Wait",
+      "webhookId": "0cae42aa-f9e5-4ec3-a678-0cfcaf3d00e3"
+    },
+    {
+      "parameters": {
+        "workflowId": "#AmyCE0nH74oO920B",
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "id": "0502a5ad-3dfc-4b3c-949c-e554bf7164f3",
+      "name": "Reintentar flujo original",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        -1232,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6403bb27-643f-4323-ba04-c8358b6ceae5",
+              "leftValue": "={{ $json.isEmpty() }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2144,
+        368
+      ],
+      "id": "6b808077-2db3-41d2-a2da-5cd5c6ef1978",
+      "name": "If que controla la existencia de largo de json"
+    },
+    {
+      "parameters": {
+        "content": "## Seccion del flujo que controla al encontrar un error, espera 3 minutos para reiniciar el flujo completo",
+        "height": 340,
+        "width": 740,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1584,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "df113fbe-ec72-4183-a919-9decfb70a531",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "998f346e-afdb-44df-b21b-271b8146ad67",
+              "leftValue": "={{ $json.isEmpty() }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2496,
+        832
+      ],
+      "id": "2f27845d-60e0-4a55-b298-178436d666dd",
+      "name": "If que controla la existencia de acceso a server"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9d9dcfb3-ec97-4c6f-bfe4-a730f69fc856",
+              "name": "imagen_url",
+              "value": "={{ $json.imagen_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -928,
+        688
+      ],
+      "id": "ffb562e3-57c2-4383-9186-5fe343e7f4b2",
+      "name": "Edit Campos a utilizar"
+    },
+    {
+      "parameters": {
+        "toRecipients": "xavier.calvas@gaia-sh.com",
+        "subject": "Problemas Servidor elperiodicodeceuta",
+        "bodyContent": "Se ha presentado una anomalia al acceder al servidor de elperiodicodeceuta.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -1024,
+        160
+      ],
+      "id": "e8cb606e-c6aa-4ce8-8926-3ee194d6fc75",
+      "name": "Microsoft Outlook",
+      "webhookId": "d3c03088-9640-40b9-9fa0-f94f3bcf007e",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "1murx6SKFo2qBbmn",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://elperiodicodeceuta.es/wp-json/wp/v2/posts",
+        "options": {
+          "timeout": 40000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2400,
+        368
+      ],
+      "id": "8ad1c2e8-fd1e-4f9f-afa7-ee7fbef7c6cd",
+      "name": "HTTP Request verificar noticias existentes"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI MasqueAlDia": {
+      "main": [
+        [
+          {
+            "node": "Edita variables con los valores necsarios para wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Edit Campos a utilizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "OpenAI MasqueAlDia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtiene las imagenes de los URL": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Edicion del campo de id y de la url de la imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edicion del campo de id y de la url de la imagen": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edita variables con los valores necsarios para wordpress": {
+      "main": [
+        [
+          {
+            "node": "Actualiza el post a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualiza el post a draft": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Obtiene las imagenes de los URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualiza las categorias": {
+      "main": [
+        [
+          {
+            "node": "Actualiza el post de draft a publish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Actualiza las categorias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Obtiene las imagenes de los URL1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Solo ingresa nuevos links obtenidos del RSS": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "HTTP Request Acceso a los posts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Actualiza las graficas para los posts": {
+      "main": [
+        [
+          {
+            "node": "Actualiza el post de draft a publish1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron que busca cada 10 minutos": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request verificar noticias existentes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wordpress Creacion de Post en draft": {
+      "main": [
+        [
+          {
+            "node": "Actualiza las graficas para los posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "Edicion del campo de id y de la url de la imagen1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Teleceuta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edita variables con los valores necsarios para wordpress1": {
+      "main": [
+        [
+          {
+            "node": "Wordpress Creacion de Post en draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtiene las imagenes de los URL1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edicion del campo de id y de la url de la imagen1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Verifica las categorias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Teleceuta": {
+      "main": [
+        [
+          {
+            "node": "Edita variables con los valores necsarios para wordpress1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Acceso a los posts": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Verifica las categorias": {
+      "main": [
+        [
+          {
+            "node": "If que controla la existencia de acceso a server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Almacena las categorias recultantes": {
+      "main": [
+        [
+          {
+            "node": "Solo ingresa nuevos links obtenidos del RSS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Microsoft Outlook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Reintentar flujo original",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If que controla la existencia de largo de json": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If que controla la existencia de acceso a server": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Almacena las categorias recultantes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Campos a utilizar": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft Outlook": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request verificar noticias existentes": {
+      "main": [
+        [
+          {
+            "node": "If que controla la existencia de largo de json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f08a5b4d-e967-43f2-b4af-212c0f1fd3e5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ae37de52389820bab78a2fd3b3906f4f2d53e9b3e8e285be1658f8cf56dcdab8"
+  },
+  "id": "AmyCE0nH74oO920B",
+  "tags": []
+}

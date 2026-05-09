@@ -1,0 +1,3380 @@
+{
+  "name": "Extraer, generar y postear artículos en wordpress",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## RSS\nExtracción de las noticias cada hora.",
+        "height": 1940,
+        "width": 1558
+      },
+      "id": "a4305a8d-b1ae-414d-b897-8b1f319148f7",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6624,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/sociedad/",
+        "options": {}
+      },
+      "id": "b246a2f7-a938-41ec-8864-007a4f0af6bd",
+      "name": "RTVCE Sociedad",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        -48
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/politica/",
+        "options": {}
+      },
+      "id": "0bf9d6a2-e799-4a8c-891c-eb154c1262d1",
+      "name": "RTVCE Política",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        -208
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Últimas entradas\nComprueba que noticias se han publicado hace menos de 1 hora\n",
+        "height": 715,
+        "width": 1832,
+        "color": 3
+      },
+      "id": "d224f1b1-3dfe-4fb1-ba65-be66648f1c49",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -4192,
+        2080
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/cultura/",
+        "options": {}
+      },
+      "id": "84482390-dee3-4094-8f68-8c12d99a183d",
+      "name": "RTVCE Cultura",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        128
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/Sucesos/",
+        "options": {}
+      },
+      "id": "640b3aed-cff7-4cd6-8176-a60279ba155a",
+      "name": "RTVCE Sucesos",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        288
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/sanidad/",
+        "options": {}
+      },
+      "id": "1d071c65-b403-4d32-95f9-3bc12e10e950",
+      "name": "RTVCE Sanidad",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        448
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/educacion/",
+        "options": {}
+      },
+      "id": "1c71885d-515a-48f2-959f-a8fdd2d425ff",
+      "name": "RTVCE Educación",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        608
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/economia/",
+        "options": {}
+      },
+      "id": "717bd0b1-df96-44bc-8bdf-be2ce10219e1",
+      "name": "RTVCE Economía",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        768
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/medio-ambiente/",
+        "options": {}
+      },
+      "id": "c347b139-dba1-46bf-bfda-62589f7b6e10",
+      "name": "RTVCE Medio ambiente",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        928
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/castrense/",
+        "options": {}
+      },
+      "id": "f65a62eb-2e38-4731-81f8-8301b8d96812",
+      "name": "RTVCE Castrense",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        1088
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.rtvce.es/rss/deportes/",
+        "options": {}
+      },
+      "id": "42dd472c-c457-4ba5-a77b-1840197b2f19",
+      "name": "RTVCE Deportes",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -5344,
+        1248
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Agregar fuentes\nAgrega todas las fuentes en una única fuente y elimina los duplicados\n",
+        "height": 3111,
+        "width": 766,
+        "color": 2
+      },
+      "id": "947612ae-ab8d-47e3-8ecf-4d888fa4cea6",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -5008,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 8
+      },
+      "id": "73208395-0274-468e-9500-fd4b841fc8d9",
+      "name": "Agregar fuentes 1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -4848,
+        480
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "03b9fe04-ea59-4ec3-8580-fb64c12bbe11",
+      "name": "Agregar fuentes",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -4688,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Web Scrapping\nExtracción de las noticias cada hora.",
+        "height": 1515,
+        "width": 1566
+      },
+      "id": "b6fcd775-9987-42d3-9dbd-8c19572afeaf",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6624,
+        1664
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "url",
+              "cssSelector": "=article.cell .mainBox > a[href]",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5cfef9be-6664-42ef-a5d7-e0a162c77819",
+      "name": "extraer la url de la noticia de portada",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        -6128,
+        1712
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "url",
+              "cssSelector": "=div.container.gridLayout.g4.simply article h3 a",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "183bb5e2-ec43-4d93-9766-50bebf6726d2",
+      "name": "extraer el resto de noticias",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        -6128,
+        1968
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {},
+      "id": "e33636a9-d631-4c5f-9bbb-dd9901c0d670",
+      "name": "Agregar fuentes rtve2",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -5776,
+        1824
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst urlArray = items.flatMap((item) => item?.json?.url || []);\nconst result = urlArray.map((link) => ({ url: link, category: \"nacional\" }));\nreturn result;\n"
+      },
+      "id": "2af97648-fa03-4fc3-b89b-24ccf6465910",
+      "name": "Añadir categoria",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5520,
+        1824
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "url",
+              "cssSelector": "=article.cell .mainBox > a[href]",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "913e8bf9-61f2-456e-9766-755dd2706722",
+      "name": "extraer la url de la noticia de portada1",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        -6128,
+        2160
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "url",
+              "cssSelector": "=div.container.gridLayout.g4.simply article h3 a",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "71a7771e-7c86-4e2b-b9f6-6c6a55d57092",
+      "name": "extraer el resto de noticias1",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        -6128,
+        2432
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {},
+      "id": "c37da45b-ae81-4be0-b69a-9190b4dfdf36",
+      "name": "Agregar fuentes rtve3",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -5776,
+        2288
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "url",
+              "cssSelector": "=article.cell .mainBox > a[href]",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9e316b3d-0328-493a-913d-52eb10b48431",
+      "name": "extraer la url de la noticia de portada2",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        -6128,
+        2672
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "url",
+              "cssSelector": "=div.container.gridLayout.g4.simply article h3 a",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3490ab81-5a4f-4861-932d-4badb5653333",
+      "name": "extraer el resto de noticias2",
+      "type": "n8n-nodes-base.html",
+      "position": [
+        -6128,
+        2928
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst urlArray = items.flatMap((item) => item?.json?.url || []);\nconst result = urlArray.map((link) => ({ url: link, category: \"internacional\" }));\nreturn result;\n"
+      },
+      "id": "b6ddc473-2122-4ed6-aa26-4201d1e8590f",
+      "name": "Añadir categoria1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5520,
+        2288
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst urlArray = items.flatMap((item) => item?.json?.url || []);\nconst result = urlArray.map((link) => ({ url: link, category: \"economia\" }));\nreturn result;\n"
+      },
+      "id": "0e0b971e-cfb9-4d7b-b2b1-3c2606516fcc",
+      "name": "Añadir categoria2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5520,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "id": "2992a8b6-89b3-4160-8d0f-de9abae5c07b",
+      "name": "Agregar fuentes rtve1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -5216,
+        2288
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.rtve.es/noticias/espana/",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "de70fd92-c378-49ed-8b18-3d043bf04d07",
+      "name": "Visitar la web",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -6400,
+        1824
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.rtve.es/noticias/internacional/",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "c0565387-4e51-40e1-87cd-af577bd988ca",
+      "name": "Visitar la web1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -6384,
+        2288
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.rtve.es/noticias/economia/",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "d63427f3-d178-4c72-a8e6-6662ade7c64f",
+      "name": "Visitar la web2",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -6384,
+        2784
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {},
+      "id": "23e795e3-b5d6-475a-8410-2063bf92e4d0",
+      "name": "Agregar fuentes rtve4",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -5776,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "51127954-f414-4829-a767-e1f235c9283e",
+      "name": "Cada 20 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -6960,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "dedupeValue": "={{ $json.url }}",
+        "options": {
+          "historySize": 100000
+        }
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -4928,
+        2304
+      ],
+      "id": "1969d048-a406-49b4-be07-b16d59bd1b71",
+      "name": "Remove Duplicates RTVE"
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "dedupeValue": "={{ $json.link }}",
+        "options": {
+          "historySize": 100000
+        }
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -4480,
+        576
+      ],
+      "id": "4e37bdd9-33ab-41c6-80af-f0f00a8193a9",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".maintitle"
+            },
+            {
+              "key": "content",
+              "cssSelector": "div .artBody ",
+              "returnArray": true
+            },
+            {
+              "key": "isoDate",
+              "cssSelector": ".datpub"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e2727828-b736-47df-9713-4f2667e2db53",
+      "name": "Extraer el contenido2",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -4384,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.isoDateClean }}",
+              "rightValue": "={{ $json.todayMadrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3984,
+        2304
+      ],
+      "id": "7e052b83-a886-4c36-b848-609822c03812",
+      "name": "Filtra por fecha actual1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "59b37635-fbb8-4d82-9737-5c33ae8a2235",
+              "name": "isoDateClean",
+              "value": "={{ \n(($json.isoDate || '')\n    .replace(/\\u00A0/g, ' ')     \n    .trim()\n    .slice(0,10)\n    .split('.')\n    .reverse()\n    .join('-'))\n}}",
+              "type": "string"
+            },
+            {
+              "id": "b9a61f72-4fce-47bd-be45-7ffd19541670",
+              "name": "todayMadrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            },
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "00197d42-5ad0-4678-b655-09c3e2c3f3af",
+              "name": "categorie",
+              "value": "={{ $('Remove Duplicates RTVE').item.json.category }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4176,
+        2304
+      ],
+      "id": "a58b8bf3-ed0f-4022-a428-5c61ac265983",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "96e9b8b4-4790-40cb-ab99-6255910bb477",
+              "name": "title",
+              "value": "={{ JSON.parse($json.output).title }}",
+              "type": "string"
+            },
+            {
+              "id": "54dbb81d-5579-4d23-8b08-6443a56346d2",
+              "name": "content",
+              "value": "={{ JSON.parse($json.output).content.join('') }}",
+              "type": "string"
+            },
+            {
+              "id": "bbf565b4-76b6-4d1f-bb92-0bf31b908d05",
+              "name": "meta_description",
+              "value": "={{ JSON.parse($json.output).meta_description }}\n",
+              "type": "string"
+            },
+            {
+              "id": "0eedee78-bf54-4257-88d9-f03c27a9e529",
+              "name": "category",
+              "value": "={{ Array.isArray(JSON.parse($json.output).categories) \n    ? JSON.parse($json.output).categories \n    : [JSON.parse($json.output).categories] }}\n",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3008,
+        2288
+      ],
+      "id": "33da0e24-73d2-4fd7-ad5c-fa6ded8af14f",
+      "name": "Edita variables con los valores necsarios para wordpress3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Considera el System Message",
+        "options": {
+          "systemMessage": "=const promptMejorado = `Re-escribe el artículo en base al contexto indicado. Sigue ESTRICTAMENTE estas instrucciones:\n\nCONTEXTO:\n- Título original: {{ $json.title }}\n- Contenido original: {{ $json.content }}\n- Categoría original: {{ $json.categorie }}\n\nINSTRUCCIONES DE REDACCIÓN:\n- Crea un título diferente al original (77 caracteres máximo)\n- Desarrolla un contenido de 800-900 palabras, fluido y con lógica lineal\n- Usa HTML básico: <strong>, <em>, <ul>, <li> (NO markdown\n- Crea un prompt descriptivo para imagen fotográfica de portada\n\nINSTRUCCIONES DE FORMATEO JSON (CRÍTICO):\n- Devuelve EXCLUSIVAMENTE un objeto JSON válido\n- SIN texto antes o después, SIN explicaciones, SIN bloques de código\n- ESCAPA correctamente las comillas dobles dentro del contenido usando \\\"\n- NO uses saltos de línea dentro de las strings del JSON\n- Minifica el JSON (una sola línea, sin espacios innecesarios)\n\nESTRUCTURA OBLIGATORIA:\n{\"title\":\"string máx 77 chars\",\n\"content\":[\"<p>párrafo 1</p>\",\"<p>párrafo 2</p>\"],\n\"meta_description\":\"string máx 160 chars\",\n\"categories\":número}\n\nCONVERSIÓN DE CATEGORÍAS (OBLIGATORIO):\n- \"Nacional\" o \"España\" → 198\n- \"Internacional\" o \"Mundo\" → 6827\n- \"Economía\" o \"economia\" → 11\n\nVALIDACIONES FINALES:\n- title: 10-77 caracteres\n- meta_description: máximo 160 caracteres\n- content: array con mínimo 8 párrafos HTML válidos\n- categories: número entero (no string)\n- JSON válido y sin caracteres especiales problemáticos\n\nIMPORTANTE: Revisa que todas las comillas dentro del HTML estén escapadas como \\\" antes de enviar.`;"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -3520,
+        2288
+      ],
+      "id": "8cfb5d3d-7f93-471b-8969-dd955c4ae9cf",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -3456,
+        2576
+      ],
+      "id": "03a3dcd8-47bd-406c-9630-e0fee1a50710",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "5OGI8br51RcoQeoa",
+          "name": "OpenAi utemedios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categorie;\n  \n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"España\") || categorias.includes(\"españa\") || \n           categorias.includes(\"Mundo\") || categorias.includes(\"mundo\") || \n           categorias.includes(\"Economía\") || categorias.includes(\"economía\")|| \n           categorias.includes(\"Nacional\") || categorias.includes(\"nacional\")|| \n           categorias.includes(\"Internacional\") || categorias.includes(\"internacional\")\n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"España\") || parsed.includes(\"españa\") || \n           categorias.includes(\"Mundo\") || categorias.includes(\"mundo\") || \n           categorias.includes(\"Economía\") || categorias.includes(\"economía\")|| \n           categorias.includes(\"Nacional\") || categorias.includes(\"nacional\")|| \n           categorias.includes(\"Internacional\") || categorias.includes(\"internacional\")\n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"España\") || categorias.includes(\"españa\") || \n           categorias.includes(\"Mundo\") || categorias.includes(\"mundo\") || \n           categorias.includes(\"Economía\") || categorias.includes(\"economía\")|| \n           categorias.includes(\"Nacional\") || categorias.includes(\"nacional\")|| \n           categorias.includes(\"Internacional\") || categorias.includes(\"internacional\")\n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3728,
+        2288
+      ],
+      "id": "ed941388-1aea-4806-92ae-56aecff9f1e3",
+      "name": "Verifica que las noticias sea Categoria Tecnologia1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "id": "32753a64-daaa-4988-86bc-b3cd842d43ce",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4656,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.title }}",
+        "additionalFields": {
+          "content": "={{ $json.content }}",
+          "status": "draft",
+          "categories": "={{ $json.category }}"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        -2704,
+        2288
+      ],
+      "id": "34aa8b8f-8955-40ff-8761-7b5f2a1380e3",
+      "name": "Create a post",
+      "credentials": {
+        "wordpressApi": {
+          "id": "TYMfqiW9Yp4PoQIa",
+          "name": "Wordpress elperiodicodeceuta.es"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "377065ba-089a-41cb-8e0f-37e039cd5c61",
+      "name": "Visitar la web5",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -3680,
+        -400
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".title"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".body.politica p",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".content-time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b0ce8154-0b3c-418a-81a8-4ffb522dad79",
+      "name": "Extraer el contenido4",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -3472,
+        -416
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "129959d9-1249-48dc-bb91-c5ffe2107325",
+              "name": "date",
+              "value": "={{ (() => {\n  const s = String($json.date);\n  const norm = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n  const meses = {\n    enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,\n    julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12\n  };\n  const m = norm.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/i);\n  if (!m) return ''; // o lanza error si prefieres\n  const dd = m[1].padStart(2,'0');\n  const mm = String(meses[m[2]] || '').padStart(2,'0');\n  const yyyy = m[3];\n  return `${yyyy}-${mm}-${dd}`;\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2cfe32c-2d08-4155-bec1-fed3841b1d7f",
+              "name": "Categorie",
+              "value": "[14187,7]",
+              "type": "array"
+            },
+            {
+              "id": "39109d36-4ff9-4c9e-8dfb-bd4d344d7ff9",
+              "name": "today_madrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        -416
+      ],
+      "id": "f4fd3663-98e5-4a24-9c96-130ab29ce79d",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Considera el System Message",
+        "options": {
+          "systemMessage": "=const promptMejorado = `Re-escribe el artículo en base al contexto indicado. Sigue ESTRICTAMENTE estas instrucciones:\n\nCONTEXTO:\n- Título original: {{ $json.title }}\n- Contenido original: {{ $json.content }}\n- Categoría original: {{ $json.Categorie }}\n\nINSTRUCCIONES DE REDACCIÓN:\n- Crea un título diferente al original (77 caracteres máximo)\n- Desarrolla un contenido de 800-900 palabras, fluido y con lógica lineal\n- Usa HTML básico: <strong>, <em>, <ul>, <li> (NO markdown)\n\nINSTRUCCIONES DE FORMATEO JSON (CRÍTICO):\n- Devuelve EXCLUSIVAMENTE un objeto JSON válido\n- SIN texto antes o después, SIN explicaciones, SIN bloques de código\n- ESCAPA correctamente las comillas dobles dentro del contenido usando \\\"\n- NO uses saltos de línea dentro de las strings del JSON\n- Minifica el JSON (una sola línea, sin espacios innecesarios)\n\nESTRUCTURA OBLIGATORIA:\n{\"title\":\"string máx 77 chars\",\n\"content\":[\"<p>párrafo 1</p>\",\"<p>párrafo 2</p>\"],\n\"meta_description\":\"string máx 160 chars\",\n\"categories\":{{ $json.Categorie }} }\n\nVALIDACIONES FINALES:\n- title: 10-77 caracteres\n- meta_description: máximo 160 caracteres\n- content: array con mínimo 8 párrafos HTML válidos\n- categories: array número entero (no string)\n- JSON válido y sin caracteres especiales problemáticos\n\nIMPORTANTE: Revisa que todas las comillas dentro del HTML estén escapadas como \\\" antes de enviar.`;\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -2144,
+        -32
+      ],
+      "id": "adbe2374-26c8-43cc-a450-f491755893f7",
+      "name": "AI Agent5"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2144,
+        144
+      ],
+      "id": "4827649c-233b-43d4-a7e1-049f3246d87d",
+      "name": "OpenAI Chat Model5",
+      "credentials": {
+        "openAiApi": {
+          "id": "5OGI8br51RcoQeoa",
+          "name": "OpenAi utemedios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "05f29571-d8ca-4c5e-aaf1-1c7fd4d50cf0",
+              "leftValue": "={{ $json.creator }}",
+              "rightValue": "El Larguero",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "3741589f-6ad3-45bf-9d87-ea2ba2c9068d",
+              "leftValue": "={{ $json.creator }}",
+              "rightValue": "AStv",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "c0f7f48f-1be6-4f15-8b4a-60a54742c63a",
+              "leftValue": "={{ $json.creator }}",
+              "rightValue": "AS Fotografía",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "80e2bde1-9910-4a8b-b4b8-8ac03371b7a3",
+              "leftValue": "={{ $json.creator }}",
+              "rightValue": "Fernando S. Tavero",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4160,
+        576
+      ],
+      "id": "16f4baa1-4a94-4e79-b421-19320e4affd2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.title }}",
+        "additionalFields": {
+          "content": "={{ $json.content }}",
+          "status": "draft",
+          "categories": "={{ $json.category }}"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        -1520,
+        -32
+      ],
+      "id": "309843ec-c456-4db9-a4ca-6bc492c4e3e7",
+      "name": "Create a post1",
+      "credentials": {
+        "wordpressApi": {
+          "id": "TYMfqiW9Yp4PoQIa",
+          "name": "Wordpress elperiodicodeceuta.es"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "={{ $json.today_madrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3088,
+        -416
+      ],
+      "id": "3d646feb-a835-4531-b3d3-e1f2f05323d7",
+      "name": "Filtra por fecha actual"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "96e9b8b4-4790-40cb-ab99-6255910bb477",
+              "name": "title",
+              "value": "={{ JSON.parse($json.output).title }}",
+              "type": "string"
+            },
+            {
+              "id": "54dbb81d-5579-4d23-8b08-6443a56346d2",
+              "name": "content",
+              "value": "={{ JSON.parse($json.output).content.join('') }}",
+              "type": "string"
+            },
+            {
+              "id": "bbf565b4-76b6-4d1f-bb92-0bf31b908d05",
+              "name": "meta_description",
+              "value": "={{ JSON.parse($json.output).meta_description }}\n",
+              "type": "string"
+            },
+            {
+              "id": "0eedee78-bf54-4257-88d9-f03c27a9e529",
+              "name": "category",
+              "value": "=[14187,7]\n",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1744,
+        -32
+      ],
+      "id": "e0eb1670-5198-49a5-8b38-68ee22130cf2",
+      "name": "Edita variables con los valores necsarios para wordpress"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "44610236-9fe5-4d87-b868-12b64f7d737a",
+      "name": "Visitar la web6",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -3680,
+        -160
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".title"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".body.sociedad p",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".content-time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e6c5f72e-3b9f-4aa9-a500-fff17f272603",
+      "name": "Extraer el contenido",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -3472,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "129959d9-1249-48dc-bb91-c5ffe2107325",
+              "name": "date",
+              "value": "={{ (() => {\n  const s = String($json.date);\n  const norm = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n  const meses = {\n    enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,\n    julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12\n  };\n  const m = norm.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/i);\n  if (!m) return ''; // o lanza error si prefieres\n  const dd = m[1].padStart(2,'0');\n  const mm = String(meses[m[2]] || '').padStart(2,'0');\n  const yyyy = m[3];\n  return `${yyyy}-${mm}-${dd}`;\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2cfe32c-2d08-4155-bec1-fed3841b1d7f",
+              "name": "Categorie",
+              "value": "[14187,4]",
+              "type": "array"
+            },
+            {
+              "id": "39109d36-4ff9-4c9e-8dfb-bd4d344d7ff9",
+              "name": "today_madrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        -176
+      ],
+      "id": "9212fc88-432f-489e-bd6a-a97cc3516c37",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "={{ $json.today_madrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3088,
+        -176
+      ],
+      "id": "ccc82a4c-2e22-40dc-95b9-824cfb8c1093",
+      "name": "Filtra por fecha actual2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "1de3f819-de32-47e5-924f-092fc6a3f000",
+      "name": "Visitar la web7",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -3680,
+        240
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".title"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".body.sucesos p",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".content-time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1095b1a-1e8b-4025-96af-d24bfd21ea5f",
+      "name": "Extraer el contenido5",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -3472,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "129959d9-1249-48dc-bb91-c5ffe2107325",
+              "name": "date",
+              "value": "={{ (() => {\n  const s = String($json.date);\n  const norm = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n  const meses = {\n    enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,\n    julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12\n  };\n  const m = norm.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/i);\n  if (!m) return ''; // o lanza error si prefieres\n  const dd = m[1].padStart(2,'0');\n  const mm = String(meses[m[2]] || '').padStart(2,'0');\n  const yyyy = m[3];\n  return `${yyyy}-${mm}-${dd}`;\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2cfe32c-2d08-4155-bec1-fed3841b1d7f",
+              "name": "Categorie",
+              "value": "[14187,10]",
+              "type": "array"
+            },
+            {
+              "id": "39109d36-4ff9-4c9e-8dfb-bd4d344d7ff9",
+              "name": "today_madrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        224
+      ],
+      "id": "39983190-39f2-4c94-8600-dde40750d748",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "={{ $json.today_madrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3088,
+        224
+      ],
+      "id": "75e834d7-4603-49ab-b660-c785b2d37e34",
+      "name": "Filtra por fecha actual3"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "a94a59ab-1cd4-4878-8591-219f173e38b1",
+      "name": "Visitar la web8",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -3680,
+        48
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".title"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".body.cultura p",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".content-time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5be9f9da-a1cc-4fbd-8fd3-4bff6b9d4236",
+      "name": "Extraer el contenido6",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -3472,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "129959d9-1249-48dc-bb91-c5ffe2107325",
+              "name": "date",
+              "value": "={{ (() => {\n  const s = String($json.date);\n  const norm = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n  const meses = {\n    enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,\n    julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12\n  };\n  const m = norm.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/i);\n  if (!m) return ''; // o lanza error si prefieres\n  const dd = m[1].padStart(2,'0');\n  const mm = String(meses[m[2]] || '').padStart(2,'0');\n  const yyyy = m[3];\n  return `${yyyy}-${mm}-${dd}`;\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2cfe32c-2d08-4155-bec1-fed3841b1d7f",
+              "name": "Categorie",
+              "value": "[14187,12]",
+              "type": "array"
+            },
+            {
+              "id": "39109d36-4ff9-4c9e-8dfb-bd4d344d7ff9",
+              "name": "today_madrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        32
+      ],
+      "id": "71bdb48f-d8fd-4a3b-8e59-7e196c9a5ab8",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "={{ $json.today_madrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3088,
+        32
+      ],
+      "id": "7259e002-6f89-48a7-af6e-b7fd29a450d0",
+      "name": "Filtra por fecha actual4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "c3dfc226-92d8-41ff-a6a5-15339b9293dc",
+      "name": "Visitar la web9",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -3680,
+        448
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".title"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".body.sanidad p",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".content-time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c4bbe4d4-0034-463b-886f-0c2eb6ddf1b4",
+      "name": "Extraer el contenido7",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -3472,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "129959d9-1249-48dc-bb91-c5ffe2107325",
+              "name": "date",
+              "value": "={{ (() => {\n  const s = String($json.date);\n  const norm = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n  const meses = {\n    enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,\n    julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12\n  };\n  const m = norm.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/i);\n  if (!m) return ''; // o lanza error si prefieres\n  const dd = m[1].padStart(2,'0');\n  const mm = String(meses[m[2]] || '').padStart(2,'0');\n  const yyyy = m[3];\n  return `${yyyy}-${mm}-${dd}`;\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2cfe32c-2d08-4155-bec1-fed3841b1d7f",
+              "name": "Categorie",
+              "value": "[14187,14]",
+              "type": "array"
+            },
+            {
+              "id": "39109d36-4ff9-4c9e-8dfb-bd4d344d7ff9",
+              "name": "today_madrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        432
+      ],
+      "id": "11e57e0d-5846-4ed1-9894-9b4e1d2af6b0",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "={{ $json.today_madrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3088,
+        432
+      ],
+      "id": "a4a8d2ff-3181-43e4-8eaf-1a4cdb52c9c2",
+      "name": "Filtra por fecha actual5"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "c5d08cd8-d686-4bc3-a7df-83d7b8e95ab8",
+      "name": "Visitar la web10",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -3680,
+        688
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".title"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".body.educacion p",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".content-time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c87b4f29-2a8f-478b-89c2-7807ce7cb493",
+      "name": "Extraer el contenido1",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -3472,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "129959d9-1249-48dc-bb91-c5ffe2107325",
+              "name": "date",
+              "value": "={{ (() => {\n  const s = String($json.date);\n  const norm = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n  const meses = {\n    enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,\n    julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12\n  };\n  const m = norm.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/i);\n  if (!m) return ''; // o lanza error si prefieres\n  const dd = m[1].padStart(2,'0');\n  const mm = String(meses[m[2]] || '').padStart(2,'0');\n  const yyyy = m[3];\n  return `${yyyy}-${mm}-${dd}`;\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2cfe32c-2d08-4155-bec1-fed3841b1d7f",
+              "name": "Categorie",
+              "value": "[14187,17]",
+              "type": "array"
+            },
+            {
+              "id": "39109d36-4ff9-4c9e-8dfb-bd4d344d7ff9",
+              "name": "today_madrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        672
+      ],
+      "id": "e230ab7b-5431-4993-9fbc-2245af3453a8",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "={{ $json.today_madrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3088,
+        672
+      ],
+      "id": "082cd183-3c9b-4622-827a-eefc9fcce03c",
+      "name": "Filtra por fecha actual6"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "70e88912-385e-4efa-9d51-2c5a64391818",
+      "name": "Visitar la web11",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -3680,
+        1088
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".title"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".body.politica p",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".content-time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "31568409-55a0-4e26-9212-57ce4ecefc32",
+      "name": "Extraer el contenido8",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -3472,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "129959d9-1249-48dc-bb91-c5ffe2107325",
+              "name": "date",
+              "value": "={{ (() => {\n  const s = String($json.date);\n  const norm = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n  const meses = {\n    enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,\n    julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12\n  };\n  const m = norm.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/i);\n  if (!m) return ''; // o lanza error si prefieres\n  const dd = m[1].padStart(2,'0');\n  const mm = String(meses[m[2]] || '').padStart(2,'0');\n  const yyyy = m[3];\n  return `${yyyy}-${mm}-${dd}`;\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2cfe32c-2d08-4155-bec1-fed3841b1d7f",
+              "name": "Categorie",
+              "value": "[14187,20]",
+              "type": "array"
+            },
+            {
+              "id": "39109d36-4ff9-4c9e-8dfb-bd4d344d7ff9",
+              "name": "today_madrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        1072
+      ],
+      "id": "b1601b64-59a8-4d84-b385-eadfb079eb9d",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "={{ $json.today_madrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3088,
+        1072
+      ],
+      "id": "06256a28-1438-4158-8d36-00ae64d38e2e",
+      "name": "Filtra por fecha actual7"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "95753692-1926-4897-9b16-1321071e6da0",
+      "name": "Visitar la web12",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -3680,
+        896
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": ".title"
+            },
+            {
+              "key": "content",
+              "cssSelector": ".body.deportes p",
+              "returnArray": true
+            },
+            {
+              "key": "date",
+              "cssSelector": ".content-time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "243fd0a0-a9cb-4ad9-8211-95e90cf4ca69",
+      "name": "Extraer el contenido9",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -3472,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccf9d82-c789-4dff-ac7d-11e344ea2d32",
+              "name": "content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "5c69428e-ad81-4fd6-885b-76a6c88d7a3c",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "129959d9-1249-48dc-bb91-c5ffe2107325",
+              "name": "date",
+              "value": "={{ (() => {\n  const s = String($json.date);\n  const norm = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n  const meses = {\n    enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,\n    julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12\n  };\n  const m = norm.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/i);\n  if (!m) return ''; // o lanza error si prefieres\n  const dd = m[1].padStart(2,'0');\n  const mm = String(meses[m[2]] || '').padStart(2,'0');\n  const yyyy = m[3];\n  return `${yyyy}-${mm}-${dd}`;\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2cfe32c-2d08-4155-bec1-fed3841b1d7f",
+              "name": "Categorie",
+              "value": "[14187,11]",
+              "type": "array"
+            },
+            {
+              "id": "39109d36-4ff9-4c9e-8dfb-bd4d344d7ff9",
+              "name": "today_madrid",
+              "value": "={{ $now.setZone('Europe/Madrid').toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        880
+      ],
+      "id": "7022c700-a588-4fb6-a303-e7f04829671f",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e81e8e71-cf14-4dce-826a-a496b54d833b",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "={{ $json.today_madrid }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3088,
+        880
+      ],
+      "id": "c6ba7fb8-f525-4a16-a15e-ef7bec338d2a",
+      "name": "Filtra por fecha actual8"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Considera el System Message",
+        "options": {
+          "systemMessage": "=const promptMejorado = `Re-escribe el artículo en base al contexto indicado. Sigue ESTRICTAMENTE estas instrucciones:\n\nCONTEXTO:\n- Título original: {{ $json.title }}\n- Contenido original: {{ $json.content }}\n- Categoría original: {{ $json.Categorie }}\n\nINSTRUCCIONES DE REDACCIÓN:\n- Crea un título diferente al original (77 caracteres máximo)\n- Desarrolla un contenido de 800-900 palabras, fluido y con lógica lineal\n- Usa HTML básico: <strong>, <em>, <ul>, <li> (NO markdown)\n\nINSTRUCCIONES DE FORMATEO JSON (CRÍTICO):\n- Devuelve EXCLUSIVAMENTE un objeto JSON válido\n- SIN texto antes o después, SIN explicaciones, SIN bloques de código\n- ESCAPA correctamente las comillas dobles dentro del contenido usando \\\"\n- NO uses saltos de línea dentro de las strings del JSON\n- Minifica el JSON (una sola línea, sin espacios innecesarios)\n\nESTRUCTURA OBLIGATORIA:\n{\"title\":\"string máx 77 chars\",\n\"content\":[\"<p>párrafo 1</p>\",\"<p>párrafo 2</p>\"],\n\"meta_description\":\"string máx 160 chars\",\n\"categories\":{{ $json.Categorie }} }\n\nVALIDACIONES FINALES:\n- title: 10-77 caracteres\n- meta_description: máximo 160 caracteres\n- content: array con mínimo 8 párrafos HTML válidos\n- categories: array número entero (no string)\n- JSON válido y sin caracteres especiales problemáticos\n\nIMPORTANTE: Revisa que todas las comillas dentro del HTML estén escapadas como \\\" antes de enviar.`;\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -2144,
+        672
+      ],
+      "id": "27892884-6087-4504-9e32-f04efbe63458",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2144,
+        848
+      ],
+      "id": "6a565d3d-6d18-4760-bd01-9e5b37b1a410",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5OGI8br51RcoQeoa",
+          "name": "OpenAi utemedios"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.title }}",
+        "additionalFields": {
+          "content": "={{ $json.content }}",
+          "status": "draft",
+          "categories": "={{ $json.category }}"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        -1520,
+        672
+      ],
+      "id": "3b70c5d8-b254-4ec9-a41e-83c87e822a6a",
+      "name": "Create a post2",
+      "credentials": {
+        "wordpressApi": {
+          "id": "TYMfqiW9Yp4PoQIa",
+          "name": "Wordpress elperiodicodeceuta.es"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "96e9b8b4-4790-40cb-ab99-6255910bb477",
+              "name": "title",
+              "value": "={{ JSON.parse($json.output).title }}",
+              "type": "string"
+            },
+            {
+              "id": "54dbb81d-5579-4d23-8b08-6443a56346d2",
+              "name": "content",
+              "value": "={{ JSON.parse($json.output).content.join('') }}",
+              "type": "string"
+            },
+            {
+              "id": "bbf565b4-76b6-4d1f-bb92-0bf31b908d05",
+              "name": "meta_description",
+              "value": "={{ JSON.parse($json.output).meta_description }}\n",
+              "type": "string"
+            },
+            {
+              "id": "0eedee78-bf54-4257-88d9-f03c27a9e529",
+              "name": "category",
+              "value": "=[14187,7]\n",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1744,
+        672
+      ],
+      "id": "3c71c65e-948c-4853-bcc3-abd978281cab",
+      "name": "Edita variables con los valores necsarios para wordpress1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categories;\n    // Si categories es undefined, null o vacío, saltar este item\n  if (categorias === undefined || categorias === null || categorias === '') {\n    return false;\n  }\n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"Política\") || categorias.includes(\"política\") \n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"Política\") || parsed.includes(\"política\") \n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"Política\") || categorias.includes(\"política\") \n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3872,
+        -400
+      ],
+      "id": "2fd1e5de-8607-4396-adb2-fae72cee554d",
+      "name": "Verifica que las noticias sea Categoria Politca"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categories;\n\n    // Si categories es undefined, null o vacío, saltar este item\n  if (categorias === undefined || categorias === null || categorias === '') {\n    return false;\n  }\n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"Sociedad\") || categorias.includes(\"sociedad\") \n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"Sociedad\") || parsed.includes(\"sociedad\") \n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"Sociedad\") || categorias.includes(\"sociedad\") \n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3872,
+        -160
+      ],
+      "id": "4fbb64f3-899a-4dbf-bc4f-e31a752e2157",
+      "name": "Verifica que las noticias sea Categoria Sociedad"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categories;\n\n    // Si categories es undefined, null o vacío, saltar este item\n  if (categorias === undefined || categorias === null || categorias === '') {\n    return false;\n  }\n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"Cultura\") || categorias.includes(\"cultura\") \n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"Cultura\") || parsed.includes(\"cultura\") \n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"Cultura\") || categorias.includes(\"cultura\") \n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3872,
+        48
+      ],
+      "id": "11fe1cfb-a6c9-4a58-ad34-6d57c93f345f",
+      "name": "Verifica que las noticias sea Categoria Cultura"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categories;\n\n    // Si categories es undefined, null o vacío, saltar este item\n  if (categorias === undefined || categorias === null || categorias === '') {\n    return false;\n  }\n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"Sucesos\") || categorias.includes(\"sucesos\") \n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"Sucesos\") || parsed.includes(\"sucesos\") \n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"Sucesos\") || categorias.includes(\"sucesos\") \n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3872,
+        240
+      ],
+      "id": "91a3f2ed-31c1-4408-bcd6-9749851150a8",
+      "name": "Verifica que las noticias sea Categoria Sucesos"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categories;\n\n    // Si categories es undefined, null o vacío, saltar este item\n  if (categorias === undefined || categorias === null || categorias === '') {\n    return false;\n  }\n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"Sanidad\") || categorias.includes(\"sanidad\") \n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"Sanidad\") || parsed.includes(\"sanidad\") \n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"Sanidad\") || categorias.includes(\"sanidad\") \n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3872,
+        448
+      ],
+      "id": "8768b7c0-3609-4ee7-89e8-20ae5792f216",
+      "name": "Verifica que las noticias sea Categoria Sanidad"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categories;\n\n    // Si categories es undefined, null o vacío, saltar este item\n  if (categorias === undefined || categorias === null || categorias === '') {\n    return false;\n  }\n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"Educación\") || categorias.includes(\"educación\") \n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"Educación\") || parsed.includes(\"educación\") \n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"Educación\") || categorias.includes(\"educación\") \n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3872,
+        688
+      ],
+      "id": "9ae9e076-6131-4565-b39d-5a58db03e9ce",
+      "name": "Verifica que las noticias sea Categoria Educacion"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categories;\n\n    // Si categories es undefined, null o vacío, saltar este item\n  if (categorias === undefined || categorias === null || categorias === '') {\n    return false;\n  }\n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"Economía\") || categorias.includes(\"economía\") \n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"Economía\") || parsed.includes(\"economía\") \n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"Economía\") || categorias.includes(\"economía\") \n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3872,
+        896
+      ],
+      "id": "43b21d19-718d-49c8-ba10-40357a9cb638",
+      "name": "Verifica que las noticias sea Categoria Economía"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(item => {\n  const categorias = item.json.categories;\n\n    // Si categories es undefined, null o vacío, saltar este item\n  if (categorias === undefined || categorias === null || categorias === '') {\n    return false;\n  }\n  // Asegura que sea un array\n  if (Array.isArray(categorias)) {\n    return categorias.includes(\"Deportes\") || categorias.includes(\"deportes\") \n      ;\n  }\n\n  // Si es un string tipo \"['Política', 'Economía']\"\n  try {\n    const parsed = JSON.parse(categorias);\n    return parsed.includes(\"Deportes\") || parsed.includes(\"deportes\") \n  } catch (e) {\n    // Si no es parseable, intentamos buscar como texto\n    return categorias.includes(\"Deportes\") || categorias.includes(\"deportes\") \n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3872,
+        1088
+      ],
+      "id": "f6b2007c-ebe7-4054-a778-cdeacee07238",
+      "name": "Verifica que las noticias sea Categoria Deportes"
+    },
+    {
+      "parameters": {
+        "content": "## Últimas entradas\nComprueba que noticias se han publicado hace menos de 1 hora\n",
+        "height": 2059,
+        "width": 1832,
+        "color": 4
+      },
+      "id": "58d94bd8-6b2d-4bbe-b1b2-3a91b0e5dcc0",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -4192,
+        -592
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Agentes IA",
+        "height": 1136,
+        "width": 1136,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2304,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "ea26676d-b5e0-49a0-88b6-c8c623cfe4c1",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RTVCE Sociedad": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes 1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "RTVCE Política": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RTVCE Cultura": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes 1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "RTVCE Sucesos": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes 1",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "RTVCE Sanidad": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes 1",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "RTVCE Educación": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes 1",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "RTVCE Economía": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes 1",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "RTVCE Medio ambiente": {
+      "main": [
+        []
+      ]
+    },
+    "RTVCE Castrense": {
+      "main": [
+        []
+      ]
+    },
+    "RTVCE Deportes": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes 1",
+            "type": "main",
+            "index": 7
+          }
+        ]
+      ]
+    },
+    "Agregar fuentes 1": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar fuentes": {
+      "main": [
+        []
+      ]
+    },
+    "extraer la url de la noticia de portada": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraer el resto de noticias": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Agregar fuentes rtve2": {
+      "main": [
+        [
+          {
+            "node": "Añadir categoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraer la url de la noticia de portada1": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraer el resto de noticias1": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Agregar fuentes rtve3": {
+      "main": [
+        [
+          {
+            "node": "Añadir categoria1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraer la url de la noticia de portada2": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraer el resto de noticias2": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Añadir categoria": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Añadir categoria1": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Añadir categoria2": {
+      "main": [
+        [
+          {
+            "node": "Agregar fuentes rtve1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Agregar fuentes rtve1": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates RTVE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web": {
+      "main": [
+        [
+          {
+            "node": "extraer la url de la noticia de portada",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "extraer el resto de noticias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web1": {
+      "main": [
+        [
+          {
+            "node": "extraer la url de la noticia de portada1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "extraer el resto de noticias1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web2": {
+      "main": [
+        [
+          {
+            "node": "extraer la url de la noticia de portada2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "extraer el resto de noticias2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar fuentes rtve4": {
+      "main": [
+        [
+          {
+            "node": "Añadir categoria2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cada 20 minutos": {
+      "main": [
+        [
+          {
+            "node": "RTVCE Política",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Sociedad",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Cultura",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Sucesos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Sanidad",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Educación",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Economía",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Medio ambiente",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Castrense",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RTVCE Deportes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Visitar la web",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Visitar la web1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Visitar la web2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates RTVE": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual1": {
+      "main": [
+        [
+          {
+            "node": "Verifica que las noticias sea Categoria Tecnologia1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edita variables con los valores necsarios para wordpress3": {
+      "main": [
+        [
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Edita variables con los valores necsarios para wordpress3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Tecnologia1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web5": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent5": {
+      "main": [
+        [
+          {
+            "node": "Edita variables con los valores necsarios para wordpress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Verifica que las noticias sea Categoria Politca",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verifica que las noticias sea Categoria Sociedad",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verifica que las noticias sea Categoria Cultura",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verifica que las noticias sea Categoria Sucesos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verifica que las noticias sea Categoria Sanidad",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verifica que las noticias sea Categoria Educacion",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verifica que las noticias sea Categoria Economía",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verifica que las noticias sea Categoria Deportes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Edita variables con los valores necsarios para wordpress": {
+      "main": [
+        [
+          {
+            "node": "Create a post1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web6": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Visitar la web7": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web8": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido6": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web9": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido7": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web10": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web11": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido8": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Visitar la web12": {
+      "main": [
+        [
+          {
+            "node": "Extraer el contenido9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer el contenido9": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields8": {
+      "main": [
+        [
+          {
+            "node": "Filtra por fecha actual8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual5": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edita variables con los valores necsarios para wordpress1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edita variables con los valores necsarios para wordpress1": {
+      "main": [
+        [
+          {
+            "node": "Create a post2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual6": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual8": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra por fecha actual7": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Politca": {
+      "main": [
+        [
+          {
+            "node": "Visitar la web5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Sociedad": {
+      "main": [
+        [
+          {
+            "node": "Visitar la web6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Cultura": {
+      "main": [
+        [
+          {
+            "node": "Visitar la web8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Sucesos": {
+      "main": [
+        [
+          {
+            "node": "Visitar la web7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Sanidad": {
+      "main": [
+        [
+          {
+            "node": "Visitar la web9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Educacion": {
+      "main": [
+        [
+          {
+            "node": "Visitar la web10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Economía": {
+      "main": [
+        [
+          {
+            "node": "Visitar la web12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica que las noticias sea Categoria Deportes": {
+      "main": [
+        [
+          {
+            "node": "Visitar la web11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "65a6ad7f-a39b-434e-a58b-65f345d83579",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ae37de52389820bab78a2fd3b3906f4f2d53e9b3e8e285be1658f8cf56dcdab8"
+  },
+  "id": "trUBfzDKyd33n1xy",
+  "tags": [
+    {
+      "createdAt": "2024-09-05T14:27:39.851Z",
+      "updatedAt": "2024-09-05T14:27:39.851Z",
+      "id": "cEQSjg9B4wSsKVXs",
+      "name": "rss"
+    },
+    {
+      "createdAt": "2024-09-07T13:46:59.923Z",
+      "updatedAt": "2024-09-07T13:46:59.923Z",
+      "id": "roymtKI5tPLoqohI",
+      "name": "wordpress"
+    },
+    {
+      "createdAt": "2024-09-07T13:47:04.268Z",
+      "updatedAt": "2024-09-07T13:47:04.268Z",
+      "id": "s65OLmwqqeE2MdlZ",
+      "name": "ai"
+    }
+  ]
+}

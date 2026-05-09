@@ -1,0 +1,925 @@
+{
+  "name": "Publicar en RRSS",
+  "nodes": [
+    {
+      "parameters": {
+        "text": "={{ $('Generar tweet ').item.json.message.content.publicacion }} {{ $('Webhook').item.json.body.permalink }}",
+        "additionalFields": {}
+      },
+      "id": "3d10794b-9b3e-428f-86e3-4f7242ddb783",
+      "name": "Post en teleceuta1",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        4240,
+        1008
+      ],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "UMWFMW58RsY1unxB",
+          "name": "teleceutaa@gmail.com"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v20.0",
+        "node": "17841412263372194",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{ $('Webhook').item.json.body.featured_img }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $json.message.content.titulo }} - {{ $json.message.content.link }} "
+              }
+            ]
+          }
+        }
+      },
+      "id": "547e0249-3463-4129-a4c5-71c39d9582d0",
+      "name": "Publicar en instagram Elperiodicodeceuta - container1",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        4240,
+        80
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "8I0jIcuXzJ2rllYK",
+          "name": "Facebook elperiodicodeceuta"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v20.0",
+        "node": "17841412263372194",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "495615f5-a7e9-464c-a9df-56ebfada233c",
+      "name": "Publicar en instagram Elperiodicodeceuta1",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        4544,
+        64
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "8I0jIcuXzJ2rllYK",
+          "name": "Facebook elperiodicodeceuta"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "text": "={{ $('Generar tweet ').item.json.message.content.publicacion }} {{ $('Webhook').item.json.body.permalink }}",
+        "additionalFields": {}
+      },
+      "id": "8c55c6f4-485f-4701-8329-4312cf1d9f44",
+      "name": "Post en elperiodicoceu1",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        4240,
+        768
+      ],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "UK6bjDv4TvQm4Jvq",
+          "name": "elperiodicoceu"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v20.0",
+        "node": "=111871054316655",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $('Generar tweet ').item.json.message.content.publicacion }}"
+              },
+              {
+                "name": "link",
+                "value": "={{ $('Webhook').item.json.body.permalink }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "5a1df321-8971-43b7-b8e7-d9a53844b90d",
+      "name": "Publicar en facebook teleceuta",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        4240,
+        592
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "YYqiovyca0DlFoBL",
+          "name": "Facebook Graph account teleceuta"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v20.0",
+        "node": "=246896862686935",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $('Generar tweet ').item.json.message.content.publicacion }}"
+              },
+              {
+                "name": "link",
+                "value": "={{ $('Webhook').item.json.body.permalink }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "6809d591-9290-4352-ba71-124fa854b91a",
+      "name": "Publicar en facebook el periodico",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        4240,
+        320
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "8I0jIcuXzJ2rllYK",
+          "name": "Facebook elperiodicodeceuta"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Si no existe informacion de ingreso no hagas nada, caso contrario \"Redacta un post de un máximo de 220 caracteres, claro y profesional, sobre la noticia:\n“{{ $json.title }} — {{ $json.content }}”.\nResume el dato clave y su impacto en una frase y cierra con 2‑4 hashtags sectoriales segun las categorias que se encuentran en {{ $json.categories }}.\nSi el resultado de la redaccion de la noticia excede los 220 caracteres, reescribe el contenido ya que se compartira en redes sociales con limites de caracteres especificos.\nEstructura la salida de informacion entre titulo {{ $json.title }} y contenido (el resumen de la noticia de 220 caracteres) y el link  {{ $json.link }} asi como el link de la imagen que le acompaña {{ $json.imagen_url }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "id": "3ce6ee3d-36d7-4963-a195-de252afcc0e9",
+      "name": "Generar tweet ",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        3552,
+        928
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "5OGI8br51RcoQeoa",
+          "name": "OpenAi utemedios"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.content.link }}",
+                    "rightValue": "https://www.elperiodicodeceuta.es",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    },
+                    "id": "4ea0d423-ecbc-4439-926e-9857c2b7ab8e"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "54b3c420-26e0-496f-a08b-9a8c94d954e3",
+                    "leftValue": "={{ $json.message.content.link }}",
+                    "rightValue": "https://www.teleceuta.com",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "19051c21-ffdb-42de-91fe-0fbee764fc20",
+                    "leftValue": "={{ $json.message.content.link }}",
+                    "rightValue": "https://masquealdia.com",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": "={{ false }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "20dbd6a6-1c4b-42d1-9d4d-cee0cb082cd2",
+      "name": "Selecciona el origen de la noticia",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.1,
+      "position": [
+        3872,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.elperiodicodeceuta.es/robots.txt",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "id": "2bdec7d4-d344-4f52-86af-cdc78e41fcb9",
+      "name": "Verificar robots.txt1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        2288,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.elperiodicodeceuta.es/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        2688,
+        368
+      ],
+      "id": "020caa56-a5fa-4ba3-bdef-f99c2a752822",
+      "name": "RSS Leer Feed Existente"
+    },
+    {
+      "parameters": {
+        "operation": "clearDeduplicationHistory",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        368
+      ],
+      "id": "dfb4e4f5-e4dd-4b12-bee0-3c95b48e8753",
+      "name": "Solo ingresa nuevos links obtenidos del RSS"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        2080,
+        592
+      ],
+      "id": "8aa3f334-d104-4ff6-881c-8802d49ec92e",
+      "name": "Cron que busca cada 10 minutos"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body }}",
+              "operation": "contains",
+              "value2": "Disallow: /feed"
+            }
+          ]
+        }
+      },
+      "id": "3bb2d87a-63b0-4cf3-aa74-b20133ac5cc1",
+      "name": "¿Feed bloqueado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.masquealdia.com/robots.txt",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "id": "ac0af3a9-a6c0-4eb9-a5d3-f289caf34ad3",
+      "name": "Verificar robots.txt",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        2288,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.masquealdia.com/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        2688,
+        608
+      ],
+      "id": "0e45095c-f662-4b84-b2d4-eddf302709f1",
+      "name": "RSS Leer Feed Existente1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body }}",
+              "operation": "contains",
+              "value2": "Disallow: /feed"
+            }
+          ]
+        }
+      },
+      "id": "527a9c2d-aa2c-42c7-b1d6-0390af0b14d1",
+      "name": "¿Feed bloqueado?1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.teleceuta.com/robots.txt",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "id": "05a5b78e-0573-44ba-9e95-28a466c192f0",
+      "name": "Verificar robots.txt2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        2288,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.teleceuta.com/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        2688,
+        848
+      ],
+      "id": "433d0bd9-8177-4657-8701-cf03bc71c056",
+      "name": "RSS Leer Feed Existente2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body }}",
+              "operation": "contains",
+              "value2": "Disallow: /feed"
+            }
+          ]
+        }
+      },
+      "id": "8c0a6f78-d44b-4737-84ef-33f777f9fa9e",
+      "name": "¿Feed bloqueado?2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        3232,
+        352
+      ],
+      "id": "52b8654b-66ae-43b3-be09-2e53bc21af0a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "=data",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "imagen_url",
+              "cssSelector": "meta[property=\"og:image\"]",
+              "returnValue": "attribute",
+              "attribute": "content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        3152,
+        128
+      ],
+      "id": "846c26da-de22-4553-96dc-46a4d62d718f",
+      "name": "HTML Extrae las imagenes para el posteo de imagenes"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2912,
+        128
+      ],
+      "id": "d01370aa-8a21-4673-b5e2-3b7cf2d9fd38",
+      "name": "HTTP Consulta los links de imagenes"
+    },
+    {
+      "parameters": {
+        "operation": "clearDeduplicationHistory",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        608
+      ],
+      "id": "9a7a2baf-da76-434e-842b-d481c513130d",
+      "name": "Solo ingresa nuevos links obtenidos del RSS1"
+    },
+    {
+      "parameters": {
+        "operation": "clearDeduplicationHistory",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        848
+      ],
+      "id": "7f42a141-9f84-4af3-ab08-9b4a84bf880a",
+      "name": "Solo ingresa nuevos links obtenidos del RSS2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        3232,
+        592
+      ],
+      "id": "3c7b0063-f06e-4765-862d-519b1bfed1d9",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        3232,
+        800
+      ],
+      "id": "073e80f7-3fb5-4d4c-9f2d-edaf03d0c572",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        3488,
+        592
+      ],
+      "id": "57124861-844e-488c-adf1-244aa0a0fb33",
+      "name": "Merge3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Publicar en instagram Elperiodicodeceuta - container1": {
+      "main": [
+        [
+          {
+            "node": "Publicar en instagram Elperiodicodeceuta1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar tweet ": {
+      "main": [
+        [
+          {
+            "node": "Selecciona el origen de la noticia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Selecciona el origen de la noticia": {
+      "main": [
+        [
+          {
+            "node": "Publicar en instagram Elperiodicodeceuta - container1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Publicar en facebook el periodico",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Post en elperiodicoceu1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Post en teleceuta1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Publicar en facebook teleceuta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "RSS Leer Feed Existente": {
+      "main": [
+        [
+          {
+            "node": "HTTP Consulta los links de imagenes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Solo ingresa nuevos links obtenidos del RSS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron que busca cada 10 minutos": {
+      "main": [
+        [
+          {
+            "node": "Verificar robots.txt1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verificar robots.txt",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verificar robots.txt2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Solo ingresa nuevos links obtenidos del RSS": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Verificar robots.txt1": {
+      "main": [
+        [
+          {
+            "node": "¿Feed bloqueado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Feed bloqueado?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "RSS Leer Feed Existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar robots.txt": {
+      "main": [
+        [
+          {
+            "node": "¿Feed bloqueado?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Leer Feed Existente1": {
+      "main": [
+        [
+          {
+            "node": "Solo ingresa nuevos links obtenidos del RSS1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Feed bloqueado?1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "RSS Leer Feed Existente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar robots.txt2": {
+      "main": [
+        [
+          {
+            "node": "¿Feed bloqueado?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Leer Feed Existente2": {
+      "main": [
+        [
+          {
+            "node": "Solo ingresa nuevos links obtenidos del RSS2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Feed bloqueado?2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "RSS Leer Feed Existente2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extrae las imagenes para el posteo de imagenes": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Consulta los links de imagenes": {
+      "main": [
+        [
+          {
+            "node": "HTML Extrae las imagenes para el posteo de imagenes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Solo ingresa nuevos links obtenidos del RSS1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Solo ingresa nuevos links obtenidos del RSS2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Generar tweet ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6e364556-b4b7-4d0f-a06c-e0f69c7cb681",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ae37de52389820bab78a2fd3b3906f4f2d53e9b3e8e285be1658f8cf56dcdab8"
+  },
+  "id": "mtPyxyMplVeYWBl6",
+  "tags": []
+}
