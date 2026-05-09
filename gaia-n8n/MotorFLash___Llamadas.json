@@ -1,0 +1,3815 @@
+{
+  "name": "MotorFLash - Llamadas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "LlamadasInbound",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        -160
+      ],
+      "id": "f31fe344-13f0-4b91-ba10-fab4e9da7895",
+      "name": "Webhook",
+      "webhookId": "e8dee19b-b911-42b0-9bf8-a02eb4de8e72"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Variables del cliente  \nkilometraje_maximo:{{ $('Webhook').item.json.body.args.kilometraje_maximo }}  \nmarca:{{ $('Webhook').item.json.body.args.marca_preferida }}  \ntipo_motor:{{ $('Webhook').item.json.body.args.tipo_motor }}  \naño_maximo:{{ $('Webhook').item.json.body.args.anio_maximo }}  \nmodelo:{{ $('Webhook').item.json.body.args.modelo_interesado }}  \npresupuesto_maximo:{{ $('Webhook').item.json.body.args.presupuesto_maximo }}\n\nInstrucciones:  \nDebes buscar vehículos que cumplan los mas aproximados con los criterios proporcionados por el cliente.  \n⚠️ Toda la información debe tomarse **únicamente** de la base de datos real proporcionada.  \n❌ No debes inventar, suponer ni generar resultados ficticios.  \n❌ No muestres ejemplos ilustrativos ni sugerencias inventadas.  \n✅ La respuesta debe estar basada **exclusivamente** en los datos reales del inventario.\n\n🧠 Comportamiento esperado:\n- La IA debe realizar **una búsqueda nueva cada vez que el cliente modifique uno o más criterios** (por ejemplo, tipo de motor, marca, presupuesto, etc.).  \n- Cada nueva búsqueda debe combinar **todos los filtros activos actualizados hasta ese momento**, sin perder ninguna condición anterior.  \n- Este proceso puede repetirse **tantas veces como el cliente lo solicite durante la llamada**, sin límite.  \n- Solo si tras una nueva búsqueda **no se encuentran resultados en el inventario**, se puede sugerir cambiar algún filtro voluntariamente (ej. ampliar presupuesto, aceptar más kilómetros, considerar otro tipo de motor, etc.).  \n- Si el cliente acepta ajustar, **se debe hacer otra búsqueda real y validar contra la base de datos**.\n\nCriterios aproximados a buscar:  \n- Marca: {{ $('Webhook').item.json.body.args.marca_preferida }}  \n- Modelo (si aplica): {{ $('Webhook').item.json.body.args.modelo_interesado }}  \n- Tipo de motor: {{ $('Webhook').item.json.body.args.tipo_motor }}  \n- Año igual o menor a: {{ $('Webhook').item.json.body.args.anio_maximo }}  \n- Kilometraje igual o menor a: {{ $('Webhook').item.json.body.args.kilometraje_maximo }}  \n- Precio igual o menor a: {{ $('Webhook').item.json.body.args.presupuesto_maximo }}\n\nRespuesta esperada:  \n- Si hay coincidencias: mostrar los vehículos disponibles con marca, modelo, año, tipo de motor, kilometraje y precio.  \n- Si no hay coincidencias: responder con un mostrar 5 opciones que se aproximen.\n\nEjemplo de respuesta si hay resultados:  \n\"Hemos encontrado estas opciones que se ajustan a tu búsqueda: [lista de vehículos con detalles relevantes]\"\n\n\n",
+        "options": {
+          "systemMessage": "Conéctate a la herramienta vinculada (hoja de cálculo) que contiene el listado de vehículos disponibles.\n\nUsa los siguientes filtros proporcionados por el cliente:\n- kilometraje_máximo\n- marca_preferida\n- tipo_motor\n- presupuesto_máximo\n- anio_maximo\n- modelo_interesado\n\nBusca en la herramienta los vehículos que mejor coincidan con los filtros y devuelve únicamente 5 resultados.\n\n⚠️ La respuesta debe estar en formato JSON puro, sin texto adicional.\n\nFormato esperado:\n[\n  {\n    \"marca\": \"\",\n    \"modelo\": \"\",\n    \"tipo_motor\": \"\",\n    \"año\": 0,\n    \"kilometraje\": 0,\n    \"precio\": 0\n  },\n  {\n    \"marca\": \"\",\n    \"modelo\": \"\",\n    \"tipo_motor\": \"\",\n    \"año\": 0,\n    \"kilometraje\": 0,\n    \"precio\": 0\n  },{\n    \"marca\": \"\",\n    \"modelo\": \"\",\n    \"tipo_motor\": \"\",\n    \"año\": 0,\n    \"kilometraje\": 0,\n    \"precio\": 0\n  },\n{\n    \"marca\": \"\",\n    \"modelo\": \"\",\n    \"tipo_motor\": \"\",\n    \"año\": 0,\n    \"kilometraje\": 0,\n    \"precio\": 0\n  },\n{\n    \"marca\": \"\",\n    \"modelo\": \"\",\n    \"tipo_motor\": \"\",\n    \"año\": 0,\n    \"kilometraje\": 0,\n    \"precio\": 0\n  }\n]\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        120,
+        -160
+      ],
+      "id": "ded8d0ec-c0ef-4891-a65f-5b9cb63cf948",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        -160
+      ],
+      "id": "b9e353bb-9726-4ed8-ac92-85266c9a820f",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        60
+      ],
+      "id": "e0104975-6728-4f57-bc18-199be02ce7ec",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ONyhofPcuArHdsq1",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -100,
+        -160
+      ],
+      "id": "b398cc04-f2b5-4032-b57c-5b556a130fe0",
+      "name": "Code",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1_KRg1LTN9eva-gORQKO2c3zhtVFjkm9nrYGLn-Ezyw0/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 880999649,
+          "mode": "list",
+          "cachedResultName": "StockVehiculos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_KRg1LTN9eva-gORQKO2c3zhtVFjkm9nrYGLn-Ezyw0/edit#gid=880999649"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        340,
+        60
+      ],
+      "id": "8be8870e-442d-4849-8fc6-bc1f32df08d9",
+      "name": "Base Conocimiento",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CWk1cfmKyWDzGM5i",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.gaia-sh.com",
+            "user-agent": "axios/1.7.7",
+            "content-length": "51287",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "n8n.gaia-sh.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "a469dbb2435a",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1750688830229,d=ebd26ab70fdc26cace3e31652bf3b0e7d3cad3c460a8fe35bf77f82f0459a8f1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "call": {
+              "call_id": "call_f4b4582dea602c35f12ae28e0d6",
+              "call_type": "phone_call",
+              "agent_id": "agent_0c0c7fc6049e0614e65de1a25e",
+              "agent_version": 16,
+              "call_status": "ongoing",
+              "start_timestamp": 1750688620537,
+              "transcript": "Agent: ¡Hola! Muchas gracias por comunicarte con MotorFlash 😊  \n¿Con quién tengo el gusto de hablar?\nAgent: ¡Hola! Muy buenos días 😊 ¿Con quién tengo el gusto de hablar?\nUser: Hola,\nAgent: ¡Hola! ¿Cómo estás? 😊 ¿Con quién tengo el gusto de hablar?\nUser: Hablas con Javier,\nAgent: Encantada, Javier. ¿En qué te puedo ayudar hoy?\nUser: Quiero saber alguna oferta de carros que tengas\nAgent: Perfecto, Javier. Para ayudarte a encontrar el coche ideal, te voy a hacer unas preguntas rápidas. ¿Te parece bien?\nAgent: ¡Claro! Tómate tu tiempo, estaré esperando aquí 😊\nUser: Que dijo que sí, que sí, sí quiero que me preguntes.\nAgent: Genial, Javier. Empecemos.¿Tienes alguna marca en mente o estás abierto a sugerencias?\nUser: Toyota.\nAgent: Perfecto, Javier. ¿Qué modelo de Toyota te interesa, si ya tienes alguno pensado?\nUser: Land Cruiser.\nAgent: Muy bien, Javier. ¿Prefieres algún tipo de motor para el Toyota Land Cruiser? (gasolina, diésel, híbrido, eléctrico…)\nUser: Diez el dos punto uno.\nAgent: Entiendo, Javier. Entonces, ¿cuál es tu presupuesto aproximado para el Toyota Land Cruiser?\nUser: Veinticinco mil.\nAgent: Gracias, Javier. ¿Hasta qué año de antigüedad te gustaría que tuviera el Toyota Land Cruiser?\nUser: No tengo problema al respecto.\nAgent: Perfecto, Javier. Por último, ¿qué kilometraje máximo \nUser: No tengo\nAgent: considerarías aceptable para el Toyota Land Cruiser?\nUser: problema al \nUser: respecto.\nAgent: Gracias por toda la información, Javier.\nAgent: Dame un instante mientras reviso el inventario para ver qué coches encajan con lo que estás buscando.\nAgent: Lamentablemente, no he encontrado ninguna opción disponible que se ajuste a lo que buscas en este momento.¿Te gustaría que revisáramos juntos si vale la pena ajustar alguno de los filtros? Podríamos considerar cambiar el tipo de motor, el presupuesto, o incluso el modelo. ¿Qué te parece?\nUser: Vale.\nAgent: Entiendo, gracias por decírmelo. Vamos a actualizar los filtros con lo que me acabas de decir.¿Te gustaría ajustar el tipo de motor, el presupuesto, o quizás considerar otro modelo? ¿Qué prefieres cambiar?\nUser: Otro modelo.\n",
+              "transcript_object": [
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Muchas gracias por comunicarte con MotorFlash 😊  \n¿Con quién tengo el gusto de hablar?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 1.520230712890625,
+                      "end": 2.324076904296875
+                    },
+                    {
+                      "word": " Muchas ",
+                      "start": 2.644230712890625,
+                      "end": 2.934615478515625
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 2.934615478515625,
+                      "end": 3.2701923828125
+                    },
+                    {
+                      "word": "por ",
+                      "start": 3.2701923828125,
+                      "end": 3.40384619140625
+                    },
+                    {
+                      "word": "comunicarte ",
+                      "start": 3.40384619140625,
+                      "end": 3.96153857421875
+                    },
+                    {
+                      "word": "con ",
+                      "start": 3.96153857421875,
+                      "end": 4.084615478515625
+                    },
+                    {
+                      "word": "MotorFlash ",
+                      "start": 4.084615478515625,
+                      "end": 4.72115380859375
+                    },
+                    {
+                      "word": "😊 ",
+                      "start": 4.72115380859375,
+                      "end": 4.922115478515625
+                    },
+                    {
+                      "word": " \n¿Con ",
+                      "start": 4.922115478515625,
+                      "end": 5.089423095703125
+                    },
+                    {
+                      "word": "quién ",
+                      "start": 5.089423095703125,
+                      "end": 5.301923095703125
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 5.301923095703125,
+                      "end": 5.401923095703125
+                    },
+                    {
+                      "word": "el ",
+                      "start": 5.401923095703125,
+                      "end": 5.70384619140625
+                    },
+                    {
+                      "word": "gusto ",
+                      "start": 5.70384619140625,
+                      "end": 5.781730712890625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 5.781730712890625,
+                      "end": 6.3951923828125
+                    },
+                    {
+                      "word": "hablar?",
+                      "start": 2.6,
+                      "end": 2.6
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Muy buenos días 😊 ¿Con quién tengo el gusto de hablar?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 18.738769287109374,
+                      "end": 19.531076904296874
+                    },
+                    {
+                      "word": " Muy ",
+                      "start": 19.890115478515625,
+                      "end": 20.1131923828125
+                    },
+                    {
+                      "word": "buenos ",
+                      "start": 20.1131923828125,
+                      "end": 20.403576904296877
+                    },
+                    {
+                      "word": "días ",
+                      "start": 20.403576904296877,
+                      "end": 20.6603076171875
+                    },
+                    {
+                      "word": "😊 ",
+                      "start": 20.6603076171875,
+                      "end": 20.827615478515625
+                    },
+                    {
+                      "word": "¿Con ",
+                      "start": 20.827615478515625,
+                      "end": 20.9728076171875
+                    },
+                    {
+                      "word": "quién ",
+                      "start": 20.9728076171875,
+                      "end": 21.1631923828125
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 21.1631923828125,
+                      "end": 21.2631923828125
+                    },
+                    {
+                      "word": "el ",
+                      "start": 21.2631923828125,
+                      "end": 21.565115478515626
+                    },
+                    {
+                      "word": "gusto ",
+                      "start": 21.565115478515626,
+                      "end": 21.643
+                    },
+                    {
+                      "word": "de ",
+                      "start": 21.643,
+                      "end": 22.190115478515626
+                    },
+                    {
+                      "word": "hablar?",
+                      "start": 19.868,
+                      "end": 19.868
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Hola,",
+                  "words": [
+                    {
+                      "word": "Hola,",
+                      "start": 36.841,
+                      "end": 37.281000000000006
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Hola! ¿Cómo estás? 😊 ¿Con quién tengo el gusto de hablar?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 40.69123071289062,
+                      "end": 41.49507690429687
+                    },
+                    {
+                      "word": " ¿Cómo ",
+                      "start": 41.62753857421875,
+                      "end": 41.89484619140625
+                    },
+                    {
+                      "word": "estás?",
+                      "start": 41.89484619140625,
+                      "end": 42.5535
+                    },
+                    {
+                      "word": " 😊 ",
+                      "start": 42.82265380859375,
+                      "end": 43.123615478515624
+                    },
+                    {
+                      "word": "¿Con ",
+                      "start": 43.123615478515624,
+                      "end": 43.28034619140625
+                    },
+                    {
+                      "word": "quién ",
+                      "start": 43.28034619140625,
+                      "end": 43.49188452148437
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 43.49188452148437,
+                      "end": 43.59284619140625
+                    },
+                    {
+                      "word": "el ",
+                      "start": 43.59284619140625,
+                      "end": 43.90534619140625
+                    },
+                    {
+                      "word": "gusto ",
+                      "start": 43.90534619140625,
+                      "end": 43.97265380859375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 43.97265380859375,
+                      "end": 44.61976928710938
+                    },
+                    {
+                      "word": "hablar?",
+                      "start": 42.789,
+                      "end": 42.789
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Hablas con Javier,",
+                  "words": [
+                    {
+                      "word": "Hablas ",
+                      "start": 46.371,
+                      "end": 46.851000000000006
+                    },
+                    {
+                      "word": "con ",
+                      "start": 46.851000000000006,
+                      "end": 47.091
+                    },
+                    {
+                      "word": "Javier,",
+                      "start": 47.091,
+                      "end": 47.561
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Encantada, Javier. ¿En qué te puedo ayudar hoy?",
+                  "words": [
+                    {
+                      "word": "Encantada, ",
+                      "start": 49.62565380859375,
+                      "end": 50.22853857421875
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 50.22853857421875,
+                      "end": 50.8871923828125
+                    },
+                    {
+                      "word": " ¿En ",
+                      "start": 50.93143920898437,
+                      "end": 51.12182373046875
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 51.12182373046875,
+                      "end": 51.2554775390625
+                    },
+                    {
+                      "word": "te ",
+                      "start": 51.2554775390625,
+                      "end": 51.356439208984376
+                    },
+                    {
+                      "word": "puedo ",
+                      "start": 51.356439208984376,
+                      "end": 51.55740063476563
+                    },
+                    {
+                      "word": "ayudar ",
+                      "start": 51.55740063476563,
+                      "end": 51.91413134765625
+                    },
+                    {
+                      "word": "hoy?",
+                      "start": 51.91413134765625,
+                      "end": 52.4054775390625
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Quiero saber alguna oferta de carros que tengas",
+                  "words": [
+                    {
+                      "word": "Quiero ",
+                      "start": 55.531000000000006,
+                      "end": 55.771
+                    },
+                    {
+                      "word": "saber ",
+                      "start": 55.771,
+                      "end": 56.271
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 56.411,
+                      "end": 56.731
+                    },
+                    {
+                      "word": "oferta ",
+                      "start": 56.731,
+                      "end": 57.231
+                    },
+                    {
+                      "word": "de ",
+                      "start": 57.291000000000004,
+                      "end": 57.451
+                    },
+                    {
+                      "word": "carros ",
+                      "start": 57.451,
+                      "end": 57.951
+                    },
+                    {
+                      "word": "que ",
+                      "start": 58.091,
+                      "end": 58.331
+                    },
+                    {
+                      "word": "tengas",
+                      "start": 58.331,
+                      "end": 58.831
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Javier. Para ayudarte a encontrar el coche ideal, te voy a hacer unas preguntas rápidas. ¿Te parece bien?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 62.85476928710938,
+                      "end": 63.39034619140625
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 63.39034619140625,
+                      "end": 64.049
+                    },
+                    {
+                      "word": " Para ",
+                      "start": 64.35611547851562,
+                      "end": 64.55707690429688
+                    },
+                    {
+                      "word": "ayudarte ",
+                      "start": 64.55707690429688,
+                      "end": 64.959
+                    },
+                    {
+                      "word": "a ",
+                      "start": 64.959,
+                      "end": 65.18207690429688
+                    },
+                    {
+                      "word": "encontrar ",
+                      "start": 65.18207690429688,
+                      "end": 65.60707690429687
+                    },
+                    {
+                      "word": "el ",
+                      "start": 65.60707690429687,
+                      "end": 65.7291923828125
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 65.7291923828125,
+                      "end": 65.99746142578125
+                    },
+                    {
+                      "word": "ideal, ",
+                      "start": 65.99746142578125,
+                      "end": 66.86765380859374
+                    },
+                    {
+                      "word": "te ",
+                      "start": 66.86765380859374,
+                      "end": 67.01284619140625
+                    },
+                    {
+                      "word": "voy ",
+                      "start": 67.01284619140625,
+                      "end": 67.15803857421875
+                    },
+                    {
+                      "word": "a ",
+                      "start": 67.15803857421875,
+                      "end": 67.22534619140625
+                    },
+                    {
+                      "word": "hacer ",
+                      "start": 67.22534619140625,
+                      "end": 67.5715
+                    },
+                    {
+                      "word": "unas ",
+                      "start": 67.5715,
+                      "end": 67.79457690429687
+                    },
+                    {
+                      "word": "preguntas ",
+                      "start": 67.79457690429687,
+                      "end": 68.25226928710937
+                    },
+                    {
+                      "word": "rápidas.",
+                      "start": 68.25226928710937,
+                      "end": 69.06765380859375
+                    },
+                    {
+                      "word": " ¿Te ",
+                      "start": 69.09715698242188,
+                      "end": 69.28754174804688
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 69.28754174804688,
+                      "end": 69.60004174804688
+                    },
+                    {
+                      "word": "bien?",
+                      "start": 69.60004174804688,
+                      "end": 70.14715698242188
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Claro! Tómate tu tiempo, estaré esperando aquí 😊",
+                  "words": [
+                    {
+                      "word": "¡Claro!",
+                      "start": 81.77165380859375,
+                      "end": 82.58607690429687
+                    },
+                    {
+                      "word": " Tómate ",
+                      "start": 82.95823071289063,
+                      "end": 83.28226928710937
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 83.28226928710937,
+                      "end": 83.439
+                    },
+                    {
+                      "word": "tiempo, ",
+                      "start": 83.439,
+                      "end": 83.79573071289063
+                    },
+                    {
+                      "word": "estaré ",
+                      "start": 83.79573071289063,
+                      "end": 84.10823071289063
+                    },
+                    {
+                      "word": "esperando ",
+                      "start": 84.10823071289063,
+                      "end": 84.55534619140624
+                    },
+                    {
+                      "word": "aquí ",
+                      "start": 84.55534619140624,
+                      "end": 85.23611547851563
+                    },
+                    {
+                      "word": "😊",
+                      "start": 82.914,
+                      "end": 82.914
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 5
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Que dijo que sí, que sí, sí quiero que me preguntes.",
+                  "words": [
+                    {
+                      "word": "Que ",
+                      "start": 88.61099999999999,
+                      "end": 88.85100399999999
+                    },
+                    {
+                      "word": "dijo ",
+                      "start": 88.85100399999999,
+                      "end": 89.091
+                    },
+                    {
+                      "word": "que ",
+                      "start": 89.091,
+                      "end": 89.25099999999999
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 89.25099999999999,
+                      "end": 89.491
+                    },
+                    {
+                      "word": "que ",
+                      "start": 89.491,
+                      "end": 89.651
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 89.651,
+                      "end": 90.151
+                    },
+                    {
+                      "word": "sí ",
+                      "start": 90.54101,
+                      "end": 90.821005
+                    },
+                    {
+                      "word": "quiero ",
+                      "start": 90.821005,
+                      "end": 91.10100399999999
+                    },
+                    {
+                      "word": "que ",
+                      "start": 91.10100399999999,
+                      "end": 91.511
+                    },
+                    {
+                      "word": "me ",
+                      "start": 91.511,
+                      "end": 91.761
+                    },
+                    {
+                      "word": "preguntes.",
+                      "start": 91.761,
+                      "end": 92.011
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Genial, Javier. Empecemos.¿Tienes alguna marca en mente o estás abierto a sugerencias?",
+                  "words": [
+                    {
+                      "word": "Genial, ",
+                      "start": 95.1693076171875,
+                      "end": 95.64911547851563
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 95.64911547851563,
+                      "end": 96.352
+                    },
+                    {
+                      "word": " Empecemos.",
+                      "start": 96.4130224609375,
+                      "end": 97.17263793945312
+                    },
+                    {
+                      "word": "¿Tienes ",
+                      "start": 97.73211547851562,
+                      "end": 98.235
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 98.235,
+                      "end": 98.58115380859375
+                    },
+                    {
+                      "word": "marca ",
+                      "start": 98.58115380859375,
+                      "end": 98.84846142578125
+                    },
+                    {
+                      "word": "en ",
+                      "start": 98.84846142578125,
+                      "end": 98.96
+                    },
+                    {
+                      "word": "mente ",
+                      "start": 98.96,
+                      "end": 99.37346142578124
+                    },
+                    {
+                      "word": "o ",
+                      "start": 99.37346142578124,
+                      "end": 99.45134619140624
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 99.45134619140624,
+                      "end": 99.75326928710938
+                    },
+                    {
+                      "word": "abierto ",
+                      "start": 99.75326928710938,
+                      "end": 100.09942309570313
+                    },
+                    {
+                      "word": "a ",
+                      "start": 100.09942309570313,
+                      "end": 100.14365380859375
+                    },
+                    {
+                      "word": "sugerencias?",
+                      "start": 100.14365380859375,
+                      "end": 101.0148076171875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Toyota.",
+                  "words": [
+                    {
+                      "word": "Toyota.",
+                      "start": 102.281004,
+                      "end": 102.781004
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Javier. ¿Qué modelo de Toyota te interesa, si ya tienes alguno pensado?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 104.76923071289062,
+                      "end": 105.30576928710937
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 105.30576928710937,
+                      "end": 105.93076928710937
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 106.15623071289062,
+                      "end": 106.39084619140625
+                    },
+                    {
+                      "word": "modelo ",
+                      "start": 106.39084619140625,
+                      "end": 106.737
+                    },
+                    {
+                      "word": "de ",
+                      "start": 106.737,
+                      "end": 106.84853857421875
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 106.84853857421875,
+                      "end": 107.29565380859376
+                    },
+                    {
+                      "word": "te ",
+                      "start": 107.29565380859376,
+                      "end": 107.38507690429688
+                    },
+                    {
+                      "word": "interesa, ",
+                      "start": 107.38507690429688,
+                      "end": 107.92065380859376
+                    },
+                    {
+                      "word": "si ",
+                      "start": 107.92065380859376,
+                      "end": 108.07642309570312
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 108.07642309570312,
+                      "end": 108.1995
+                    },
+                    {
+                      "word": "tienes ",
+                      "start": 108.1995,
+                      "end": 108.512
+                    },
+                    {
+                      "word": "alguno ",
+                      "start": 108.512,
+                      "end": 108.84661547851563
+                    },
+                    {
+                      "word": "pensado?",
+                      "start": 108.84661547851563,
+                      "end": 109.5946923828125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Land Cruiser.",
+                  "words": [
+                    {
+                      "word": "Land ",
+                      "start": 110.70099499999999,
+                      "end": 110.86099999999999
+                    },
+                    {
+                      "word": "Cruiser.",
+                      "start": 110.86099999999999,
+                      "end": 111.36099999999999
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Muy bien, Javier. ¿Prefieres algún tipo de motor para el Toyota Land Cruiser? (gasolina, diésel, híbrido, eléctrico…)",
+                  "words": [
+                    {
+                      "word": "Muy ",
+                      "start": 113.09123071289062,
+                      "end": 113.32584619140626
+                    },
+                    {
+                      "word": "bien, ",
+                      "start": 113.32584619140626,
+                      "end": 113.61623071289063
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 113.61623071289063,
+                      "end": 114.297
+                    },
+                    {
+                      "word": " ¿Prefieres ",
+                      "start": 114.52411547851563,
+                      "end": 115.08276928710937
+                    },
+                    {
+                      "word": "algún ",
+                      "start": 115.08276928710937,
+                      "end": 115.3395
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 115.3395,
+                      "end": 115.56257690429688
+                    },
+                    {
+                      "word": "de ",
+                      "start": 115.56257690429688,
+                      "end": 115.66257690429687
+                    },
+                    {
+                      "word": "motor ",
+                      "start": 115.66257690429687,
+                      "end": 116.12026928710938
+                    },
+                    {
+                      "word": "para ",
+                      "start": 116.12026928710938,
+                      "end": 116.377
+                    },
+                    {
+                      "word": "el ",
+                      "start": 116.377,
+                      "end": 116.53373071289063
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 116.53373071289063,
+                      "end": 116.99142309570313
+                    },
+                    {
+                      "word": "Land ",
+                      "start": 116.99142309570313,
+                      "end": 117.2145
+                    },
+                    {
+                      "word": "Cruiser?",
+                      "start": 117.2145,
+                      "end": 117.9846923828125
+                    },
+                    {
+                      "word": " (gasolina, ",
+                      "start": 118.03481420898437,
+                      "end": 118.716544921875
+                    },
+                    {
+                      "word": "diésel, ",
+                      "start": 118.716544921875,
+                      "end": 119.14058325195313
+                    },
+                    {
+                      "word": "híbrido, ",
+                      "start": 119.14058325195313,
+                      "end": 119.58673706054688
+                    },
+                    {
+                      "word": "eléctrico…)",
+                      "start": 119.58673706054688,
+                      "end": 120.4463525390625
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Diez el dos punto uno.",
+                  "words": [
+                    {
+                      "word": "Diez ",
+                      "start": 122.121,
+                      "end": 122.441
+                    },
+                    {
+                      "word": "el ",
+                      "start": 122.441,
+                      "end": 122.601
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 122.601,
+                      "end": 123.08099999999999
+                    },
+                    {
+                      "word": "punto ",
+                      "start": 123.08099999999999,
+                      "end": 123.161
+                    },
+                    {
+                      "word": "uno.",
+                      "start": 123.161,
+                      "end": 123.58099999999999
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, Javier. Entonces, ¿cuál es tu presupuesto aproximado para el Toyota Land Cruiser?",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 125.24465380859375,
+                      "end": 125.82542309570313
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 125.82542309570313,
+                      "end": 126.5061923828125
+                    },
+                    {
+                      "word": " Entonces, ",
+                      "start": 126.70323071289063,
+                      "end": 127.29553857421875
+                    },
+                    {
+                      "word": "¿cuál ",
+                      "start": 127.29553857421875,
+                      "end": 127.56284619140625
+                    },
+                    {
+                      "word": "es ",
+                      "start": 127.56284619140625,
+                      "end": 127.6638076171875
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 127.6638076171875,
+                      "end": 127.77534619140626
+                    },
+                    {
+                      "word": "presupuesto ",
+                      "start": 127.77534619140626,
+                      "end": 128.33303857421876
+                    },
+                    {
+                      "word": "aproximado ",
+                      "start": 128.33303857421876,
+                      "end": 129.00323071289063
+                    },
+                    {
+                      "word": "para ",
+                      "start": 129.00323071289063,
+                      "end": 129.17053857421874
+                    },
+                    {
+                      "word": "el ",
+                      "start": 129.17053857421874,
+                      "end": 129.2715
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 129.2715,
+                      "end": 129.66188452148438
+                    },
+                    {
+                      "word": "Land ",
+                      "start": 129.66188452148438,
+                      "end": 129.84073071289063
+                    },
+                    {
+                      "word": "Cruiser?",
+                      "start": 129.84073071289063,
+                      "end": 130.54361547851562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 9
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Veinticinco mil.",
+                  "words": [
+                    {
+                      "word": "Veinticinco ",
+                      "start": 132.891,
+                      "end": 133.391
+                    },
+                    {
+                      "word": "mil.",
+                      "start": 133.93099999999998,
+                      "end": 134.43099999999998
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias, Javier. ¿Hasta qué año de antigüedad te gustaría que tuviera el Toyota Land Cruiser?",
+                  "words": [
+                    {
+                      "word": "Gracias, ",
+                      "start": 137.59023071289062,
+                      "end": 138.0036923828125
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 138.0036923828125,
+                      "end": 138.57292309570312
+                    },
+                    {
+                      "word": " ¿Hasta ",
+                      "start": 139.02811547851562,
+                      "end": 139.45215380859375
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 139.45215380859375,
+                      "end": 139.57523071289063
+                    },
+                    {
+                      "word": "año ",
+                      "start": 139.57523071289063,
+                      "end": 139.7983076171875
+                    },
+                    {
+                      "word": "de ",
+                      "start": 139.7983076171875,
+                      "end": 139.88773071289063
+                    },
+                    {
+                      "word": "antigüedad ",
+                      "start": 139.88773071289063,
+                      "end": 140.4685
+                    },
+                    {
+                      "word": "te ",
+                      "start": 140.4685,
+                      "end": 140.58003857421875
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 140.58003857421875,
+                      "end": 141.0261923828125
+                    },
+                    {
+                      "word": "que ",
+                      "start": 141.0261923828125,
+                      "end": 141.1386923828125
+                    },
+                    {
+                      "word": "tuviera ",
+                      "start": 141.1386923828125,
+                      "end": 141.46176928710938
+                    },
+                    {
+                      "word": "el ",
+                      "start": 141.46176928710938,
+                      "end": 141.5627307128906
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 141.5627307128906,
+                      "end": 141.94157690429688
+                    },
+                    {
+                      "word": "Land ",
+                      "start": 141.94157690429688,
+                      "end": 142.1540769042969
+                    },
+                    {
+                      "word": "Cruiser?",
+                      "start": 142.1540769042969,
+                      "end": 142.89061547851563
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 10
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No tengo problema al respecto.",
+                  "words": [
+                    {
+                      "word": "No ",
+                      "start": 144.771,
+                      "end": 145.011
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 145.011,
+                      "end": 145.49099999999999
+                    },
+                    {
+                      "word": "problema ",
+                      "start": 145.49099999999999,
+                      "end": 145.731
+                    },
+                    {
+                      "word": "al ",
+                      "start": 145.731,
+                      "end": 145.811
+                    },
+                    {
+                      "word": "respecto.",
+                      "start": 145.811,
+                      "end": 146.311
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Javier. Por último, ¿qué kilometraje máximo ",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 148.10876928710937,
+                      "end": 148.60011547851562
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 148.60011547851562,
+                      "end": 149.25876928710937
+                    },
+                    {
+                      "word": " Por ",
+                      "start": 149.66311547851564,
+                      "end": 149.89773071289062
+                    },
+                    {
+                      "word": "último, ",
+                      "start": 149.89773071289062,
+                      "end": 150.27753857421874
+                    },
+                    {
+                      "word": "¿qué ",
+                      "start": 150.27753857421874,
+                      "end": 150.44484619140624
+                    },
+                    {
+                      "word": "kilometraje ",
+                      "start": 150.44484619140624,
+                      "end": 151.14773071289062
+                    },
+                    {
+                      "word": "máximo ",
+                      "start": 151.14773071289062,
+                      "end": 151.68426928710937
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 11
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No tengo",
+                  "words": [
+                    {
+                      "word": "No ",
+                      "start": 151.921,
+                      "end": 152.421
+                    },
+                    {
+                      "word": "tengo",
+                      "start": 153.851,
+                      "end": 154.351
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "considerarías aceptable para el Toyota Land Cruiser?",
+                  "words": [
+                    {
+                      "word": "considerarías ",
+                      "start": 151.68426928710937,
+                      "end": 152.43138452148438
+                    },
+                    {
+                      "word": "aceptable ",
+                      "start": 152.43138452148438,
+                      "end": 153.03426928710937
+                    },
+                    {
+                      "word": "para ",
+                      "start": 153.03426928710937,
+                      "end": 153.21311547851562
+                    },
+                    {
+                      "word": "el ",
+                      "start": 153.21311547851562,
+                      "end": 153.32465380859375
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 153.32465380859375,
+                      "end": 153.70446142578126
+                    },
+                    {
+                      "word": "Land ",
+                      "start": 153.70446142578126,
+                      "end": 153.8833076171875
+                    },
+                    {
+                      "word": "Cruiser?",
+                      "start": 153.8833076171875,
+                      "end": 154.64196142578126
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 11
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "problema al ",
+                  "words": [
+                    {
+                      "word": "problema ",
+                      "start": 156.22099,
+                      "end": 156.441
+                    },
+                    {
+                      "word": "al ",
+                      "start": 156.441,
+                      "end": 156.691
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "respecto.",
+                  "words": [
+                    {
+                      "word": "respecto.",
+                      "start": 156.691,
+                      "end": 156.941
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias por toda la información, Javier.",
+                  "words": [
+                    {
+                      "word": "Gracias ",
+                      "start": 159.01023071289063,
+                      "end": 159.50157690429688
+                    },
+                    {
+                      "word": "por ",
+                      "start": 159.50157690429688,
+                      "end": 159.74773071289061
+                    },
+                    {
+                      "word": "toda ",
+                      "start": 159.74773071289061,
+                      "end": 160.06023071289061
+                    },
+                    {
+                      "word": "la ",
+                      "start": 160.06023071289061,
+                      "end": 160.12657690429688
+                    },
+                    {
+                      "word": "información, ",
+                      "start": 160.12657690429688,
+                      "end": 160.76311547851563
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 160.76311547851563,
+                      "end": 161.37753857421876
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 13
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "Dame un instante mientras reviso el inventario para ver qué coches encajan con lo que estás buscando.",
+                  "words": [
+                    {
+                      "word": "Dame ",
+                      "start": 161.40391357421876,
+                      "end": 161.67122119140626
+                    },
+                    {
+                      "word": "un ",
+                      "start": 161.67122119140626,
+                      "end": 161.7721826171875
+                    },
+                    {
+                      "word": "instante ",
+                      "start": 161.7721826171875,
+                      "end": 162.43083642578125
+                    },
+                    {
+                      "word": "mientras ",
+                      "start": 162.43083642578125,
+                      "end": 163.18949047851564
+                    },
+                    {
+                      "word": "reviso ",
+                      "start": 163.18949047851564,
+                      "end": 163.5471826171875
+                    },
+                    {
+                      "word": "el ",
+                      "start": 163.5471826171875,
+                      "end": 163.65872119140624
+                    },
+                    {
+                      "word": "inventario ",
+                      "start": 163.65872119140624,
+                      "end": 164.2500673828125
+                    },
+                    {
+                      "word": "para ",
+                      "start": 164.2500673828125,
+                      "end": 164.51833642578126
+                    },
+                    {
+                      "word": "ver ",
+                      "start": 164.51833642578126,
+                      "end": 164.80872119140625
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 164.80872119140625,
+                      "end": 165.0096826171875
+                    },
+                    {
+                      "word": "coches ",
+                      "start": 165.0096826171875,
+                      "end": 165.52314428710937
+                    },
+                    {
+                      "word": "encajan ",
+                      "start": 165.52314428710937,
+                      "end": 166.37122119140625
+                    },
+                    {
+                      "word": "con ",
+                      "start": 166.37122119140625,
+                      "end": 166.53852880859375
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 166.53852880859375,
+                      "end": 166.66160571289063
+                    },
+                    {
+                      "word": "que ",
+                      "start": 166.66160571289063,
+                      "end": 166.75102880859376
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 166.75102880859376,
+                      "end": 167.05199047851562
+                    },
+                    {
+                      "word": "buscando.",
+                      "start": 167.05199047851562,
+                      "end": 167.91160571289063
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 13
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "Lamentablemente, no he encontrado ninguna opción disponible que se ajuste a lo que buscas en este momento.¿Te gustaría que revisáramos juntos si vale la pena ajustar alguno de los filtros? Podríamos considerar cambiar el tipo de motor, el presupuesto, o incluso el modelo. ¿Qué te parece?",
+                  "words": [
+                    {
+                      "word": "Lamentablemente, ",
+                      "start": 170.53223071289062,
+                      "end": 171.83896142578126
+                    },
+                    {
+                      "word": "no ",
+                      "start": 171.83896142578126,
+                      "end": 171.96203857421875
+                    },
+                    {
+                      "word": "he ",
+                      "start": 171.96203857421875,
+                      "end": 172.12934619140626
+                    },
+                    {
+                      "word": "encontrado ",
+                      "start": 172.12934619140626,
+                      "end": 172.63126928710938
+                    },
+                    {
+                      "word": "ninguna ",
+                      "start": 172.63126928710938,
+                      "end": 172.9553076171875
+                    },
+                    {
+                      "word": "opción ",
+                      "start": 172.9553076171875,
+                      "end": 173.28992309570313
+                    },
+                    {
+                      "word": "disponible ",
+                      "start": 173.28992309570313,
+                      "end": 173.90434619140626
+                    },
+                    {
+                      "word": "que ",
+                      "start": 173.90434619140626,
+                      "end": 174.01588452148437
+                    },
+                    {
+                      "word": "se ",
+                      "start": 174.01588452148437,
+                      "end": 174.12742309570314
+                    },
+                    {
+                      "word": "ajuste ",
+                      "start": 174.12742309570314,
+                      "end": 174.57357690429689
+                    },
+                    {
+                      "word": "a ",
+                      "start": 174.57357690429689,
+                      "end": 174.62934619140626
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 174.62934619140626,
+                      "end": 174.75242309570314
+                    },
+                    {
+                      "word": "que ",
+                      "start": 174.75242309570314,
+                      "end": 174.8755
+                    },
+                    {
+                      "word": "buscas ",
+                      "start": 174.8755,
+                      "end": 175.39953857421875
+                    },
+                    {
+                      "word": "en ",
+                      "start": 175.39953857421875,
+                      "end": 175.52261547851563
+                    },
+                    {
+                      "word": "este ",
+                      "start": 175.52261547851563,
+                      "end": 175.7456923828125
+                    },
+                    {
+                      "word": "momento.",
+                      "start": 175.7456923828125,
+                      "end": 176.6053076171875
+                    },
+                    {
+                      "word": "¿Te ",
+                      "start": 176.62544873046875,
+                      "end": 176.86006420898437
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 176.86006420898437,
+                      "end": 177.36198706054688
+                    },
+                    {
+                      "word": "que ",
+                      "start": 177.36198706054688,
+                      "end": 177.47448706054686
+                    },
+                    {
+                      "word": "revisáramos ",
+                      "start": 177.47448706054686,
+                      "end": 178.08794873046875
+                    },
+                    {
+                      "word": "juntos ",
+                      "start": 178.08794873046875,
+                      "end": 178.69083325195314
+                    },
+                    {
+                      "word": "si ",
+                      "start": 178.69083325195314,
+                      "end": 178.891794921875
+                    },
+                    {
+                      "word": "vale ",
+                      "start": 178.891794921875,
+                      "end": 179.12641015625
+                    },
+                    {
+                      "word": "la ",
+                      "start": 179.12641015625,
+                      "end": 179.26006420898437
+                    },
+                    {
+                      "word": "pena ",
+                      "start": 179.26006420898437,
+                      "end": 179.59467944335938
+                    },
+                    {
+                      "word": "ajustar ",
+                      "start": 179.59467944335938,
+                      "end": 180.09756420898438
+                    },
+                    {
+                      "word": "alguno ",
+                      "start": 180.09756420898438,
+                      "end": 180.41006420898438
+                    },
+                    {
+                      "word": "de ",
+                      "start": 180.41006420898438,
+                      "end": 180.48794873046876
+                    },
+                    {
+                      "word": "los ",
+                      "start": 180.48794873046876,
+                      "end": 180.666794921875
+                    },
+                    {
+                      "word": "filtros?",
+                      "start": 180.666794921875,
+                      "end": 181.38121801757814
+                    },
+                    {
+                      "word": " Podríamos ",
+                      "start": 181.41390698242188,
+                      "end": 181.98313793945312
+                    },
+                    {
+                      "word": "considerar ",
+                      "start": 181.98313793945312,
+                      "end": 182.51967626953126
+                    },
+                    {
+                      "word": "cambiar ",
+                      "start": 182.51967626953126,
+                      "end": 182.84275317382813
+                    },
+                    {
+                      "word": "el ",
+                      "start": 182.84275317382813,
+                      "end": 183.02159936523438
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 183.02159936523438,
+                      "end": 183.33409936523438
+                    },
+                    {
+                      "word": "de ",
+                      "start": 183.33409936523438,
+                      "end": 183.43506079101562
+                    },
+                    {
+                      "word": "motor, ",
+                      "start": 183.43506079101562,
+                      "end": 183.99275317382813
+                    },
+                    {
+                      "word": "el ",
+                      "start": 183.99275317382813,
+                      "end": 184.16006079101564
+                    },
+                    {
+                      "word": "presupuesto, ",
+                      "start": 184.16006079101564,
+                      "end": 185.12063793945313
+                    },
+                    {
+                      "word": "o ",
+                      "start": 185.12063793945313,
+                      "end": 185.24275317382813
+                    },
+                    {
+                      "word": "incluso ",
+                      "start": 185.24275317382813,
+                      "end": 185.8235224609375
+                    },
+                    {
+                      "word": "el ",
+                      "start": 185.8235224609375,
+                      "end": 186.01390698242187
+                    },
+                    {
+                      "word": "modelo.",
+                      "start": 186.01390698242187,
+                      "end": 186.7504455566406
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 186.8036474609375,
+                      "end": 186.96037817382813
+                    },
+                    {
+                      "word": "te ",
+                      "start": 186.96037817382813,
+                      "end": 187.06037817382813
+                    },
+                    {
+                      "word": "parece?",
+                      "start": 187.06037817382813,
+                      "end": 187.83153198242186
+                    }
+                  ],
+                  "metadata": {
+                    "interrupt_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale.",
+                  "words": [
+                    {
+                      "word": "Vale.",
+                      "start": 190.791,
+                      "end": 191.291
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, gracias por decírmelo. Vamos a actualizar los filtros con lo que me acabas de decir.¿Te gustaría ajustar el tipo de motor, el presupuesto, o quizás considerar otro modelo? ¿Qué prefieres cambiar?",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 193.37065380859374,
+                      "end": 193.82834619140624
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 193.82834619140624,
+                      "end": 194.15238452148438
+                    },
+                    {
+                      "word": "por ",
+                      "start": 194.15238452148438,
+                      "end": 194.29661547851563
+                    },
+                    {
+                      "word": "decírmelo.",
+                      "start": 194.29661547851563,
+                      "end": 195.12353857421874
+                    },
+                    {
+                      "word": " Vamos ",
+                      "start": 195.18348071289063,
+                      "end": 195.46328857421875
+                    },
+                    {
+                      "word": "a ",
+                      "start": 195.46328857421875,
+                      "end": 195.50751928710937
+                    },
+                    {
+                      "word": "actualizar ",
+                      "start": 195.50751928710937,
+                      "end": 195.97675
+                    },
+                    {
+                      "word": "los ",
+                      "start": 195.97675,
+                      "end": 196.17771142578124
+                    },
+                    {
+                      "word": "filtros ",
+                      "start": 196.17771142578124,
+                      "end": 196.60175
+                    },
+                    {
+                      "word": "con ",
+                      "start": 196.60175,
+                      "end": 196.72482690429686
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 196.72482690429686,
+                      "end": 196.83636547851563
+                    },
+                    {
+                      "word": "que ",
+                      "start": 196.83636547851563,
+                      "end": 196.94790380859374
+                    },
+                    {
+                      "word": "me ",
+                      "start": 196.94790380859374,
+                      "end": 197.03732690429686
+                    },
+                    {
+                      "word": "acabas ",
+                      "start": 197.03732690429686,
+                      "end": 197.43925
+                    },
+                    {
+                      "word": "de ",
+                      "start": 197.43925,
+                      "end": 197.56136547851563
+                    },
+                    {
+                      "word": "decir.",
+                      "start": 197.56136547851563,
+                      "end": 198.3094423828125
+                    },
+                    {
+                      "word": "¿Te ",
+                      "start": 198.36032055664063,
+                      "end": 198.54974365234375
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 198.54974365234375,
+                      "end": 198.98532055664063
+                    },
+                    {
+                      "word": "ajustar ",
+                      "start": 198.98532055664063,
+                      "end": 199.375705078125
+                    },
+                    {
+                      "word": "el ",
+                      "start": 199.375705078125,
+                      "end": 199.47666674804688
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 199.47666674804688,
+                      "end": 199.71128198242187
+                    },
+                    {
+                      "word": "de ",
+                      "start": 199.71128198242187,
+                      "end": 199.8112819824219
+                    },
+                    {
+                      "word": "motor, ",
+                      "start": 199.8112819824219,
+                      "end": 200.26897436523439
+                    },
+                    {
+                      "word": "el ",
+                      "start": 200.26897436523439,
+                      "end": 200.36993579101562
+                    },
+                    {
+                      "word": "presupuesto, ",
+                      "start": 200.36993579101562,
+                      "end": 201.08435888671875
+                    },
+                    {
+                      "word": "o ",
+                      "start": 201.08435888671875,
+                      "end": 201.18435888671874
+                    },
+                    {
+                      "word": "quizás ",
+                      "start": 201.18435888671874,
+                      "end": 201.63147436523437
+                    },
+                    {
+                      "word": "considerar ",
+                      "start": 201.63147436523437,
+                      "end": 202.2333974609375
+                    },
+                    {
+                      "word": "otro ",
+                      "start": 202.2333974609375,
+                      "end": 202.52378198242187
+                    },
+                    {
+                      "word": "modelo?",
+                      "start": 202.52378198242187,
+                      "end": 203.238205078125
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 203.28506420898438,
+                      "end": 203.41967944335937
+                    },
+                    {
+                      "word": "prefieres ",
+                      "start": 203.41967944335937,
+                      "end": 203.86583325195312
+                    },
+                    {
+                      "word": "cambiar?",
+                      "start": 203.86583325195312,
+                      "end": 204.53602563476562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 14
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Otro modelo.",
+                  "words": [
+                    {
+                      "word": "Otro ",
+                      "start": 207.40099999999998,
+                      "end": 207.561
+                    },
+                    {
+                      "word": "modelo.",
+                      "start": 207.561,
+                      "end": 208.061
+                    }
+                  ]
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Muchas gracias por comunicarte con MotorFlash 😊  \n¿Con quién tengo el gusto de hablar?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 1.520230712890625,
+                      "end": 2.324076904296875
+                    },
+                    {
+                      "word": " Muchas ",
+                      "start": 2.644230712890625,
+                      "end": 2.934615478515625
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 2.934615478515625,
+                      "end": 3.2701923828125
+                    },
+                    {
+                      "word": "por ",
+                      "start": 3.2701923828125,
+                      "end": 3.40384619140625
+                    },
+                    {
+                      "word": "comunicarte ",
+                      "start": 3.40384619140625,
+                      "end": 3.96153857421875
+                    },
+                    {
+                      "word": "con ",
+                      "start": 3.96153857421875,
+                      "end": 4.084615478515625
+                    },
+                    {
+                      "word": "MotorFlash ",
+                      "start": 4.084615478515625,
+                      "end": 4.72115380859375
+                    },
+                    {
+                      "word": "😊 ",
+                      "start": 4.72115380859375,
+                      "end": 4.922115478515625
+                    },
+                    {
+                      "word": " \n¿Con ",
+                      "start": 4.922115478515625,
+                      "end": 5.089423095703125
+                    },
+                    {
+                      "word": "quién ",
+                      "start": 5.089423095703125,
+                      "end": 5.301923095703125
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 5.301923095703125,
+                      "end": 5.401923095703125
+                    },
+                    {
+                      "word": "el ",
+                      "start": 5.401923095703125,
+                      "end": 5.70384619140625
+                    },
+                    {
+                      "word": "gusto ",
+                      "start": 5.70384619140625,
+                      "end": 5.781730712890625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 5.781730712890625,
+                      "end": 6.3951923828125
+                    },
+                    {
+                      "word": "hablar?",
+                      "start": 2.6,
+                      "end": 2.6
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Muy buenos días 😊 ¿Con quién tengo el gusto de hablar?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 18.738769287109374,
+                      "end": 19.531076904296874
+                    },
+                    {
+                      "word": " Muy ",
+                      "start": 19.890115478515625,
+                      "end": 20.1131923828125
+                    },
+                    {
+                      "word": "buenos ",
+                      "start": 20.1131923828125,
+                      "end": 20.403576904296877
+                    },
+                    {
+                      "word": "días ",
+                      "start": 20.403576904296877,
+                      "end": 20.6603076171875
+                    },
+                    {
+                      "word": "😊 ",
+                      "start": 20.6603076171875,
+                      "end": 20.827615478515625
+                    },
+                    {
+                      "word": "¿Con ",
+                      "start": 20.827615478515625,
+                      "end": 20.9728076171875
+                    },
+                    {
+                      "word": "quién ",
+                      "start": 20.9728076171875,
+                      "end": 21.1631923828125
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 21.1631923828125,
+                      "end": 21.2631923828125
+                    },
+                    {
+                      "word": "el ",
+                      "start": 21.2631923828125,
+                      "end": 21.565115478515626
+                    },
+                    {
+                      "word": "gusto ",
+                      "start": 21.565115478515626,
+                      "end": 21.643
+                    },
+                    {
+                      "word": "de ",
+                      "start": 21.643,
+                      "end": 22.190115478515626
+                    },
+                    {
+                      "word": "hablar?",
+                      "start": 19.868,
+                      "end": 19.868
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Hola,",
+                  "words": [
+                    {
+                      "word": "Hola,",
+                      "start": 36.841,
+                      "end": 37.281000000000006
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Hola! ¿Cómo estás? 😊 ¿Con quién tengo el gusto de hablar?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 40.69123071289062,
+                      "end": 41.49507690429687
+                    },
+                    {
+                      "word": " ¿Cómo ",
+                      "start": 41.62753857421875,
+                      "end": 41.89484619140625
+                    },
+                    {
+                      "word": "estás?",
+                      "start": 41.89484619140625,
+                      "end": 42.5535
+                    },
+                    {
+                      "word": " 😊 ",
+                      "start": 42.82265380859375,
+                      "end": 43.123615478515624
+                    },
+                    {
+                      "word": "¿Con ",
+                      "start": 43.123615478515624,
+                      "end": 43.28034619140625
+                    },
+                    {
+                      "word": "quién ",
+                      "start": 43.28034619140625,
+                      "end": 43.49188452148437
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 43.49188452148437,
+                      "end": 43.59284619140625
+                    },
+                    {
+                      "word": "el ",
+                      "start": 43.59284619140625,
+                      "end": 43.90534619140625
+                    },
+                    {
+                      "word": "gusto ",
+                      "start": 43.90534619140625,
+                      "end": 43.97265380859375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 43.97265380859375,
+                      "end": 44.61976928710938
+                    },
+                    {
+                      "word": "hablar?",
+                      "start": 42.789,
+                      "end": 42.789
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Hablas con Javier,",
+                  "words": [
+                    {
+                      "word": "Hablas ",
+                      "start": 46.371,
+                      "end": 46.851000000000006
+                    },
+                    {
+                      "word": "con ",
+                      "start": 46.851000000000006,
+                      "end": 47.091
+                    },
+                    {
+                      "word": "Javier,",
+                      "start": 47.091,
+                      "end": 47.561
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Encantada, Javier. ¿En qué te puedo ayudar hoy?",
+                  "words": [
+                    {
+                      "word": "Encantada, ",
+                      "start": 49.62565380859375,
+                      "end": 50.22853857421875
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 50.22853857421875,
+                      "end": 50.8871923828125
+                    },
+                    {
+                      "word": " ¿En ",
+                      "start": 50.93143920898437,
+                      "end": 51.12182373046875
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 51.12182373046875,
+                      "end": 51.2554775390625
+                    },
+                    {
+                      "word": "te ",
+                      "start": 51.2554775390625,
+                      "end": 51.356439208984376
+                    },
+                    {
+                      "word": "puedo ",
+                      "start": 51.356439208984376,
+                      "end": 51.55740063476563
+                    },
+                    {
+                      "word": "ayudar ",
+                      "start": 51.55740063476563,
+                      "end": 51.91413134765625
+                    },
+                    {
+                      "word": "hoy?",
+                      "start": 51.91413134765625,
+                      "end": 52.4054775390625
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Quiero saber alguna oferta de carros que tengas",
+                  "words": [
+                    {
+                      "word": "Quiero ",
+                      "start": 55.531000000000006,
+                      "end": 55.771
+                    },
+                    {
+                      "word": "saber ",
+                      "start": 55.771,
+                      "end": 56.271
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 56.411,
+                      "end": 56.731
+                    },
+                    {
+                      "word": "oferta ",
+                      "start": 56.731,
+                      "end": 57.231
+                    },
+                    {
+                      "word": "de ",
+                      "start": 57.291000000000004,
+                      "end": 57.451
+                    },
+                    {
+                      "word": "carros ",
+                      "start": 57.451,
+                      "end": 57.951
+                    },
+                    {
+                      "word": "que ",
+                      "start": 58.091,
+                      "end": 58.331
+                    },
+                    {
+                      "word": "tengas",
+                      "start": 58.331,
+                      "end": 58.831
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Javier. Para ayudarte a encontrar el coche ideal, te voy a hacer unas preguntas rápidas. ¿Te parece bien?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 62.85476928710938,
+                      "end": 63.39034619140625
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 63.39034619140625,
+                      "end": 64.049
+                    },
+                    {
+                      "word": " Para ",
+                      "start": 64.35611547851562,
+                      "end": 64.55707690429688
+                    },
+                    {
+                      "word": "ayudarte ",
+                      "start": 64.55707690429688,
+                      "end": 64.959
+                    },
+                    {
+                      "word": "a ",
+                      "start": 64.959,
+                      "end": 65.18207690429688
+                    },
+                    {
+                      "word": "encontrar ",
+                      "start": 65.18207690429688,
+                      "end": 65.60707690429687
+                    },
+                    {
+                      "word": "el ",
+                      "start": 65.60707690429687,
+                      "end": 65.7291923828125
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 65.7291923828125,
+                      "end": 65.99746142578125
+                    },
+                    {
+                      "word": "ideal, ",
+                      "start": 65.99746142578125,
+                      "end": 66.86765380859374
+                    },
+                    {
+                      "word": "te ",
+                      "start": 66.86765380859374,
+                      "end": 67.01284619140625
+                    },
+                    {
+                      "word": "voy ",
+                      "start": 67.01284619140625,
+                      "end": 67.15803857421875
+                    },
+                    {
+                      "word": "a ",
+                      "start": 67.15803857421875,
+                      "end": 67.22534619140625
+                    },
+                    {
+                      "word": "hacer ",
+                      "start": 67.22534619140625,
+                      "end": 67.5715
+                    },
+                    {
+                      "word": "unas ",
+                      "start": 67.5715,
+                      "end": 67.79457690429687
+                    },
+                    {
+                      "word": "preguntas ",
+                      "start": 67.79457690429687,
+                      "end": 68.25226928710937
+                    },
+                    {
+                      "word": "rápidas.",
+                      "start": 68.25226928710937,
+                      "end": 69.06765380859375
+                    },
+                    {
+                      "word": " ¿Te ",
+                      "start": 69.09715698242188,
+                      "end": 69.28754174804688
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 69.28754174804688,
+                      "end": 69.60004174804688
+                    },
+                    {
+                      "word": "bien?",
+                      "start": 69.60004174804688,
+                      "end": 70.14715698242188
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Claro! Tómate tu tiempo, estaré esperando aquí 😊",
+                  "words": [
+                    {
+                      "word": "¡Claro!",
+                      "start": 81.77165380859375,
+                      "end": 82.58607690429687
+                    },
+                    {
+                      "word": " Tómate ",
+                      "start": 82.95823071289063,
+                      "end": 83.28226928710937
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 83.28226928710937,
+                      "end": 83.439
+                    },
+                    {
+                      "word": "tiempo, ",
+                      "start": 83.439,
+                      "end": 83.79573071289063
+                    },
+                    {
+                      "word": "estaré ",
+                      "start": 83.79573071289063,
+                      "end": 84.10823071289063
+                    },
+                    {
+                      "word": "esperando ",
+                      "start": 84.10823071289063,
+                      "end": 84.55534619140624
+                    },
+                    {
+                      "word": "aquí ",
+                      "start": 84.55534619140624,
+                      "end": 85.23611547851563
+                    },
+                    {
+                      "word": "😊",
+                      "start": 82.914,
+                      "end": 82.914
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 5
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Que dijo que sí, que sí, sí quiero que me preguntes.",
+                  "words": [
+                    {
+                      "word": "Que ",
+                      "start": 88.61099999999999,
+                      "end": 88.85100399999999
+                    },
+                    {
+                      "word": "dijo ",
+                      "start": 88.85100399999999,
+                      "end": 89.091
+                    },
+                    {
+                      "word": "que ",
+                      "start": 89.091,
+                      "end": 89.25099999999999
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 89.25099999999999,
+                      "end": 89.491
+                    },
+                    {
+                      "word": "que ",
+                      "start": 89.491,
+                      "end": 89.651
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 89.651,
+                      "end": 90.151
+                    },
+                    {
+                      "word": "sí ",
+                      "start": 90.54101,
+                      "end": 90.821005
+                    },
+                    {
+                      "word": "quiero ",
+                      "start": 90.821005,
+                      "end": 91.10100399999999
+                    },
+                    {
+                      "word": "que ",
+                      "start": 91.10100399999999,
+                      "end": 91.511
+                    },
+                    {
+                      "word": "me ",
+                      "start": 91.511,
+                      "end": 91.761
+                    },
+                    {
+                      "word": "preguntes.",
+                      "start": 91.761,
+                      "end": 92.011
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Genial, Javier. Empecemos.¿Tienes alguna marca en mente o estás abierto a sugerencias?",
+                  "words": [
+                    {
+                      "word": "Genial, ",
+                      "start": 95.1693076171875,
+                      "end": 95.64911547851563
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 95.64911547851563,
+                      "end": 96.352
+                    },
+                    {
+                      "word": " Empecemos.",
+                      "start": 96.4130224609375,
+                      "end": 97.17263793945312
+                    },
+                    {
+                      "word": "¿Tienes ",
+                      "start": 97.73211547851562,
+                      "end": 98.235
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 98.235,
+                      "end": 98.58115380859375
+                    },
+                    {
+                      "word": "marca ",
+                      "start": 98.58115380859375,
+                      "end": 98.84846142578125
+                    },
+                    {
+                      "word": "en ",
+                      "start": 98.84846142578125,
+                      "end": 98.96
+                    },
+                    {
+                      "word": "mente ",
+                      "start": 98.96,
+                      "end": 99.37346142578124
+                    },
+                    {
+                      "word": "o ",
+                      "start": 99.37346142578124,
+                      "end": 99.45134619140624
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 99.45134619140624,
+                      "end": 99.75326928710938
+                    },
+                    {
+                      "word": "abierto ",
+                      "start": 99.75326928710938,
+                      "end": 100.09942309570313
+                    },
+                    {
+                      "word": "a ",
+                      "start": 100.09942309570313,
+                      "end": 100.14365380859375
+                    },
+                    {
+                      "word": "sugerencias?",
+                      "start": 100.14365380859375,
+                      "end": 101.0148076171875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Toyota.",
+                  "words": [
+                    {
+                      "word": "Toyota.",
+                      "start": 102.281004,
+                      "end": 102.781004
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Javier. ¿Qué modelo de Toyota te interesa, si ya tienes alguno pensado?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 104.76923071289062,
+                      "end": 105.30576928710937
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 105.30576928710937,
+                      "end": 105.93076928710937
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 106.15623071289062,
+                      "end": 106.39084619140625
+                    },
+                    {
+                      "word": "modelo ",
+                      "start": 106.39084619140625,
+                      "end": 106.737
+                    },
+                    {
+                      "word": "de ",
+                      "start": 106.737,
+                      "end": 106.84853857421875
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 106.84853857421875,
+                      "end": 107.29565380859376
+                    },
+                    {
+                      "word": "te ",
+                      "start": 107.29565380859376,
+                      "end": 107.38507690429688
+                    },
+                    {
+                      "word": "interesa, ",
+                      "start": 107.38507690429688,
+                      "end": 107.92065380859376
+                    },
+                    {
+                      "word": "si ",
+                      "start": 107.92065380859376,
+                      "end": 108.07642309570312
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 108.07642309570312,
+                      "end": 108.1995
+                    },
+                    {
+                      "word": "tienes ",
+                      "start": 108.1995,
+                      "end": 108.512
+                    },
+                    {
+                      "word": "alguno ",
+                      "start": 108.512,
+                      "end": 108.84661547851563
+                    },
+                    {
+                      "word": "pensado?",
+                      "start": 108.84661547851563,
+                      "end": 109.5946923828125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Land Cruiser.",
+                  "words": [
+                    {
+                      "word": "Land ",
+                      "start": 110.70099499999999,
+                      "end": 110.86099999999999
+                    },
+                    {
+                      "word": "Cruiser.",
+                      "start": 110.86099999999999,
+                      "end": 111.36099999999999
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Muy bien, Javier. ¿Prefieres algún tipo de motor para el Toyota Land Cruiser? (gasolina, diésel, híbrido, eléctrico…)",
+                  "words": [
+                    {
+                      "word": "Muy ",
+                      "start": 113.09123071289062,
+                      "end": 113.32584619140626
+                    },
+                    {
+                      "word": "bien, ",
+                      "start": 113.32584619140626,
+                      "end": 113.61623071289063
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 113.61623071289063,
+                      "end": 114.297
+                    },
+                    {
+                      "word": " ¿Prefieres ",
+                      "start": 114.52411547851563,
+                      "end": 115.08276928710937
+                    },
+                    {
+                      "word": "algún ",
+                      "start": 115.08276928710937,
+                      "end": 115.3395
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 115.3395,
+                      "end": 115.56257690429688
+                    },
+                    {
+                      "word": "de ",
+                      "start": 115.56257690429688,
+                      "end": 115.66257690429687
+                    },
+                    {
+                      "word": "motor ",
+                      "start": 115.66257690429687,
+                      "end": 116.12026928710938
+                    },
+                    {
+                      "word": "para ",
+                      "start": 116.12026928710938,
+                      "end": 116.377
+                    },
+                    {
+                      "word": "el ",
+                      "start": 116.377,
+                      "end": 116.53373071289063
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 116.53373071289063,
+                      "end": 116.99142309570313
+                    },
+                    {
+                      "word": "Land ",
+                      "start": 116.99142309570313,
+                      "end": 117.2145
+                    },
+                    {
+                      "word": "Cruiser?",
+                      "start": 117.2145,
+                      "end": 117.9846923828125
+                    },
+                    {
+                      "word": " (gasolina, ",
+                      "start": 118.03481420898437,
+                      "end": 118.716544921875
+                    },
+                    {
+                      "word": "diésel, ",
+                      "start": 118.716544921875,
+                      "end": 119.14058325195313
+                    },
+                    {
+                      "word": "híbrido, ",
+                      "start": 119.14058325195313,
+                      "end": 119.58673706054688
+                    },
+                    {
+                      "word": "eléctrico…)",
+                      "start": 119.58673706054688,
+                      "end": 120.4463525390625
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Diez el dos punto uno.",
+                  "words": [
+                    {
+                      "word": "Diez ",
+                      "start": 122.121,
+                      "end": 122.441
+                    },
+                    {
+                      "word": "el ",
+                      "start": 122.441,
+                      "end": 122.601
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 122.601,
+                      "end": 123.08099999999999
+                    },
+                    {
+                      "word": "punto ",
+                      "start": 123.08099999999999,
+                      "end": 123.161
+                    },
+                    {
+                      "word": "uno.",
+                      "start": 123.161,
+                      "end": 123.58099999999999
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, Javier. Entonces, ¿cuál es tu presupuesto aproximado para el Toyota Land Cruiser?",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 125.24465380859375,
+                      "end": 125.82542309570313
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 125.82542309570313,
+                      "end": 126.5061923828125
+                    },
+                    {
+                      "word": " Entonces, ",
+                      "start": 126.70323071289063,
+                      "end": 127.29553857421875
+                    },
+                    {
+                      "word": "¿cuál ",
+                      "start": 127.29553857421875,
+                      "end": 127.56284619140625
+                    },
+                    {
+                      "word": "es ",
+                      "start": 127.56284619140625,
+                      "end": 127.6638076171875
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 127.6638076171875,
+                      "end": 127.77534619140626
+                    },
+                    {
+                      "word": "presupuesto ",
+                      "start": 127.77534619140626,
+                      "end": 128.33303857421876
+                    },
+                    {
+                      "word": "aproximado ",
+                      "start": 128.33303857421876,
+                      "end": 129.00323071289063
+                    },
+                    {
+                      "word": "para ",
+                      "start": 129.00323071289063,
+                      "end": 129.17053857421874
+                    },
+                    {
+                      "word": "el ",
+                      "start": 129.17053857421874,
+                      "end": 129.2715
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 129.2715,
+                      "end": 129.66188452148438
+                    },
+                    {
+                      "word": "Land ",
+                      "start": 129.66188452148438,
+                      "end": 129.84073071289063
+                    },
+                    {
+                      "word": "Cruiser?",
+                      "start": 129.84073071289063,
+                      "end": 130.54361547851562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 9
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Veinticinco mil.",
+                  "words": [
+                    {
+                      "word": "Veinticinco ",
+                      "start": 132.891,
+                      "end": 133.391
+                    },
+                    {
+                      "word": "mil.",
+                      "start": 133.93099999999998,
+                      "end": 134.43099999999998
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias, Javier. ¿Hasta qué año de antigüedad te gustaría que tuviera el Toyota Land Cruiser?",
+                  "words": [
+                    {
+                      "word": "Gracias, ",
+                      "start": 137.59023071289062,
+                      "end": 138.0036923828125
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 138.0036923828125,
+                      "end": 138.57292309570312
+                    },
+                    {
+                      "word": " ¿Hasta ",
+                      "start": 139.02811547851562,
+                      "end": 139.45215380859375
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 139.45215380859375,
+                      "end": 139.57523071289063
+                    },
+                    {
+                      "word": "año ",
+                      "start": 139.57523071289063,
+                      "end": 139.7983076171875
+                    },
+                    {
+                      "word": "de ",
+                      "start": 139.7983076171875,
+                      "end": 139.88773071289063
+                    },
+                    {
+                      "word": "antigüedad ",
+                      "start": 139.88773071289063,
+                      "end": 140.4685
+                    },
+                    {
+                      "word": "te ",
+                      "start": 140.4685,
+                      "end": 140.58003857421875
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 140.58003857421875,
+                      "end": 141.0261923828125
+                    },
+                    {
+                      "word": "que ",
+                      "start": 141.0261923828125,
+                      "end": 141.1386923828125
+                    },
+                    {
+                      "word": "tuviera ",
+                      "start": 141.1386923828125,
+                      "end": 141.46176928710938
+                    },
+                    {
+                      "word": "el ",
+                      "start": 141.46176928710938,
+                      "end": 141.5627307128906
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 141.5627307128906,
+                      "end": 141.94157690429688
+                    },
+                    {
+                      "word": "Land ",
+                      "start": 141.94157690429688,
+                      "end": 142.1540769042969
+                    },
+                    {
+                      "word": "Cruiser?",
+                      "start": 142.1540769042969,
+                      "end": 142.89061547851563
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 10
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No tengo problema al respecto.",
+                  "words": [
+                    {
+                      "word": "No ",
+                      "start": 144.771,
+                      "end": 145.011
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 145.011,
+                      "end": 145.49099999999999
+                    },
+                    {
+                      "word": "problema ",
+                      "start": 145.49099999999999,
+                      "end": 145.731
+                    },
+                    {
+                      "word": "al ",
+                      "start": 145.731,
+                      "end": 145.811
+                    },
+                    {
+                      "word": "respecto.",
+                      "start": 145.811,
+                      "end": 146.311
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Javier. Por último, ¿qué kilometraje máximo ",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 148.10876928710937,
+                      "end": 148.60011547851562
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 148.60011547851562,
+                      "end": 149.25876928710937
+                    },
+                    {
+                      "word": " Por ",
+                      "start": 149.66311547851564,
+                      "end": 149.89773071289062
+                    },
+                    {
+                      "word": "último, ",
+                      "start": 149.89773071289062,
+                      "end": 150.27753857421874
+                    },
+                    {
+                      "word": "¿qué ",
+                      "start": 150.27753857421874,
+                      "end": 150.44484619140624
+                    },
+                    {
+                      "word": "kilometraje ",
+                      "start": 150.44484619140624,
+                      "end": 151.14773071289062
+                    },
+                    {
+                      "word": "máximo ",
+                      "start": 151.14773071289062,
+                      "end": 151.68426928710937
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 11
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No tengo",
+                  "words": [
+                    {
+                      "word": "No ",
+                      "start": 151.921,
+                      "end": 152.421
+                    },
+                    {
+                      "word": "tengo",
+                      "start": 153.851,
+                      "end": 154.351
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "considerarías aceptable para el Toyota Land Cruiser?",
+                  "words": [
+                    {
+                      "word": "considerarías ",
+                      "start": 151.68426928710937,
+                      "end": 152.43138452148438
+                    },
+                    {
+                      "word": "aceptable ",
+                      "start": 152.43138452148438,
+                      "end": 153.03426928710937
+                    },
+                    {
+                      "word": "para ",
+                      "start": 153.03426928710937,
+                      "end": 153.21311547851562
+                    },
+                    {
+                      "word": "el ",
+                      "start": 153.21311547851562,
+                      "end": 153.32465380859375
+                    },
+                    {
+                      "word": "Toyota ",
+                      "start": 153.32465380859375,
+                      "end": 153.70446142578126
+                    },
+                    {
+                      "word": "Land ",
+                      "start": 153.70446142578126,
+                      "end": 153.8833076171875
+                    },
+                    {
+                      "word": "Cruiser?",
+                      "start": 153.8833076171875,
+                      "end": 154.64196142578126
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 11
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "problema al ",
+                  "words": [
+                    {
+                      "word": "problema ",
+                      "start": 156.22099,
+                      "end": 156.441
+                    },
+                    {
+                      "word": "al ",
+                      "start": 156.441,
+                      "end": 156.691
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "tool_call_8d332a",
+                  "name": "BuscaVehiculo",
+                  "arguments": "{\"kilometraje_maximo\":999999,\"marca_preferida\":\"Toyota\",\"tipo_motor\":\"diésel\",\"presupuesto_maximo\":25000,\"anio_maximo\":9999,\"modelo_interesado\":\"Land Cruiser\"}"
+                },
+                {
+                  "role": "user",
+                  "content": "respecto.",
+                  "words": [
+                    {
+                      "word": "respecto.",
+                      "start": 156.691,
+                      "end": 156.941
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias por toda la información, Javier.",
+                  "words": [
+                    {
+                      "word": "Gracias ",
+                      "start": 159.01023071289063,
+                      "end": 159.50157690429688
+                    },
+                    {
+                      "word": "por ",
+                      "start": 159.50157690429688,
+                      "end": 159.74773071289061
+                    },
+                    {
+                      "word": "toda ",
+                      "start": 159.74773071289061,
+                      "end": 160.06023071289061
+                    },
+                    {
+                      "word": "la ",
+                      "start": 160.06023071289061,
+                      "end": 160.12657690429688
+                    },
+                    {
+                      "word": "información, ",
+                      "start": 160.12657690429688,
+                      "end": 160.76311547851563
+                    },
+                    {
+                      "word": "Javier.",
+                      "start": 160.76311547851563,
+                      "end": 161.37753857421876
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 13
+                  }
+                },
+                {
+                  "role": "tool_call_result",
+                  "tool_call_id": "tool_call_8d332a",
+                  "content": "{\"output\":\"```json\\n[]\\n```\"}"
+                },
+                {
+                  "role": "agent",
+                  "content": "Dame un instante mientras reviso el inventario para ver qué coches encajan con lo que estás buscando.",
+                  "words": [
+                    {
+                      "word": "Dame ",
+                      "start": 161.40391357421876,
+                      "end": 161.67122119140626
+                    },
+                    {
+                      "word": "un ",
+                      "start": 161.67122119140626,
+                      "end": 161.7721826171875
+                    },
+                    {
+                      "word": "instante ",
+                      "start": 161.7721826171875,
+                      "end": 162.43083642578125
+                    },
+                    {
+                      "word": "mientras ",
+                      "start": 162.43083642578125,
+                      "end": 163.18949047851564
+                    },
+                    {
+                      "word": "reviso ",
+                      "start": 163.18949047851564,
+                      "end": 163.5471826171875
+                    },
+                    {
+                      "word": "el ",
+                      "start": 163.5471826171875,
+                      "end": 163.65872119140624
+                    },
+                    {
+                      "word": "inventario ",
+                      "start": 163.65872119140624,
+                      "end": 164.2500673828125
+                    },
+                    {
+                      "word": "para ",
+                      "start": 164.2500673828125,
+                      "end": 164.51833642578126
+                    },
+                    {
+                      "word": "ver ",
+                      "start": 164.51833642578126,
+                      "end": 164.80872119140625
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 164.80872119140625,
+                      "end": 165.0096826171875
+                    },
+                    {
+                      "word": "coches ",
+                      "start": 165.0096826171875,
+                      "end": 165.52314428710937
+                    },
+                    {
+                      "word": "encajan ",
+                      "start": 165.52314428710937,
+                      "end": 166.37122119140625
+                    },
+                    {
+                      "word": "con ",
+                      "start": 166.37122119140625,
+                      "end": 166.53852880859375
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 166.53852880859375,
+                      "end": 166.66160571289063
+                    },
+                    {
+                      "word": "que ",
+                      "start": 166.66160571289063,
+                      "end": 166.75102880859376
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 166.75102880859376,
+                      "end": 167.05199047851562
+                    },
+                    {
+                      "word": "buscando.",
+                      "start": 167.05199047851562,
+                      "end": 167.91160571289063
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 13
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "Lamentablemente, no he encontrado ninguna opción disponible que se ajuste a lo que buscas en este momento.¿Te gustaría que revisáramos juntos si vale la pena ajustar alguno de los filtros? Podríamos considerar cambiar el tipo de motor, el presupuesto, o incluso el modelo. ¿Qué te parece?",
+                  "words": [
+                    {
+                      "word": "Lamentablemente, ",
+                      "start": 170.53223071289062,
+                      "end": 171.83896142578126
+                    },
+                    {
+                      "word": "no ",
+                      "start": 171.83896142578126,
+                      "end": 171.96203857421875
+                    },
+                    {
+                      "word": "he ",
+                      "start": 171.96203857421875,
+                      "end": 172.12934619140626
+                    },
+                    {
+                      "word": "encontrado ",
+                      "start": 172.12934619140626,
+                      "end": 172.63126928710938
+                    },
+                    {
+                      "word": "ninguna ",
+                      "start": 172.63126928710938,
+                      "end": 172.9553076171875
+                    },
+                    {
+                      "word": "opción ",
+                      "start": 172.9553076171875,
+                      "end": 173.28992309570313
+                    },
+                    {
+                      "word": "disponible ",
+                      "start": 173.28992309570313,
+                      "end": 173.90434619140626
+                    },
+                    {
+                      "word": "que ",
+                      "start": 173.90434619140626,
+                      "end": 174.01588452148437
+                    },
+                    {
+                      "word": "se ",
+                      "start": 174.01588452148437,
+                      "end": 174.12742309570314
+                    },
+                    {
+                      "word": "ajuste ",
+                      "start": 174.12742309570314,
+                      "end": 174.57357690429689
+                    },
+                    {
+                      "word": "a ",
+                      "start": 174.57357690429689,
+                      "end": 174.62934619140626
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 174.62934619140626,
+                      "end": 174.75242309570314
+                    },
+                    {
+                      "word": "que ",
+                      "start": 174.75242309570314,
+                      "end": 174.8755
+                    },
+                    {
+                      "word": "buscas ",
+                      "start": 174.8755,
+                      "end": 175.39953857421875
+                    },
+                    {
+                      "word": "en ",
+                      "start": 175.39953857421875,
+                      "end": 175.52261547851563
+                    },
+                    {
+                      "word": "este ",
+                      "start": 175.52261547851563,
+                      "end": 175.7456923828125
+                    },
+                    {
+                      "word": "momento.",
+                      "start": 175.7456923828125,
+                      "end": 176.6053076171875
+                    },
+                    {
+                      "word": "¿Te ",
+                      "start": 176.62544873046875,
+                      "end": 176.86006420898437
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 176.86006420898437,
+                      "end": 177.36198706054688
+                    },
+                    {
+                      "word": "que ",
+                      "start": 177.36198706054688,
+                      "end": 177.47448706054686
+                    },
+                    {
+                      "word": "revisáramos ",
+                      "start": 177.47448706054686,
+                      "end": 178.08794873046875
+                    },
+                    {
+                      "word": "juntos ",
+                      "start": 178.08794873046875,
+                      "end": 178.69083325195314
+                    },
+                    {
+                      "word": "si ",
+                      "start": 178.69083325195314,
+                      "end": 178.891794921875
+                    },
+                    {
+                      "word": "vale ",
+                      "start": 178.891794921875,
+                      "end": 179.12641015625
+                    },
+                    {
+                      "word": "la ",
+                      "start": 179.12641015625,
+                      "end": 179.26006420898437
+                    },
+                    {
+                      "word": "pena ",
+                      "start": 179.26006420898437,
+                      "end": 179.59467944335938
+                    },
+                    {
+                      "word": "ajustar ",
+                      "start": 179.59467944335938,
+                      "end": 180.09756420898438
+                    },
+                    {
+                      "word": "alguno ",
+                      "start": 180.09756420898438,
+                      "end": 180.41006420898438
+                    },
+                    {
+                      "word": "de ",
+                      "start": 180.41006420898438,
+                      "end": 180.48794873046876
+                    },
+                    {
+                      "word": "los ",
+                      "start": 180.48794873046876,
+                      "end": 180.666794921875
+                    },
+                    {
+                      "word": "filtros?",
+                      "start": 180.666794921875,
+                      "end": 181.38121801757814
+                    },
+                    {
+                      "word": " Podríamos ",
+                      "start": 181.41390698242188,
+                      "end": 181.98313793945312
+                    },
+                    {
+                      "word": "considerar ",
+                      "start": 181.98313793945312,
+                      "end": 182.51967626953126
+                    },
+                    {
+                      "word": "cambiar ",
+                      "start": 182.51967626953126,
+                      "end": 182.84275317382813
+                    },
+                    {
+                      "word": "el ",
+                      "start": 182.84275317382813,
+                      "end": 183.02159936523438
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 183.02159936523438,
+                      "end": 183.33409936523438
+                    },
+                    {
+                      "word": "de ",
+                      "start": 183.33409936523438,
+                      "end": 183.43506079101562
+                    },
+                    {
+                      "word": "motor, ",
+                      "start": 183.43506079101562,
+                      "end": 183.99275317382813
+                    },
+                    {
+                      "word": "el ",
+                      "start": 183.99275317382813,
+                      "end": 184.16006079101564
+                    },
+                    {
+                      "word": "presupuesto, ",
+                      "start": 184.16006079101564,
+                      "end": 185.12063793945313
+                    },
+                    {
+                      "word": "o ",
+                      "start": 185.12063793945313,
+                      "end": 185.24275317382813
+                    },
+                    {
+                      "word": "incluso ",
+                      "start": 185.24275317382813,
+                      "end": 185.8235224609375
+                    },
+                    {
+                      "word": "el ",
+                      "start": 185.8235224609375,
+                      "end": 186.01390698242187
+                    },
+                    {
+                      "word": "modelo.",
+                      "start": 186.01390698242187,
+                      "end": 186.7504455566406
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 186.8036474609375,
+                      "end": 186.96037817382813
+                    },
+                    {
+                      "word": "te ",
+                      "start": 186.96037817382813,
+                      "end": 187.06037817382813
+                    },
+                    {
+                      "word": "parece?",
+                      "start": 187.06037817382813,
+                      "end": 187.83153198242186
+                    }
+                  ],
+                  "metadata": {
+                    "interrupt_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale.",
+                  "words": [
+                    {
+                      "word": "Vale.",
+                      "start": 190.791,
+                      "end": 191.291
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, gracias por decírmelo. Vamos a actualizar los filtros con lo que me acabas de decir.¿Te gustaría ajustar el tipo de motor, el presupuesto, o quizás considerar otro modelo? ¿Qué prefieres cambiar?",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 193.37065380859374,
+                      "end": 193.82834619140624
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 193.82834619140624,
+                      "end": 194.15238452148438
+                    },
+                    {
+                      "word": "por ",
+                      "start": 194.15238452148438,
+                      "end": 194.29661547851563
+                    },
+                    {
+                      "word": "decírmelo.",
+                      "start": 194.29661547851563,
+                      "end": 195.12353857421874
+                    },
+                    {
+                      "word": " Vamos ",
+                      "start": 195.18348071289063,
+                      "end": 195.46328857421875
+                    },
+                    {
+                      "word": "a ",
+                      "start": 195.46328857421875,
+                      "end": 195.50751928710937
+                    },
+                    {
+                      "word": "actualizar ",
+                      "start": 195.50751928710937,
+                      "end": 195.97675
+                    },
+                    {
+                      "word": "los ",
+                      "start": 195.97675,
+                      "end": 196.17771142578124
+                    },
+                    {
+                      "word": "filtros ",
+                      "start": 196.17771142578124,
+                      "end": 196.60175
+                    },
+                    {
+                      "word": "con ",
+                      "start": 196.60175,
+                      "end": 196.72482690429686
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 196.72482690429686,
+                      "end": 196.83636547851563
+                    },
+                    {
+                      "word": "que ",
+                      "start": 196.83636547851563,
+                      "end": 196.94790380859374
+                    },
+                    {
+                      "word": "me ",
+                      "start": 196.94790380859374,
+                      "end": 197.03732690429686
+                    },
+                    {
+                      "word": "acabas ",
+                      "start": 197.03732690429686,
+                      "end": 197.43925
+                    },
+                    {
+                      "word": "de ",
+                      "start": 197.43925,
+                      "end": 197.56136547851563
+                    },
+                    {
+                      "word": "decir.",
+                      "start": 197.56136547851563,
+                      "end": 198.3094423828125
+                    },
+                    {
+                      "word": "¿Te ",
+                      "start": 198.36032055664063,
+                      "end": 198.54974365234375
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 198.54974365234375,
+                      "end": 198.98532055664063
+                    },
+                    {
+                      "word": "ajustar ",
+                      "start": 198.98532055664063,
+                      "end": 199.375705078125
+                    },
+                    {
+                      "word": "el ",
+                      "start": 199.375705078125,
+                      "end": 199.47666674804688
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 199.47666674804688,
+                      "end": 199.71128198242187
+                    },
+                    {
+                      "word": "de ",
+                      "start": 199.71128198242187,
+                      "end": 199.8112819824219
+                    },
+                    {
+                      "word": "motor, ",
+                      "start": 199.8112819824219,
+                      "end": 200.26897436523439
+                    },
+                    {
+                      "word": "el ",
+                      "start": 200.26897436523439,
+                      "end": 200.36993579101562
+                    },
+                    {
+                      "word": "presupuesto, ",
+                      "start": 200.36993579101562,
+                      "end": 201.08435888671875
+                    },
+                    {
+                      "word": "o ",
+                      "start": 201.08435888671875,
+                      "end": 201.18435888671874
+                    },
+                    {
+                      "word": "quizás ",
+                      "start": 201.18435888671874,
+                      "end": 201.63147436523437
+                    },
+                    {
+                      "word": "considerar ",
+                      "start": 201.63147436523437,
+                      "end": 202.2333974609375
+                    },
+                    {
+                      "word": "otro ",
+                      "start": 202.2333974609375,
+                      "end": 202.52378198242187
+                    },
+                    {
+                      "word": "modelo?",
+                      "start": 202.52378198242187,
+                      "end": 203.238205078125
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 203.28506420898438,
+                      "end": 203.41967944335937
+                    },
+                    {
+                      "word": "prefieres ",
+                      "start": 203.41967944335937,
+                      "end": 203.86583325195312
+                    },
+                    {
+                      "word": "cambiar?",
+                      "start": 203.86583325195312,
+                      "end": 204.53602563476562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 14
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Otro modelo.",
+                  "words": [
+                    {
+                      "word": "Otro ",
+                      "start": 207.40099999999998,
+                      "end": 207.561
+                    },
+                    {
+                      "word": "modelo.",
+                      "start": 207.561,
+                      "end": 208.061
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "tool_call_763142",
+                  "name": "BuscaVehiculo",
+                  "arguments": "{\"kilometraje_maximo\":999999,\"marca_preferida\":\"Toyota\",\"tipo_motor\":\"diésel\",\"presupuesto_maximo\":25000,\"anio_maximo\":9999,\"modelo_interesado\":\"indiferente\"}"
+                }
+              ],
+              "public_log_url": "https://dxc03zgurdly9.cloudfront.net/47bc692848e5be4a946633e86442f597d396bfd155c01a1bf7888f80974ddd9c/public.log",
+              "latency": {},
+              "call_cost": {
+                "total_duration_unit_price": 0,
+                "product_costs": [],
+                "combined_cost": 0,
+                "total_duration_seconds": 0
+              },
+              "opt_out_sensitive_data_storage": false,
+              "opt_in_signed_url": false,
+              "from_number": "+951386791",
+              "to_number": "+34951386791",
+              "direction": "inbound"
+            },
+            "name": "BuscaVehiculo",
+            "args": {
+              "kilometraje_maximo": 999999,
+              "marca_preferida": "Toyota",
+              "tipo_motor": "diésel",
+              "presupuesto_maximo": 25000,
+              "anio_maximo": 9999,
+              "modelo_interesado": "indiferente"
+            }
+          },
+          "webhookUrl": "https://n8n.gaia-sh.com/webhook/LlamadasInbound",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Base Conocimiento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9a8aa580-2e85-4aa5-8777-e89f13f37db5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3553ae62eb37885eaca9e6ddffc9228a0ce0e6e90336c826346bd3043f8cc33"
+  },
+  "id": "ZKmtuKjwdqk4fl3I",
+  "tags": []
+}

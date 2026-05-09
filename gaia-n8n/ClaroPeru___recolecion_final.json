@@ -1,0 +1,2583 @@
+{
+  "name": "ClaroPeru - recolecion final",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "RecoleccionClaro",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1580,
+        760
+      ],
+      "id": "4f006383-d8ef-46a2-a288-963594b315e9",
+      "name": "fin llamada",
+      "webhookId": "c0fe11fd-456e-4e40-89aa-e394230b470a"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -880,
+        980
+      ],
+      "id": "82c358d4-739c-450d-9043-319b44ffcb79",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ONyhofPcuArHdsq1",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1443e7d9-5be6-4cf3-a3f8-b0fa7bf18ac9",
+              "leftValue": "={{ $json.body.event }}",
+              "rightValue": "call_ended",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1380,
+        760
+      ],
+      "id": "e58250f4-fdc2-42cd-a3d4-b10687fc3d01",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2000ac7d-1481-4f68-8bab-0b4196536516",
+              "leftValue": "={{ $json.body.call.transcript }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1120,
+        740
+      ],
+      "id": "1f888cd5-7b40-4899-82de-feef2ee587ab",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        -140,
+        720
+      ],
+      "id": "6e5b67f8-2942-4116-a0d1-4e61b27cc79d",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=-transcripcion analizar: {{ $('fin llamada').item.json.body.call.transcript }}",
+        "options": {
+          "systemMessage": "=Lee cuidadosamente la siguiente transcripción de una llamada y genera un objeto JSON con los siguientes campos, basándote únicamente en la información que se mencione explícitamente o se pueda inferir claramente en el texto. Si falta información en la transcripción para algún campo, deja el valor como null.\n\nNo incluyas comentarios, explicaciones ni nada adicional. Solo responde con el JSON limpio y correctamente estructurado.\n\n\n{\n  \"persona_encargada\": \"sí\" | \"no\" | null,(Es el o es otra persona)\n  \"nombre_encargado\": \"texto\" | null,\n  \"nombre_empresa\": \"texto\" | null,\n  \"rubro_empresa\": \"texto\" | null,\n  \"cantidad_empleados\": número | null,\n  \"cargo_contacto\": \"texto\" | null,\n  \"tiene_lineas_moviles\": \"sí\" | \"no\" | null,\n  \"operador_actual\": \"texto\" | null,\n  \"lineas_necesarias\": número | null,\n  \"uso_lineas\": \"llamadas\" | \"internet\" | \"apps empresariales\" | \"roaming\" | \"varios\" | null,\n  \"preferencia_datos\": \"ilimitado\" | \"cuota controlada\" | null,\n  \"requiere_equipos\": \"sí\" | \"no\" | null,\n  \"tiene_internet_fijo\": \"sí\" | \"no\" | null,\n  \"proveedor_internet\": \"texto\" | null,\n  \"velocidad_requerida\": \"menos de 50 megas\" | \"entre 50 y 200\" | \"más de 200\" | null,\n  \"presupuesto_mensual\": \"texto\" | null,\n  \"tiempo_contratacion\": \"inmediato\" | \"en menos de un mes\" | \"solo cotizando\" | null,\n  \"nombre_contacto\": \"texto\" | null,\n  \"correo_contacto\": \"texto\" | null,\n  \"telefono_contacto\": \"INT\" | null,\n  \"interes\": \"sí\" | \"no\" | null,\n  \"sentimiento\": \"positivo\" | \"neutro\" | \"negativo\" | null\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -880,
+        720
+      ],
+      "id": "c5e8934a-cc7e-4d43-8dad-5e22194f8c1c",
+      "name": "Analista"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener el contenido bruto del JSON\nconst rawOutput = items[0].json.output;\n\n// Limpiar string si contiene etiquetas tipo markdown\nconst cleanJsonString = rawOutput.replace(/```?json\\n?|```|\\njson\\n?/g, '').trim();\n\n// Parsear JSON\nconst parsed = JSON.parse(cleanJsonString);\n\n// Normalizar el correo: minúsculas, sin espacios, sin tildes\nconst correoOriginal = parsed.correo_contacto || '';\nconst correoNormalizado = correoOriginal\n  .normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\") // quitar tildes\n  .replace(/\\s+/g, '')                              // quitar espacios\n  .toLowerCase();                                   // minúsculas\n\n// Retornar cada campo individual\nreturn [\n  {\n    json: {\n       persona_encargada: parsed.persona_encargada,\n      nombre_encargado: parsed.nombre_encargado,\n      nombre_empresa: parsed.nombre_empresa,\n      rubro_empresa: parsed.rubro_empresa,\n      cantidad_empleados: parsed.cantidad_empleados,\n      cargo_contacto: parsed.cargo_contacto,\n      tiene_lineas_moviles: parsed.tiene_lineas_moviles,\n      operador_actual: parsed.operador_actual,\n      lineas_necesarias: parsed.lineas_necesarias,\n      uso_lineas: parsed.uso_lineas,\n      preferencia_datos: parsed.preferencia_datos,\n      requiere_equipos: parsed.requiere_equipos,\n      tiene_internet_fijo: parsed.tiene_internet_fijo,\n      proveedor_internet: parsed.proveedor_internet,\n      velocidad_requerida: parsed.velocidad_requerida,\n      presupuesto_mensual: parsed.presupuesto_mensual,\n      tiempo_contratacion: parsed.tiempo_contratacion,\n      nombre_contacto: parsed.nombre_contacto,\n      correo_contacto: correoNormalizado,\n      telefono_contacto: parsed.telefono_contacto,\n      interes: parsed.interes,\n      sentimiento: parsed.sentimiento\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        720
+      ],
+      "id": "c4e90087-c182-45dc-8c8c-a0b1028f85ee",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1XI9EA_9mA-DG8WGemoiyx6iUM4xDRaH-_qixCvUsTmY/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yJ4I-ewqKv78ud-5PrkagLaEGdtWxg8Et_ahK7GppTA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nombre_cliente": "={{ $json.nombre_encargado }}",
+            "nombre_empresa": "={{ $json.nombre_empresa }}",
+            "rubro_empresa": "={{ $json.rubro_empresa }}",
+            "cantidad_empleados": "={{ $json.cantidad_empleados }}",
+            "cargo_contacto": "={{ $json.cargo_contacto }}",
+            "tiene_lineas_moviles": "={{ $json.tiene_lineas_moviles }}",
+            "lineas_necesarias": "={{ $json.lineas_necesarias }}",
+            "operador_actual": "={{ $json.operador_actual }}",
+            "uso_lineas": "={{ $json.uso_lineas }}",
+            "preferencia_datos": "={{ $json.preferencia_datos }}",
+            "requiere_equipos": "={{ $json.requiere_equipos }}",
+            "tiene_internet_fijo": "={{ $json.tiene_internet_fijo }}",
+            "proveedor_internet": "={{ $json.proveedor_internet }}",
+            "velocidad_requerida": "={{ $json.velocidad_requerida }}",
+            "presupuesto_mensual": "={{ $json.presupuesto_mensual }}",
+            "tiempo_contratacion": "={{ $json.tiempo_contratacion }}",
+            "nombre_contacto": "={{ $json.nombre_contacto }}",
+            "correo_contacto": "={{ $json.correo_contacto }}",
+            "telefono_contacto": "={{ $json.telefono_contacto }}",
+            "interes": "={{ $json.interes }}",
+            "sentimiento": "={{ $json.sentimiento }}",
+            "persona encargada": "={{ $json.persona_encargada }}",
+            "Telefono Origen": "={{ $('fin llamada').item.json.body.call.to_number }}"
+          },
+          "matchingColumns": [
+            "Telefono Origen"
+          ],
+          "schema": [
+            {
+              "id": "nombre_cliente",
+              "displayName": "nombre_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Telefono Origen",
+              "displayName": "Telefono Origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "persona encargada",
+              "displayName": "persona encargada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre_empresa",
+              "displayName": "nombre_empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rubro_empresa",
+              "displayName": "rubro_empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cantidad_empleados",
+              "displayName": "cantidad_empleados",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cargo_contacto",
+              "displayName": "cargo_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tiene_lineas_moviles",
+              "displayName": "tiene_lineas_moviles",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "operador_actual",
+              "displayName": "operador_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lineas_necesarias",
+              "displayName": "lineas_necesarias",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "uso_lineas",
+              "displayName": "uso_lineas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "preferencia_datos",
+              "displayName": "preferencia_datos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "requiere_equipos",
+              "displayName": "requiere_equipos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tiene_internet_fijo",
+              "displayName": "tiene_internet_fijo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "proveedor_internet",
+              "displayName": "proveedor_internet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "velocidad_requerida",
+              "displayName": "velocidad_requerida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "presupuesto_mensual",
+              "displayName": "presupuesto_mensual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tiempo_contratacion",
+              "displayName": "tiempo_contratacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre_contacto",
+              "displayName": "nombre_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "correo_contacto",
+              "displayName": "correo_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefono_contacto",
+              "displayName": "telefono_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "interes",
+              "displayName": "interes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sentimiento",
+              "displayName": "sentimiento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -340,
+        720
+      ],
+      "id": "7411d6b2-a16b-4dec-bb17-650584983521",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CWk1cfmKyWDzGM5i",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        1020
+      ],
+      "id": "c258a4cf-553c-4873-8c6b-79dcff5bea6b",
+      "name": "No Operation, do nothing"
+    }
+  ],
+  "pinData": {
+    "fin llamada": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.gaia-sh.com",
+            "user-agent": "axios/1.7.7",
+            "content-length": "25966",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "n8n.gaia-sh.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "a469dbb2435a",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1750986251251,d=db5ac9302e5e3dc738ae33b6dbe1844b7cc2937e167074b50f66a3b91edb0d87"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "call_ended",
+            "call": {
+              "call_id": "call_b87330403b12248131d2756c357",
+              "call_type": "web_call",
+              "agent_id": "agent_3a5ae7c0e0ccd9096b32111fbc",
+              "agent_version": 0,
+              "retell_llm_dynamic_variables": {
+                "nombre_empresa": "gaia",
+                "nombre_cliente": "",
+                "nombre_encargado": ""
+              },
+              "call_status": "ended",
+              "start_timestamp": 1750986166256,
+              "end_timestamp": 1750986250557,
+              "duration_ms": 84301,
+              "transcript": "Agent: ¡Hola! Buen día, ¿hablo con la empresa Gaia?\nUser: Sí, con ella habla.\nAgent: Soy el asistente virtual de CLARO EMPRESA y te llamo para presentarte una oferta exclusiva que está ayudando a cientos de negocios a reducir costos en conectividad y mejorar su operación.Ofrecemos internet de alta velocidad con fibra óptica, telefonía fija con 5000 minutos y herramientas digitales como correo empresarial, backup en la nube y facturación electrónica. Además, si tienen líneas móviles, pueden acceder a un 50% de descuento en los planes.\n\n¿Eres tú quien gestiona el área tecnológica, telecomunicaciones o las líneas móviles?\nUser: No señora,\nAgent: Perfecto, ¿podrías indicarme el nombre o el contacto del responsable de las telecomunicaciones o la tecnología? Incluso con el nombre basta, así podemos enviarle la propuesta directamente.\nUser: Claro, es Juan David y su número de contacto es tres once ocho veinte cinco\nAgent: ¡Genial! Tomé nota del contacto. Nuestro equipo se pondrá en contacto con Juan David para presentarle la propuesta.\n\n¡Gracias por tu apoyo! Que tengas un excelente día.\nUser: Vale, muchas gracias, hasta luego.\n",
+              "transcript_object": [
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Buen día, ¿hablo con la empresa Gaia?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 1.379,
+                      "end": 2.226
+                    },
+                    {
+                      "word": " Buen ",
+                      "start": 2.444,
+                      "end": 2.688
+                    },
+                    {
+                      "word": "día, ",
+                      "start": 2.688,
+                      "end": 3.013
+                    },
+                    {
+                      "word": "¿hablo ",
+                      "start": 3.013,
+                      "end": 3.28
+                    },
+                    {
+                      "word": "con ",
+                      "start": 3.28,
+                      "end": 3.385
+                    },
+                    {
+                      "word": "la ",
+                      "start": 3.385,
+                      "end": 3.454
+                    },
+                    {
+                      "word": "empresa ",
+                      "start": 3.454,
+                      "end": 3.779
+                    },
+                    {
+                      "word": "Gaia?",
+                      "start": 3.779,
+                      "end": 4.325
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, con ella habla.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 5.5839996,
+                      "end": 5.904
+                    },
+                    {
+                      "word": "con ",
+                      "start": 5.904,
+                      "end": 6.144
+                    },
+                    {
+                      "word": "ella ",
+                      "start": 6.144,
+                      "end": 6.384
+                    },
+                    {
+                      "word": "habla.",
+                      "start": 6.384,
+                      "end": 6.8340000000000005
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Soy el asistente virtual de CLARO EMPRESA y te llamo para presentarte una oferta exclusiva que está ayudando a cientos de negocios a reducir costos en conectividad y mejorar su operación.Ofrecemos internet de alta velocidad con fibra óptica, telefonía fija con 5000 minutos y herramientas digitales como correo empresarial, backup en la nube y facturación electrónica. Además, si tienen líneas móviles, pueden acceder a un 50% de descuento en los planes.\n\n¿Eres tú quien gestiona el área tecnológica, telecomunicaciones o las líneas móviles?",
+                  "words": [
+                    {
+                      "word": "Soy ",
+                      "start": 9.825,
+                      "end": 10.046
+                    },
+                    {
+                      "word": "el ",
+                      "start": 10.046,
+                      "end": 10.15
+                    },
+                    {
+                      "word": "asistente ",
+                      "start": 10.15,
+                      "end": 10.556
+                    },
+                    {
+                      "word": "virtual ",
+                      "start": 10.556,
+                      "end": 10.951
+                    },
+                    {
+                      "word": "de ",
+                      "start": 10.951,
+                      "end": 11.137
+                    },
+                    {
+                      "word": "CLARO ",
+                      "start": 11.137,
+                      "end": 11.52
+                    },
+                    {
+                      "word": "EMPRESA ",
+                      "start": 11.52,
+                      "end": 12.286
+                    },
+                    {
+                      "word": "y ",
+                      "start": 12.286,
+                      "end": 12.461
+                    },
+                    {
+                      "word": "te ",
+                      "start": 12.461,
+                      "end": 12.553
+                    },
+                    {
+                      "word": "llamo ",
+                      "start": 12.553,
+                      "end": 12.844
+                    },
+                    {
+                      "word": "para ",
+                      "start": 12.844,
+                      "end": 13.006
+                    },
+                    {
+                      "word": "presentarte ",
+                      "start": 13.006,
+                      "end": 13.842
+                    },
+                    {
+                      "word": "una ",
+                      "start": 13.842,
+                      "end": 14.039
+                    },
+                    {
+                      "word": "oferta ",
+                      "start": 14.039,
+                      "end": 14.376
+                    },
+                    {
+                      "word": "exclusiva ",
+                      "start": 14.376,
+                      "end": 15.096
+                    },
+                    {
+                      "word": "que ",
+                      "start": 15.096,
+                      "end": 15.235
+                    },
+                    {
+                      "word": "está ",
+                      "start": 15.235,
+                      "end": 15.409
+                    },
+                    {
+                      "word": "ayudando ",
+                      "start": 15.409,
+                      "end": 15.816
+                    },
+                    {
+                      "word": "a ",
+                      "start": 15.816,
+                      "end": 15.874
+                    },
+                    {
+                      "word": "cientos ",
+                      "start": 15.874,
+                      "end": 16.28
+                    },
+                    {
+                      "word": "de ",
+                      "start": 16.28,
+                      "end": 16.385
+                    },
+                    {
+                      "word": "negocios ",
+                      "start": 16.385,
+                      "end": 17.244
+                    },
+                    {
+                      "word": "a ",
+                      "start": 17.244,
+                      "end": 17.406
+                    },
+                    {
+                      "word": "reducir ",
+                      "start": 17.406,
+                      "end": 17.848
+                    },
+                    {
+                      "word": "costos ",
+                      "start": 17.848,
+                      "end": 18.277
+                    },
+                    {
+                      "word": "en ",
+                      "start": 18.277,
+                      "end": 18.37
+                    },
+                    {
+                      "word": "conectividad ",
+                      "start": 18.37,
+                      "end": 19.299
+                    },
+                    {
+                      "word": "y ",
+                      "start": 19.299,
+                      "end": 19.461
+                    },
+                    {
+                      "word": "mejorar ",
+                      "start": 19.461,
+                      "end": 19.868
+                    },
+                    {
+                      "word": "su ",
+                      "start": 19.868,
+                      "end": 19.949
+                    },
+                    {
+                      "word": "operación.",
+                      "start": 19.949,
+                      "end": 20.82
+                    },
+                    {
+                      "word": "Ofrecemos ",
+                      "start": 20.831708251953124,
+                      "end": 21.353708251953126
+                    },
+                    {
+                      "word": "internet ",
+                      "start": 21.353708251953126,
+                      "end": 21.759708251953125
+                    },
+                    {
+                      "word": "de ",
+                      "start": 21.759708251953125,
+                      "end": 21.852708251953125
+                    },
+                    {
+                      "word": "alta ",
+                      "start": 21.852708251953125,
+                      "end": 22.061708251953124
+                    },
+                    {
+                      "word": "velocidad ",
+                      "start": 22.061708251953124,
+                      "end": 22.851708251953124
+                    },
+                    {
+                      "word": "con ",
+                      "start": 22.851708251953124,
+                      "end": 23.071708251953126
+                    },
+                    {
+                      "word": "fibra ",
+                      "start": 23.071708251953126,
+                      "end": 23.420708251953126
+                    },
+                    {
+                      "word": "óptica, ",
+                      "start": 23.420708251953126,
+                      "end": 24.174708251953124
+                    },
+                    {
+                      "word": "telefonía ",
+                      "start": 24.174708251953124,
+                      "end": 24.720708251953123
+                    },
+                    {
+                      "word": "fija ",
+                      "start": 24.720708251953123,
+                      "end": 25.091708251953126
+                    },
+                    {
+                      "word": "con ",
+                      "start": 25.091708251953126,
+                      "end": 25.312708251953126
+                    },
+                    {
+                      "word": "5000 ",
+                      "start": 25.312708251953126,
+                      "end": 25.718708251953124
+                    },
+                    {
+                      "word": "minutos ",
+                      "start": 25.718708251953124,
+                      "end": 26.636708251953124
+                    },
+                    {
+                      "word": "y ",
+                      "start": 26.636708251953124,
+                      "end": 26.763708251953126
+                    },
+                    {
+                      "word": "herramientas ",
+                      "start": 26.763708251953126,
+                      "end": 27.274708251953125
+                    },
+                    {
+                      "word": "digitales ",
+                      "start": 27.274708251953125,
+                      "end": 27.901708251953124
+                    },
+                    {
+                      "word": "como ",
+                      "start": 27.901708251953124,
+                      "end": 28.122708251953124
+                    },
+                    {
+                      "word": "correo ",
+                      "start": 28.122708251953124,
+                      "end": 28.435708251953123
+                    },
+                    {
+                      "word": "empresarial, ",
+                      "start": 28.435708251953123,
+                      "end": 29.619708251953124
+                    },
+                    {
+                      "word": "backup ",
+                      "start": 29.619708251953124,
+                      "end": 30.002708251953123
+                    },
+                    {
+                      "word": "en ",
+                      "start": 30.002708251953123,
+                      "end": 30.072708251953124
+                    },
+                    {
+                      "word": "la ",
+                      "start": 30.072708251953124,
+                      "end": 30.177708251953124
+                    },
+                    {
+                      "word": "nube ",
+                      "start": 30.177708251953124,
+                      "end": 30.687708251953126
+                    },
+                    {
+                      "word": "y ",
+                      "start": 30.687708251953126,
+                      "end": 30.838708251953125
+                    },
+                    {
+                      "word": "facturación ",
+                      "start": 30.838708251953125,
+                      "end": 31.465708251953124
+                    },
+                    {
+                      "word": "electrónica.",
+                      "start": 31.465708251953124,
+                      "end": 32.47570825195312
+                    },
+                    {
+                      "word": " Además, ",
+                      "start": 32.522125,
+                      "end": 33.335125
+                    },
+                    {
+                      "word": "si ",
+                      "start": 33.335125,
+                      "end": 33.521125
+                    },
+                    {
+                      "word": "tienen ",
+                      "start": 33.521125,
+                      "end": 33.788125
+                    },
+                    {
+                      "word": "líneas ",
+                      "start": 33.788125,
+                      "end": 34.090125
+                    },
+                    {
+                      "word": "móviles, ",
+                      "start": 34.090125,
+                      "end": 34.856125
+                    },
+                    {
+                      "word": "pueden ",
+                      "start": 34.856125,
+                      "end": 35.158125
+                    },
+                    {
+                      "word": "acceder ",
+                      "start": 35.158125,
+                      "end": 35.506125
+                    },
+                    {
+                      "word": "a ",
+                      "start": 35.506125,
+                      "end": 35.587125
+                    },
+                    {
+                      "word": "un ",
+                      "start": 35.587125,
+                      "end": 35.820125
+                    },
+                    {
+                      "word": "50% ",
+                      "start": 35.820125,
+                      "end": 36.830125
+                    },
+                    {
+                      "word": "de ",
+                      "start": 36.830125,
+                      "end": 36.946125
+                    },
+                    {
+                      "word": "descuento ",
+                      "start": 36.946125,
+                      "end": 37.515125
+                    },
+                    {
+                      "word": "en ",
+                      "start": 37.515125,
+                      "end": 37.677125
+                    },
+                    {
+                      "word": "los ",
+                      "start": 37.677125,
+                      "end": 37.840125
+                    },
+                    {
+                      "word": "planes.",
+                      "start": 37.840125,
+                      "end": 38.606125
+                    },
+                    {
+                      "word": "\n\n¿Eres ",
+                      "start": 38.65220825195313,
+                      "end": 38.94320825195312
+                    },
+                    {
+                      "word": "tú ",
+                      "start": 38.94320825195312,
+                      "end": 39.070208251953126
+                    },
+                    {
+                      "word": "quien ",
+                      "start": 39.070208251953126,
+                      "end": 39.23320825195312
+                    },
+                    {
+                      "word": "gestiona ",
+                      "start": 39.23320825195312,
+                      "end": 39.628208251953126
+                    },
+                    {
+                      "word": "el ",
+                      "start": 39.628208251953126,
+                      "end": 39.744208251953125
+                    },
+                    {
+                      "word": "área ",
+                      "start": 39.744208251953125,
+                      "end": 39.918208251953125
+                    },
+                    {
+                      "word": "tecnológica, ",
+                      "start": 39.918208251953125,
+                      "end": 40.94020825195312
+                    },
+                    {
+                      "word": "telecomunicaciones ",
+                      "start": 40.94020825195312,
+                      "end": 42.135208251953124
+                    },
+                    {
+                      "word": "o ",
+                      "start": 42.135208251953124,
+                      "end": 42.28620825195313
+                    },
+                    {
+                      "word": "las ",
+                      "start": 42.28620825195313,
+                      "end": 42.47220825195313
+                    },
+                    {
+                      "word": "líneas ",
+                      "start": 42.47220825195313,
+                      "end": 42.832208251953126
+                    },
+                    {
+                      "word": "móviles?",
+                      "start": 42.832208251953126,
+                      "end": 43.668208251953125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No señora,",
+                  "words": [
+                    {
+                      "word": "No ",
+                      "start": 45.704,
+                      "end": 45.943999999999996
+                    },
+                    {
+                      "word": "señora,",
+                      "start": 45.943999999999996,
+                      "end": 46.443999999999996
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, ¿podrías indicarme el nombre o el contacto del responsable de las telecomunicaciones o la tecnología? Incluso con el nombre basta, así podemos enviarle la propuesta directamente.",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 50.712,
+                      "end": 51.64
+                    },
+                    {
+                      "word": "¿podrías ",
+                      "start": 51.64,
+                      "end": 52.209
+                    },
+                    {
+                      "word": "indicarme ",
+                      "start": 52.209,
+                      "end": 52.639
+                    },
+                    {
+                      "word": "el ",
+                      "start": 52.639,
+                      "end": 52.755
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 52.755,
+                      "end": 53.266
+                    },
+                    {
+                      "word": "o ",
+                      "start": 53.266,
+                      "end": 53.428
+                    },
+                    {
+                      "word": "el ",
+                      "start": 53.428,
+                      "end": 53.51
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 53.51,
+                      "end": 53.893
+                    },
+                    {
+                      "word": "del ",
+                      "start": 53.893,
+                      "end": 54.021
+                    },
+                    {
+                      "word": "responsable ",
+                      "start": 54.021,
+                      "end": 54.578
+                    },
+                    {
+                      "word": "de ",
+                      "start": 54.578,
+                      "end": 54.671
+                    },
+                    {
+                      "word": "las ",
+                      "start": 54.671,
+                      "end": 54.822
+                    },
+                    {
+                      "word": "telecomunicaciones ",
+                      "start": 54.822,
+                      "end": 56.052
+                    },
+                    {
+                      "word": "o ",
+                      "start": 56.052,
+                      "end": 56.203
+                    },
+                    {
+                      "word": "la ",
+                      "start": 56.203,
+                      "end": 56.308
+                    },
+                    {
+                      "word": "tecnología?",
+                      "start": 56.308,
+                      "end": 57.329
+                    },
+                    {
+                      "word": " Incluso ",
+                      "start": 57.37533325195312,
+                      "end": 57.828333251953126
+                    },
+                    {
+                      "word": "con ",
+                      "start": 57.828333251953126,
+                      "end": 58.002333251953125
+                    },
+                    {
+                      "word": "el ",
+                      "start": 58.002333251953125,
+                      "end": 58.072333251953125
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 58.072333251953125,
+                      "end": 58.35133325195312
+                    },
+                    {
+                      "word": "basta, ",
+                      "start": 58.35133325195312,
+                      "end": 58.95433325195312
+                    },
+                    {
+                      "word": "así ",
+                      "start": 58.95433325195312,
+                      "end": 59.23333325195313
+                    },
+                    {
+                      "word": "podemos ",
+                      "start": 59.23333325195313,
+                      "end": 59.581333251953126
+                    },
+                    {
+                      "word": "enviarle ",
+                      "start": 59.581333251953126,
+                      "end": 59.97633325195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 59.97633325195312,
+                      "end": 60.069333251953125
+                    },
+                    {
+                      "word": "propuesta ",
+                      "start": 60.069333251953125,
+                      "end": 60.661333251953124
+                    },
+                    {
+                      "word": "directamente.",
+                      "start": 60.661333251953124,
+                      "end": 61.78733325195312
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Claro, es Juan David y su número de contacto es tres once ocho veinte cinco",
+                  "words": [
+                    {
+                      "word": "Claro, ",
+                      "start": 62.604,
+                      "end": 63.104
+                    },
+                    {
+                      "word": "es ",
+                      "start": 63.163999999999994,
+                      "end": 63.614
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 63.854001999999994,
+                      "end": 64.254
+                    },
+                    {
+                      "word": "David ",
+                      "start": 64.254,
+                      "end": 64.654
+                    },
+                    {
+                      "word": "y ",
+                      "start": 64.654,
+                      "end": 64.934
+                    },
+                    {
+                      "word": "su ",
+                      "start": 64.934,
+                      "end": 65.214
+                    },
+                    {
+                      "word": "número ",
+                      "start": 65.214,
+                      "end": 65.454
+                    },
+                    {
+                      "word": "de ",
+                      "start": 65.454,
+                      "end": 65.694
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 65.694,
+                      "end": 66.194
+                    },
+                    {
+                      "word": "es ",
+                      "start": 66.414,
+                      "end": 66.654
+                    },
+                    {
+                      "word": "tres ",
+                      "start": 66.654,
+                      "end": 66.974
+                    },
+                    {
+                      "word": "once ",
+                      "start": 66.974,
+                      "end": 67.474
+                    },
+                    {
+                      "word": "ocho ",
+                      "start": 67.53399999999999,
+                      "end": 67.774
+                    },
+                    {
+                      "word": "veinte ",
+                      "start": 67.774,
+                      "end": 68.17399999999999
+                    },
+                    {
+                      "word": "cinco",
+                      "start": 68.17399999999999,
+                      "end": 68.584
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Genial! Tomé nota del contacto. Nuestro equipo se pondrá en contacto con Juan David para presentarle la propuesta.\n\n¡Gracias por tu apoyo! Que tengas un excelente día.",
+                  "words": [
+                    {
+                      "word": "¡Genial!",
+                      "start": 71.125,
+                      "end": 72.112
+                    },
+                    {
+                      "word": " Tomé ",
+                      "start": 72.201,
+                      "end": 72.492
+                    },
+                    {
+                      "word": "nota ",
+                      "start": 72.492,
+                      "end": 72.701
+                    },
+                    {
+                      "word": "del ",
+                      "start": 72.701,
+                      "end": 72.817
+                    },
+                    {
+                      "word": "contacto.",
+                      "start": 72.817,
+                      "end": 73.548
+                    },
+                    {
+                      "word": " Nuestro ",
+                      "start": 73.85,
+                      "end": 74.151
+                    },
+                    {
+                      "word": "equipo ",
+                      "start": 74.151,
+                      "end": 74.418
+                    },
+                    {
+                      "word": "se ",
+                      "start": 74.418,
+                      "end": 74.535
+                    },
+                    {
+                      "word": "pondrá ",
+                      "start": 74.535,
+                      "end": 74.802
+                    },
+                    {
+                      "word": "en ",
+                      "start": 74.802,
+                      "end": 74.895
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 74.895,
+                      "end": 75.394
+                    },
+                    {
+                      "word": "con ",
+                      "start": 75.394,
+                      "end": 75.545
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 75.545,
+                      "end": 75.754
+                    },
+                    {
+                      "word": "David ",
+                      "start": 75.754,
+                      "end": 76.369
+                    },
+                    {
+                      "word": "para ",
+                      "start": 76.369,
+                      "end": 76.624
+                    },
+                    {
+                      "word": "presentarle ",
+                      "start": 76.624,
+                      "end": 77.263
+                    },
+                    {
+                      "word": "la ",
+                      "start": 77.263,
+                      "end": 77.356
+                    },
+                    {
+                      "word": "propuesta.",
+                      "start": 77.356,
+                      "end": 78.203
+                    },
+                    {
+                      "word": "\n\n¡Gracias ",
+                      "start": 78.215375,
+                      "end": 78.609375
+                    },
+                    {
+                      "word": "por ",
+                      "start": 78.609375,
+                      "end": 78.772375
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 78.772375,
+                      "end": 78.842375
+                    },
+                    {
+                      "word": "apoyo!",
+                      "start": 78.842375,
+                      "end": 79.503375
+                    },
+                    {
+                      "word": " Que ",
+                      "start": 79.53870825195312,
+                      "end": 79.71270825195313
+                    },
+                    {
+                      "word": "tengas ",
+                      "start": 79.71270825195313,
+                      "end": 80.01470825195312
+                    },
+                    {
+                      "word": "un ",
+                      "start": 80.01470825195312,
+                      "end": 80.13070825195312
+                    },
+                    {
+                      "word": "excelente ",
+                      "start": 80.13070825195312,
+                      "end": 80.64170825195312
+                    },
+                    {
+                      "word": "día.",
+                      "start": 80.64170825195312,
+                      "end": 81.22170825195313
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale, muchas gracias, hasta luego.",
+                  "words": [
+                    {
+                      "word": "Vale, ",
+                      "start": 81.744005,
+                      "end": 82.244005
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 82.304,
+                      "end": 82.544
+                    },
+                    {
+                      "word": "gracias, ",
+                      "start": 82.544,
+                      "end": 83.02400399999999
+                    },
+                    {
+                      "word": "hasta ",
+                      "start": 83.02400399999999,
+                      "end": 83.344
+                    },
+                    {
+                      "word": "luego.",
+                      "start": 83.344,
+                      "end": 83.78399999999999
+                    }
+                  ]
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "node_transition",
+                  "former_node_id": "begin",
+                  "former_node_name": "begin",
+                  "new_node_id": "start-node-1750883882409",
+                  "new_node_name": "Welcome Node"
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Buen día, ¿hablo con la empresa Gaia?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 1.379,
+                      "end": 2.226
+                    },
+                    {
+                      "word": " Buen ",
+                      "start": 2.444,
+                      "end": 2.688
+                    },
+                    {
+                      "word": "día, ",
+                      "start": 2.688,
+                      "end": 3.013
+                    },
+                    {
+                      "word": "¿hablo ",
+                      "start": 3.013,
+                      "end": 3.28
+                    },
+                    {
+                      "word": "con ",
+                      "start": 3.28,
+                      "end": 3.385
+                    },
+                    {
+                      "word": "la ",
+                      "start": 3.385,
+                      "end": 3.454
+                    },
+                    {
+                      "word": "empresa ",
+                      "start": 3.454,
+                      "end": 3.779
+                    },
+                    {
+                      "word": "Gaia?",
+                      "start": 3.779,
+                      "end": 4.325
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, con ella habla.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 5.5839996,
+                      "end": 5.904
+                    },
+                    {
+                      "word": "con ",
+                      "start": 5.904,
+                      "end": 6.144
+                    },
+                    {
+                      "word": "ella ",
+                      "start": 6.144,
+                      "end": 6.384
+                    },
+                    {
+                      "word": "habla.",
+                      "start": 6.384,
+                      "end": 6.8340000000000005
+                    }
+                  ]
+                },
+                {
+                  "role": "node_transition",
+                  "former_node_id": "start-node-1750883882409",
+                  "former_node_name": "Welcome Node",
+                  "new_node_id": "node-1750946253299",
+                  "new_node_name": "BrindarDetalles"
+                },
+                {
+                  "role": "agent",
+                  "content": "Soy el asistente virtual de CLARO EMPRESA y te llamo para presentarte una oferta exclusiva que está ayudando a cientos de negocios a reducir costos en conectividad y mejorar su operación.Ofrecemos internet de alta velocidad con fibra óptica, telefonía fija con 5000 minutos y herramientas digitales como correo empresarial, backup en la nube y facturación electrónica. Además, si tienen líneas móviles, pueden acceder a un 50% de descuento en los planes.\n\n¿Eres tú quien gestiona el área tecnológica, telecomunicaciones o las líneas móviles?",
+                  "words": [
+                    {
+                      "word": "Soy ",
+                      "start": 9.825,
+                      "end": 10.046
+                    },
+                    {
+                      "word": "el ",
+                      "start": 10.046,
+                      "end": 10.15
+                    },
+                    {
+                      "word": "asistente ",
+                      "start": 10.15,
+                      "end": 10.556
+                    },
+                    {
+                      "word": "virtual ",
+                      "start": 10.556,
+                      "end": 10.951
+                    },
+                    {
+                      "word": "de ",
+                      "start": 10.951,
+                      "end": 11.137
+                    },
+                    {
+                      "word": "CLARO ",
+                      "start": 11.137,
+                      "end": 11.52
+                    },
+                    {
+                      "word": "EMPRESA ",
+                      "start": 11.52,
+                      "end": 12.286
+                    },
+                    {
+                      "word": "y ",
+                      "start": 12.286,
+                      "end": 12.461
+                    },
+                    {
+                      "word": "te ",
+                      "start": 12.461,
+                      "end": 12.553
+                    },
+                    {
+                      "word": "llamo ",
+                      "start": 12.553,
+                      "end": 12.844
+                    },
+                    {
+                      "word": "para ",
+                      "start": 12.844,
+                      "end": 13.006
+                    },
+                    {
+                      "word": "presentarte ",
+                      "start": 13.006,
+                      "end": 13.842
+                    },
+                    {
+                      "word": "una ",
+                      "start": 13.842,
+                      "end": 14.039
+                    },
+                    {
+                      "word": "oferta ",
+                      "start": 14.039,
+                      "end": 14.376
+                    },
+                    {
+                      "word": "exclusiva ",
+                      "start": 14.376,
+                      "end": 15.096
+                    },
+                    {
+                      "word": "que ",
+                      "start": 15.096,
+                      "end": 15.235
+                    },
+                    {
+                      "word": "está ",
+                      "start": 15.235,
+                      "end": 15.409
+                    },
+                    {
+                      "word": "ayudando ",
+                      "start": 15.409,
+                      "end": 15.816
+                    },
+                    {
+                      "word": "a ",
+                      "start": 15.816,
+                      "end": 15.874
+                    },
+                    {
+                      "word": "cientos ",
+                      "start": 15.874,
+                      "end": 16.28
+                    },
+                    {
+                      "word": "de ",
+                      "start": 16.28,
+                      "end": 16.385
+                    },
+                    {
+                      "word": "negocios ",
+                      "start": 16.385,
+                      "end": 17.244
+                    },
+                    {
+                      "word": "a ",
+                      "start": 17.244,
+                      "end": 17.406
+                    },
+                    {
+                      "word": "reducir ",
+                      "start": 17.406,
+                      "end": 17.848
+                    },
+                    {
+                      "word": "costos ",
+                      "start": 17.848,
+                      "end": 18.277
+                    },
+                    {
+                      "word": "en ",
+                      "start": 18.277,
+                      "end": 18.37
+                    },
+                    {
+                      "word": "conectividad ",
+                      "start": 18.37,
+                      "end": 19.299
+                    },
+                    {
+                      "word": "y ",
+                      "start": 19.299,
+                      "end": 19.461
+                    },
+                    {
+                      "word": "mejorar ",
+                      "start": 19.461,
+                      "end": 19.868
+                    },
+                    {
+                      "word": "su ",
+                      "start": 19.868,
+                      "end": 19.949
+                    },
+                    {
+                      "word": "operación.",
+                      "start": 19.949,
+                      "end": 20.82
+                    },
+                    {
+                      "word": "Ofrecemos ",
+                      "start": 20.831708251953124,
+                      "end": 21.353708251953126
+                    },
+                    {
+                      "word": "internet ",
+                      "start": 21.353708251953126,
+                      "end": 21.759708251953125
+                    },
+                    {
+                      "word": "de ",
+                      "start": 21.759708251953125,
+                      "end": 21.852708251953125
+                    },
+                    {
+                      "word": "alta ",
+                      "start": 21.852708251953125,
+                      "end": 22.061708251953124
+                    },
+                    {
+                      "word": "velocidad ",
+                      "start": 22.061708251953124,
+                      "end": 22.851708251953124
+                    },
+                    {
+                      "word": "con ",
+                      "start": 22.851708251953124,
+                      "end": 23.071708251953126
+                    },
+                    {
+                      "word": "fibra ",
+                      "start": 23.071708251953126,
+                      "end": 23.420708251953126
+                    },
+                    {
+                      "word": "óptica, ",
+                      "start": 23.420708251953126,
+                      "end": 24.174708251953124
+                    },
+                    {
+                      "word": "telefonía ",
+                      "start": 24.174708251953124,
+                      "end": 24.720708251953123
+                    },
+                    {
+                      "word": "fija ",
+                      "start": 24.720708251953123,
+                      "end": 25.091708251953126
+                    },
+                    {
+                      "word": "con ",
+                      "start": 25.091708251953126,
+                      "end": 25.312708251953126
+                    },
+                    {
+                      "word": "5000 ",
+                      "start": 25.312708251953126,
+                      "end": 25.718708251953124
+                    },
+                    {
+                      "word": "minutos ",
+                      "start": 25.718708251953124,
+                      "end": 26.636708251953124
+                    },
+                    {
+                      "word": "y ",
+                      "start": 26.636708251953124,
+                      "end": 26.763708251953126
+                    },
+                    {
+                      "word": "herramientas ",
+                      "start": 26.763708251953126,
+                      "end": 27.274708251953125
+                    },
+                    {
+                      "word": "digitales ",
+                      "start": 27.274708251953125,
+                      "end": 27.901708251953124
+                    },
+                    {
+                      "word": "como ",
+                      "start": 27.901708251953124,
+                      "end": 28.122708251953124
+                    },
+                    {
+                      "word": "correo ",
+                      "start": 28.122708251953124,
+                      "end": 28.435708251953123
+                    },
+                    {
+                      "word": "empresarial, ",
+                      "start": 28.435708251953123,
+                      "end": 29.619708251953124
+                    },
+                    {
+                      "word": "backup ",
+                      "start": 29.619708251953124,
+                      "end": 30.002708251953123
+                    },
+                    {
+                      "word": "en ",
+                      "start": 30.002708251953123,
+                      "end": 30.072708251953124
+                    },
+                    {
+                      "word": "la ",
+                      "start": 30.072708251953124,
+                      "end": 30.177708251953124
+                    },
+                    {
+                      "word": "nube ",
+                      "start": 30.177708251953124,
+                      "end": 30.687708251953126
+                    },
+                    {
+                      "word": "y ",
+                      "start": 30.687708251953126,
+                      "end": 30.838708251953125
+                    },
+                    {
+                      "word": "facturación ",
+                      "start": 30.838708251953125,
+                      "end": 31.465708251953124
+                    },
+                    {
+                      "word": "electrónica.",
+                      "start": 31.465708251953124,
+                      "end": 32.47570825195312
+                    },
+                    {
+                      "word": " Además, ",
+                      "start": 32.522125,
+                      "end": 33.335125
+                    },
+                    {
+                      "word": "si ",
+                      "start": 33.335125,
+                      "end": 33.521125
+                    },
+                    {
+                      "word": "tienen ",
+                      "start": 33.521125,
+                      "end": 33.788125
+                    },
+                    {
+                      "word": "líneas ",
+                      "start": 33.788125,
+                      "end": 34.090125
+                    },
+                    {
+                      "word": "móviles, ",
+                      "start": 34.090125,
+                      "end": 34.856125
+                    },
+                    {
+                      "word": "pueden ",
+                      "start": 34.856125,
+                      "end": 35.158125
+                    },
+                    {
+                      "word": "acceder ",
+                      "start": 35.158125,
+                      "end": 35.506125
+                    },
+                    {
+                      "word": "a ",
+                      "start": 35.506125,
+                      "end": 35.587125
+                    },
+                    {
+                      "word": "un ",
+                      "start": 35.587125,
+                      "end": 35.820125
+                    },
+                    {
+                      "word": "50% ",
+                      "start": 35.820125,
+                      "end": 36.830125
+                    },
+                    {
+                      "word": "de ",
+                      "start": 36.830125,
+                      "end": 36.946125
+                    },
+                    {
+                      "word": "descuento ",
+                      "start": 36.946125,
+                      "end": 37.515125
+                    },
+                    {
+                      "word": "en ",
+                      "start": 37.515125,
+                      "end": 37.677125
+                    },
+                    {
+                      "word": "los ",
+                      "start": 37.677125,
+                      "end": 37.840125
+                    },
+                    {
+                      "word": "planes.",
+                      "start": 37.840125,
+                      "end": 38.606125
+                    },
+                    {
+                      "word": "\n\n¿Eres ",
+                      "start": 38.65220825195313,
+                      "end": 38.94320825195312
+                    },
+                    {
+                      "word": "tú ",
+                      "start": 38.94320825195312,
+                      "end": 39.070208251953126
+                    },
+                    {
+                      "word": "quien ",
+                      "start": 39.070208251953126,
+                      "end": 39.23320825195312
+                    },
+                    {
+                      "word": "gestiona ",
+                      "start": 39.23320825195312,
+                      "end": 39.628208251953126
+                    },
+                    {
+                      "word": "el ",
+                      "start": 39.628208251953126,
+                      "end": 39.744208251953125
+                    },
+                    {
+                      "word": "área ",
+                      "start": 39.744208251953125,
+                      "end": 39.918208251953125
+                    },
+                    {
+                      "word": "tecnológica, ",
+                      "start": 39.918208251953125,
+                      "end": 40.94020825195312
+                    },
+                    {
+                      "word": "telecomunicaciones ",
+                      "start": 40.94020825195312,
+                      "end": 42.135208251953124
+                    },
+                    {
+                      "word": "o ",
+                      "start": 42.135208251953124,
+                      "end": 42.28620825195313
+                    },
+                    {
+                      "word": "las ",
+                      "start": 42.28620825195313,
+                      "end": 42.47220825195313
+                    },
+                    {
+                      "word": "líneas ",
+                      "start": 42.47220825195313,
+                      "end": 42.832208251953126
+                    },
+                    {
+                      "word": "móviles?",
+                      "start": 42.832208251953126,
+                      "end": 43.668208251953125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No señora,",
+                  "words": [
+                    {
+                      "word": "No ",
+                      "start": 45.704,
+                      "end": 45.943999999999996
+                    },
+                    {
+                      "word": "señora,",
+                      "start": 45.943999999999996,
+                      "end": 46.443999999999996
+                    }
+                  ]
+                },
+                {
+                  "role": "node_transition",
+                  "former_node_id": "node-1750946253299",
+                  "former_node_name": "BrindarDetalles",
+                  "new_node_id": "node-1750983311420",
+                  "new_node_name": "DatosDelEncargado"
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, ¿podrías indicarme el nombre o el contacto del responsable de las telecomunicaciones o la tecnología? Incluso con el nombre basta, así podemos enviarle la propuesta directamente.",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 50.712,
+                      "end": 51.64
+                    },
+                    {
+                      "word": "¿podrías ",
+                      "start": 51.64,
+                      "end": 52.209
+                    },
+                    {
+                      "word": "indicarme ",
+                      "start": 52.209,
+                      "end": 52.639
+                    },
+                    {
+                      "word": "el ",
+                      "start": 52.639,
+                      "end": 52.755
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 52.755,
+                      "end": 53.266
+                    },
+                    {
+                      "word": "o ",
+                      "start": 53.266,
+                      "end": 53.428
+                    },
+                    {
+                      "word": "el ",
+                      "start": 53.428,
+                      "end": 53.51
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 53.51,
+                      "end": 53.893
+                    },
+                    {
+                      "word": "del ",
+                      "start": 53.893,
+                      "end": 54.021
+                    },
+                    {
+                      "word": "responsable ",
+                      "start": 54.021,
+                      "end": 54.578
+                    },
+                    {
+                      "word": "de ",
+                      "start": 54.578,
+                      "end": 54.671
+                    },
+                    {
+                      "word": "las ",
+                      "start": 54.671,
+                      "end": 54.822
+                    },
+                    {
+                      "word": "telecomunicaciones ",
+                      "start": 54.822,
+                      "end": 56.052
+                    },
+                    {
+                      "word": "o ",
+                      "start": 56.052,
+                      "end": 56.203
+                    },
+                    {
+                      "word": "la ",
+                      "start": 56.203,
+                      "end": 56.308
+                    },
+                    {
+                      "word": "tecnología?",
+                      "start": 56.308,
+                      "end": 57.329
+                    },
+                    {
+                      "word": " Incluso ",
+                      "start": 57.37533325195312,
+                      "end": 57.828333251953126
+                    },
+                    {
+                      "word": "con ",
+                      "start": 57.828333251953126,
+                      "end": 58.002333251953125
+                    },
+                    {
+                      "word": "el ",
+                      "start": 58.002333251953125,
+                      "end": 58.072333251953125
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 58.072333251953125,
+                      "end": 58.35133325195312
+                    },
+                    {
+                      "word": "basta, ",
+                      "start": 58.35133325195312,
+                      "end": 58.95433325195312
+                    },
+                    {
+                      "word": "así ",
+                      "start": 58.95433325195312,
+                      "end": 59.23333325195313
+                    },
+                    {
+                      "word": "podemos ",
+                      "start": 59.23333325195313,
+                      "end": 59.581333251953126
+                    },
+                    {
+                      "word": "enviarle ",
+                      "start": 59.581333251953126,
+                      "end": 59.97633325195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 59.97633325195312,
+                      "end": 60.069333251953125
+                    },
+                    {
+                      "word": "propuesta ",
+                      "start": 60.069333251953125,
+                      "end": 60.661333251953124
+                    },
+                    {
+                      "word": "directamente.",
+                      "start": 60.661333251953124,
+                      "end": 61.78733325195312
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Claro, es Juan David y su número de contacto es tres once ocho veinte cinco",
+                  "words": [
+                    {
+                      "word": "Claro, ",
+                      "start": 62.604,
+                      "end": 63.104
+                    },
+                    {
+                      "word": "es ",
+                      "start": 63.163999999999994,
+                      "end": 63.614
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 63.854001999999994,
+                      "end": 64.254
+                    },
+                    {
+                      "word": "David ",
+                      "start": 64.254,
+                      "end": 64.654
+                    },
+                    {
+                      "word": "y ",
+                      "start": 64.654,
+                      "end": 64.934
+                    },
+                    {
+                      "word": "su ",
+                      "start": 64.934,
+                      "end": 65.214
+                    },
+                    {
+                      "word": "número ",
+                      "start": 65.214,
+                      "end": 65.454
+                    },
+                    {
+                      "word": "de ",
+                      "start": 65.454,
+                      "end": 65.694
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 65.694,
+                      "end": 66.194
+                    },
+                    {
+                      "word": "es ",
+                      "start": 66.414,
+                      "end": 66.654
+                    },
+                    {
+                      "word": "tres ",
+                      "start": 66.654,
+                      "end": 66.974
+                    },
+                    {
+                      "word": "once ",
+                      "start": 66.974,
+                      "end": 67.474
+                    },
+                    {
+                      "word": "ocho ",
+                      "start": 67.53399999999999,
+                      "end": 67.774
+                    },
+                    {
+                      "word": "veinte ",
+                      "start": 67.774,
+                      "end": 68.17399999999999
+                    },
+                    {
+                      "word": "cinco",
+                      "start": 68.17399999999999,
+                      "end": 68.584
+                    }
+                  ]
+                },
+                {
+                  "role": "node_transition",
+                  "former_node_id": "node-1750983311420",
+                  "former_node_name": "DatosDelEncargado",
+                  "new_node_id": "node-1750983507837",
+                  "new_node_name": "Conversation"
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Genial! Tomé nota del contacto. Nuestro equipo se pondrá en contacto con Juan David para presentarle la propuesta.\n\n¡Gracias por tu apoyo! Que tengas un excelente día.",
+                  "words": [
+                    {
+                      "word": "¡Genial!",
+                      "start": 71.125,
+                      "end": 72.112
+                    },
+                    {
+                      "word": " Tomé ",
+                      "start": 72.201,
+                      "end": 72.492
+                    },
+                    {
+                      "word": "nota ",
+                      "start": 72.492,
+                      "end": 72.701
+                    },
+                    {
+                      "word": "del ",
+                      "start": 72.701,
+                      "end": 72.817
+                    },
+                    {
+                      "word": "contacto.",
+                      "start": 72.817,
+                      "end": 73.548
+                    },
+                    {
+                      "word": " Nuestro ",
+                      "start": 73.85,
+                      "end": 74.151
+                    },
+                    {
+                      "word": "equipo ",
+                      "start": 74.151,
+                      "end": 74.418
+                    },
+                    {
+                      "word": "se ",
+                      "start": 74.418,
+                      "end": 74.535
+                    },
+                    {
+                      "word": "pondrá ",
+                      "start": 74.535,
+                      "end": 74.802
+                    },
+                    {
+                      "word": "en ",
+                      "start": 74.802,
+                      "end": 74.895
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 74.895,
+                      "end": 75.394
+                    },
+                    {
+                      "word": "con ",
+                      "start": 75.394,
+                      "end": 75.545
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 75.545,
+                      "end": 75.754
+                    },
+                    {
+                      "word": "David ",
+                      "start": 75.754,
+                      "end": 76.369
+                    },
+                    {
+                      "word": "para ",
+                      "start": 76.369,
+                      "end": 76.624
+                    },
+                    {
+                      "word": "presentarle ",
+                      "start": 76.624,
+                      "end": 77.263
+                    },
+                    {
+                      "word": "la ",
+                      "start": 77.263,
+                      "end": 77.356
+                    },
+                    {
+                      "word": "propuesta.",
+                      "start": 77.356,
+                      "end": 78.203
+                    },
+                    {
+                      "word": "\n\n¡Gracias ",
+                      "start": 78.215375,
+                      "end": 78.609375
+                    },
+                    {
+                      "word": "por ",
+                      "start": 78.609375,
+                      "end": 78.772375
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 78.772375,
+                      "end": 78.842375
+                    },
+                    {
+                      "word": "apoyo!",
+                      "start": 78.842375,
+                      "end": 79.503375
+                    },
+                    {
+                      "word": " Que ",
+                      "start": 79.53870825195312,
+                      "end": 79.71270825195313
+                    },
+                    {
+                      "word": "tengas ",
+                      "start": 79.71270825195313,
+                      "end": 80.01470825195312
+                    },
+                    {
+                      "word": "un ",
+                      "start": 80.01470825195312,
+                      "end": 80.13070825195312
+                    },
+                    {
+                      "word": "excelente ",
+                      "start": 80.13070825195312,
+                      "end": 80.64170825195312
+                    },
+                    {
+                      "word": "día.",
+                      "start": 80.64170825195312,
+                      "end": 81.22170825195313
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale, muchas gracias, hasta luego.",
+                  "words": [
+                    {
+                      "word": "Vale, ",
+                      "start": 81.744005,
+                      "end": 82.244005
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 82.304,
+                      "end": 82.544
+                    },
+                    {
+                      "word": "gracias, ",
+                      "start": 82.544,
+                      "end": 83.02400399999999
+                    },
+                    {
+                      "word": "hasta ",
+                      "start": 83.02400399999999,
+                      "end": 83.344
+                    },
+                    {
+                      "word": "luego.",
+                      "start": 83.344,
+                      "end": 83.78399999999999
+                    }
+                  ]
+                },
+                {
+                  "role": "node_transition",
+                  "former_node_id": "node-1750983507837",
+                  "former_node_name": "Conversation",
+                  "new_node_id": "node-1750946152896",
+                  "new_node_name": "End Call"
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "end_call_e82faa",
+                  "name": "end_call",
+                  "arguments": "{}"
+                }
+              ],
+              "recording_url": "https://dxc03zgurdly9.cloudfront.net/4dbecd67750c4a9face7d22d9f30c0a1f7a10410662d1c7393bf0883bfcb2595/recording.wav",
+              "public_log_url": "https://dxc03zgurdly9.cloudfront.net/4dbecd67750c4a9face7d22d9f30c0a1f7a10410662d1c7393bf0883bfcb2595/public.log",
+              "disconnection_reason": "agent_hangup",
+              "latency": {
+                "llm": {
+                  "p50": 366,
+                  "p90": 496.79999999999995,
+                  "p95": 520.4,
+                  "p99": 539.28,
+                  "min": 326,
+                  "max": 544,
+                  "num": 5,
+                  "values": [
+                    366,
+                    544,
+                    348,
+                    426,
+                    326
+                  ]
+                },
+                "e2e": {
+                  "p50": 2933,
+                  "p90": 3945,
+                  "p95": 4071.5,
+                  "p99": 4172.7,
+                  "min": 2106,
+                  "max": 4198,
+                  "num": 3,
+                  "values": [
+                    2933,
+                    4198,
+                    2106
+                  ]
+                },
+                "tts": {
+                  "p50": 1382,
+                  "p90": 1921.9999999999998,
+                  "p95": 2041,
+                  "p99": 2136.2,
+                  "min": 937,
+                  "max": 2160,
+                  "num": 5,
+                  "values": [
+                    978,
+                    2160,
+                    1382,
+                    1565,
+                    937
+                  ]
+                }
+              },
+              "call_cost": {
+                "total_duration_unit_price": 0.1316667,
+                "product_costs": [
+                  {
+                    "product": "elevenlabs_tts",
+                    "unit_price": 0.1166667,
+                    "cost": 9.9166667
+                  },
+                  {
+                    "product": "gpt_4o_mini_high_priority",
+                    "unit_price": 0.015,
+                    "cost": 1.275
+                  }
+                ],
+                "combined_cost": 11.1916667,
+                "total_duration_seconds": 85
+              },
+              "opt_out_sensitive_data_storage": false,
+              "opt_in_signed_url": false,
+              "llm_token_usage": {
+                "values": [
+                  1763,
+                  2118,
+                  2237,
+                  2034,
+                  2084
+                ],
+                "average": 2047.2,
+                "num_requests": 5
+              },
+              "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsX2I4NzMzMDQwM2IxMjI0ODEzMWQyNzU2YzM1NyJ9LCJpc3MiOiJBUElqWGZBMzVHTmM3WHgiLCJleHAiOjE3NTA5ODY3NjUsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.8HY86dcWniMuYojdMQdDAjwVo_qfrk1G8_T8I5yok1s"
+            }
+          },
+          "webhookUrl": "https://n8n.gaia-sh.com/webhook/RecoleccionClaro",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "fin llamada": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analista",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Analista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analista": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "076d59c2-abf6-4f67-916b-09076aa8cdd9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3553ae62eb37885eaca9e6ddffc9228a0ce0e6e90336c826346bd3043f8cc33"
+  },
+  "id": "dBDln1o1MdOmX3h3",
+  "tags": []
+}

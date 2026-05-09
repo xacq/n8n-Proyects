@@ -1,0 +1,1412 @@
+{
+  "name": "WIN Peru - Agente Whastapp",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {
+          "clashHandling": {
+            "values": {
+              "resolveClash": "preferInput1",
+              "mergeMode": "shallowMerge"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1300,
+        260
+      ],
+      "id": "c50263f9-f41d-4462-b9d5-ec05c5763b1b",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2400,
+        260
+      ],
+      "id": "882c0f37-99ec-4a32-8951-8785b1a9e762",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "## Inicio / Texto / Ubicación / voz a Texto / CHATS\n",
+        "height": 1340,
+        "width": 1120,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -180,
+        -20
+      ],
+      "typeVersion": 1,
+      "id": "5d5996f4-f9f2-4b27-9a42-1e89ea53a961",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Agente IA - Principal\n",
+        "height": 520,
+        "width": 900,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1220,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "70371334-e436-43ab-bad8-e2b5d7909e7d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "AgenteWin",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1340,
+        740
+      ],
+      "id": "a86c8efe-e5b7-4a16-8210-965b87794bfc",
+      "name": "Webhook",
+      "webhookId": "e9b4e555-11ea-46d6-b240-fd272f8345ec"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v22.0/{{ $json.body.entry[0].changes[0].value.messages[0].image.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAI0ouMwOzYBO3f6xia2DWZAStxLhqYH4STWoZAWtXil6JwpDTJTTiI43ReL9cyZBdEj6ojAgTZAu7rKIoB5wjXTQH9P7XRqcqG4IxqRWYshH8Bly4c1ZA2kZBnFmFovcsFa0rIuN0zYMwBaVl5lnj3pTw8NnM48h2HlkmNcLxvSC5sa5OruUsiYPCsMThfwO0vQZDZD"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        740
+      ],
+      "id": "c435b45d-6dca-4719-937a-836521d0320a",
+      "name": "imagenes"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAURZBNutzJgBOZBlG91j85ZAbZCIwBoBa9XIwj4kGkqtsKZCjwG2P1rO8kZAhIFJHLHq2kHMUp7Hqwi0FUT75ZAEaJf7JtVi5FihbREZB6fN7AGADdNup8IFPeN0OWBxIPVctyrVZCkRuEtGC5H4d95BKIUpbFCqBRjC7wgtZBT311FIhS3ZBJtAqEz1ED9WjpJRwTvgZDZD"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        740
+      ],
+      "id": "57c3a0d1-25de-47e5-b4d5-c54967e8d474",
+      "name": "URL1"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.7,
+      "position": [
+        460,
+        480
+      ],
+      "id": "b811d9bc-c31f-4cd1-8324-c3b732798d53",
+      "name": "Transcribe Audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "ONyhofPcuArHdsq1",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "30055291-2ac1-45d5-8e86-7849319d3e70",
+              "name": "Direccion",
+              "value": "={{ $json.results[0].address_components[1].long_name }} {{ $json.results[0].address_components[0].long_name }},{{ $json.results[0].address_components[3].long_name }},{{ $json.results[0].address_components[4].long_name }},{{ $json.results[0].address_components[6].long_name }}",
+              "type": "string"
+            },
+            {
+              "id": "d8428ac0-862d-40c3-9f54-b3290d385a2b",
+              "name": "Latitude",
+              "value": "={{ $('Obtener_coordenadas1').item.json.latitude }}",
+              "type": "string"
+            },
+            {
+              "id": "032833eb-43d5-4c09-a6bd-c57296d9f692",
+              "name": "Longitude",
+              "value": "={{ $('Obtener_coordenadas1').item.json.longitude }}",
+              "type": "number"
+            },
+            {
+              "id": "0082a2f1-ab1c-4f1b-b0c6-b0e60926a403",
+              "name": "formatted_address",
+              "value": "={{ $json.results[1].formatted_address }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        240
+      ],
+      "id": "76aeb35f-a8e7-4e01-b322-664947e0c625",
+      "name": "Location"
+    },
+    {
+      "parameters": {
+        "mode": "expression",
+        "numberOutputs": 7,
+        "output": "={{\n  $json.body.entry[0].changes[0].value.messages[0].text ? 0 :\n  ($json.body.entry[0].changes[0].value.messages[0].image ? 3 :\n  ($json.body.entry[0].changes[0].value.messages[0].audio ? 2 :\n  ($json.body.entry[0].changes[0].value.messages[0].location ? 1 :\n  ($json.body.entry[0].changes[0].value.messages[0].video ? 4 :\n  ($json.body.entry[0].changes[0].value.messages[0].document ? 5 :\n  ($json.body.entry[0].changes[0].value.messages[0].sticker ? 6 : -1))))))\n}}\n",
+        "looseTypeValidation": true
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -520,
+        240
+      ],
+      "id": "33465afa-d405-4b77-8ffc-46457526d109",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0038abca-f987-4ac1-91fd-9df474460131",
+              "name": "body.entry[0].changes[0].value.contacts[0].wa_id",
+              "value": "={{ $('Webhook').item.json.body.entry[0].changes[0].value.contacts[0].wa_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        1360
+      ],
+      "id": "71ec0d6b-085a-4536-a556-7f2182197b65",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "Client ID",
+              "value": "1007780274781-d8640qqp8klbj27cnqbm1a4u9aker0l4.apps.googleusercontent.com"
+            },
+            {
+              "name": "Secreto del cliente",
+              "value": "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"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        240
+      ],
+      "id": "cae63759-34b5-46e2-877d-58924c8c20db",
+      "name": "Geocoding API2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const lat = $input.first().json.body.entry[0].changes[0].value.messages[0].location.latitude;\nconst lon = $input.first().json.body.entry[0].changes[0].value.messages[0].location.longitude;\n\nconst apiKey = \"AIzaSyByQtb_PAlVJPrgUwZ0F_Ew2C0LoNk4ByQ\"; // Tu API Key definitiva\n\nconst url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}`;\n\nreturn [\n  {\n    json: {\n      url: url,\n      latitude: lat,\n      longitude: lon\n    }\n  }\n];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        240
+      ],
+      "id": "dbad3961-f073-4231-8e43-935ac1904ae2",
+      "name": "Obtener_coordenadas1"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v22.0/{{ $json.body.entry[0].changes[0].value.messages[0].audio.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAI0ouMwOzYBO3f6xia2DWZAStxLhqYH4STWoZAWtXil6JwpDTJTTiI43ReL9cyZBdEj6ojAgTZAu7rKIoB5wjXTQH9P7XRqcqG4IxqRWYshH8Bly4c1ZA2kZBnFmFovcsFa0rIuN0zYMwBaVl5lnj3pTw8NnM48h2HlkmNcLxvSC5sa5OruUsiYPCsMThfwO0vQZDZD"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        480
+      ],
+      "id": "55530d99-a0de-4963-b94a-576521f0e279",
+      "name": "Audio1"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.fecha_actual }}",
+        "format": "custom",
+        "customFormat": "FF",
+        "outputFieldName": "Hora_actual",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        240,
+        1360
+      ],
+      "id": "3ff7f676-e06c-4428-87f8-54c4302e7524",
+      "name": "Fecha actual1"
+    },
+    {
+      "parameters": {
+        "outputFieldName": "fecha_actual",
+        "options": {
+          "timezone": "America/Bogota"
+        }
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        80,
+        1360
+      ],
+      "id": "c59d5834-e323-4754-ab77-6a44d30b432f",
+      "name": "FFFF1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAURZBNutzJgBOZBlG91j85ZAbZCIwBoBa9XIwj4kGkqtsKZCjwG2P1rO8kZAhIFJHLHq2kHMUp7Hqwi0FUT75ZAEaJf7JtVi5FihbREZB6fN7AGADdNup8IFPeN0OWBxIPVctyrVZCkRuEtGC5H4d95BKIUpbFCqBRjC7wgtZBT311FIhS3ZBJtAqEz1ED9WjpJRwTvgZDZD"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        280,
+        480
+      ],
+      "id": "c7d27509-0a59-46fc-8ed2-edb474320441",
+      "name": "URL2"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Merge').item.json.body.entry[0].changes[0].value.contacts[0].wa_id }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1600,
+        520
+      ],
+      "id": "671ad1f2-ed16-4df4-8aaa-78f7f31927d7",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "={{ $json.body?.entry?.[0]?.contacts?.[0]?.wa_id || 'undefined' }}\n\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        400,
+        1360
+      ],
+      "id": "e7705e9f-16ec-4eca-8567-214e2897b726",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body.entry[0].changes[0].value.messages[0].text.body;;\n\nreturn [\n  {\n    json: {\n      texto: \"texto de cliente: \" + body\n    }\n  }\n];\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        40
+      ],
+      "id": "90aedbd4-43ab-4ffc-8b04-29ed3f2f3aa4",
+      "name": "Obtener texto"
+    },
+    {
+      "parameters": {
+        "jsCode": "const entrada = $json.text;\n\nreturn [\n  {\n    json: {\n      texto: \"Cliente envio este audio:\" + entrada\n    }\n  }\n];\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        480
+      ],
+      "id": "94dc2ad3-e96a-4818-bc66-95e52a84d8f3",
+      "name": "Obtener texto1"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "0394996b-d7eb-4e23-abb1-82a039fb2a26",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        400,
+        960
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "f52d2aaa-e0b2-45e5-8c4b-ceef42182a0d",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.body.entry[0].changes[0].value.messages[0].document.mime_type }}",
+              "rightValue": "application/pdf"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "872d9b3e-bcce-48d3-994c-cd07203ad983",
+      "name": "Only PDF File",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -100,
+        960
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67552183-de2e-494a-878e-c2948e8cb6bb",
+              "name": "text",
+              "type": "string",
+              "value": "=User request on the file:\n{{ \"Describe this file\" || $('Only PDF File').item.json.messages[0].document.caption }}\n\nFile content:\n{{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0c966c50-2786-4acc-958e-fda989476da9",
+      "name": "File",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        560,
+        960
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v22.0/{{ $json.body.entry[0].changes[0].value.messages[0].document.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAI0ouMwOzYBO3f6xia2DWZAStxLhqYH4STWoZAWtXil6JwpDTJTTiI43ReL9cyZBdEj6ojAgTZAu7rKIoB5wjXTQH9P7XRqcqG4IxqRWYshH8Bly4c1ZA2kZBnFmFovcsFa0rIuN0zYMwBaVl5lnj3pTw8NnM48h2HlkmNcLxvSC5sa5OruUsiYPCsMThfwO0vQZDZD"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        960
+      ],
+      "id": "e9513923-fbf9-4646-915e-132592dde025",
+      "name": "Documentos"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAANzNu7KZAZAABO3yMeir8Fn4pdiV2td2LfKy3cgkx7wSZBbR9ojZAszsm1TSBw7Mj5Udkw69LxZAiH1q6gBi3zI2qXXuSZAhLPd5v8cUl3uKIiQSDpJR5I01o94zNh59PhKTcSDZAtjSfPercjCQ7dahpFWPAiEAj2XNWMxm2bz60R33rXEIUolQyhyRqVyzjDUwZDZD"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        960
+      ],
+      "id": "4e5a43e1-e2b2-4bc7-8ba2-e681b25255ab",
+      "name": "Descarga Documento"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v17.0/{{ $json.body.entry[0].changes[0].value.metadata.phone_number_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAANtM5evw5ABOZBKEzERdPpUWCIuZAPwgBEzVSSNFovXkEB4RHfaypcrCXRAr1RDIvmsWm1rfetGYZBySMClFKWNMmgCnWIuZCL2KTByFdJ8fqFCQ1ThRRo1Ygf5xekRbp7vxci9RU0WPrp7H1s8u6ICj4OfbYVPA3hv4eZB5kgFIh32TcBOMbl5HWvKE9ERZCZAqHqazsZD"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $json.body.entry[0].changes[0].value.contacts[0].wa_id }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Mil disculpas, pero actualmente solo podemos procesar archivos con formato PDF\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        1140
+      ],
+      "id": "1ba5e1fb-83f2-459b-93d3-32700e7d0852",
+      "name": "Enviar \"SOLO PDF\""
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Que hay en la imagen?\nSi es un Celular o algo relacionado a servicios de telecomunicaciones descríbelo.",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        560,
+        740
+      ],
+      "id": "a6ebb6b7-9ae1-4226-8bca-f74f737178a1",
+      "name": "analiza imagen",
+      "credentials": {
+        "openAiApi": {
+          "id": "ONyhofPcuArHdsq1",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const entrada = $json.content;\n\nreturn [\n  {\n    json: {\n      texto:\"Datos  extraido de Imagen : \" + entrada\n    }\n  }\n];\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        740
+      ],
+      "id": "b182ca85-001c-41fd-93b7-d2416ac88904",
+      "name": "Obtener texto2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const entrada = $json.text;\n\nreturn [\n  {\n    json: {\n      texto: \"Datos extraiodos de documento : \" + entrada\n    }\n  }\n];\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        960
+      ],
+      "id": "8a5d96cb-c7a0-4e10-8e59-e58721302b5b",
+      "name": "Obtener texto3"
+    },
+    {
+      "parameters": {
+        "content": "## Eliminar mensajes",
+        "height": 480,
+        "width": 340,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        260
+      ],
+      "typeVersion": 1,
+      "id": "e6dcc2f1-470b-4e96-bd27-2c5d0b290d2d",
+      "name": "Sticky Note6",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.entry[0].changes[0].value.contacts[0].wa_id }}",
+        "contextWindowLength": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -800,
+        600
+      ],
+      "id": "a5203653-9320-42f1-96eb-0517bfd37999",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1300,
+        980
+      ],
+      "id": "25c83c3f-6ca0-494e-8e77-4b8fbae048a5",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "const query = $('When Executed by Another Workflow').first().json.query || \"\";\n\n// Tomar solo el primer texto que tenga formato de link (por si viene acompañado de otros datos)\nconst rawLink = query.split(' ')[0];\n\n// Buscar ID en la URL de Google Drive\nconst match = rawLink.match(/\\/d\\/([a-zA-Z0-9_-]+)\\//);\n\nif (match && match[1]) {\n  const fileId = match[1];\n  const cleanLink = `https://drive.google.com/uc?export=download&id=${fileId}`;\n\n  return [\n    {\n      json: {\n        originalLink: rawLink,\n        fileId,\n        cleanLink\n      }\n    }\n  ];\n} else {\n  return [\n    {\n      json: {\n        error: \"No se pudo extraer el ID del link.\",\n        originalLink: rawLink\n      }\n    }\n  ];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        980
+      ],
+      "id": "1397064f-44d0-41a7-8bcf-3bd5f566e848",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "const query = $input.first().json.query;\n\n// Extraer el número después del guion \"-\"\nconst extractedNumber = query.split(' ').pop();\n\nreturn [{ json: { extractedNumber } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        980
+      ],
+      "id": "b83ab0d5-1957-47a8-bc3a-78a47c1539ea",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/737640359422388/messages\n",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "={\n  \"Authorization\": \"Bearer EAAI0ouMwOzYBO3f6xia2DWZAStxLhqYH4STWoZAWtXil6JwpDTJTTiI43ReL9cyZBdEj6ojAgTZAu7rKIoB5wjXTQH9P7XRqcqG4IxqRWYshH8Bly4c1ZA2kZBnFmFovcsFa0rIuN0zYMwBaVl5lnj3pTw8NnM48h2HlkmNcLxvSC5sa5OruUsiYPCsMThfwO0vQZDZD\",\n  \"Content-Type\": \"application/json\"\n}\n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Code1').item.json.extractedNumber }}\",\n  \"type\": \"image\",\n  \"image\": {\n    \"link\": \"{{ $json.cleanLink }}\",\n    \"caption\": \"Aquí está la imagen solicitada. ✅\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2020,
+        980
+      ],
+      "id": "7836db33-022b-4bb8-ba4f-f5f632667b71",
+      "name": "Envioimagen"
+    },
+    {
+      "parameters": {
+        "name": "Agente_imagen",
+        "description": "=Llama a este agente para obtener la imagen que pide el usuario. Este Agente_imagen debe recibir una sola input con un mensaje que contenga dos cosas: el enlace de la imagen de \"BaseDatos\" y id: {{ $('Merge').item.json.body.entry[0].changes[0].value.contacts[0].wa_id }}. Separados con un espacio \" \"",
+        "workflowId": {
+          "__rl": true,
+          "value": "5mU1RD5lHQzCwKX9",
+          "mode": "list",
+          "cachedResultName": "ARIA- Agente Whatsapp Con imagenes"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        520
+      ],
+      "id": "9c229162-733d-4940-81d7-35ca8a114bf3",
+      "name": "Agente_imagen"
+    },
+    {
+      "parameters": {
+        "content": "## Enviar Imagen",
+        "height": 300,
+        "width": 1120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        880
+      ],
+      "id": "816cff10-989e-4ff2-8dff-e9a348b4f42b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.5
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1340,
+        520
+      ],
+      "id": "f00a19d9-3160-409a-93ae-42eceff9b7cf",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ONyhofPcuArHdsq1",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const key = Object.keys($input.item.binary)[0];\nconst buffer = $input.item.binary[key].data;\nconst base64Image = buffer.toString('base64');\n\nreturn [\n  {\n    json: {\n      content: base64Image\n    }\n  }\n];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        740
+      ],
+      "id": "93600e1c-33bf-4bf9-a7d2-7663f4e49f39",
+      "name": "Convierte la imagen descargada en base64"
+    },
+    {
+      "parameters": {
+        "jsCode": "const key = Object.keys($input.item.binary)[0];\nconst buffer = $input.item.binary[key].data;\nconst base64Audio = buffer.toString('base64');\n\nreturn [\n  {\n    json: {\n      content: base64Audio\n    }\n  }\n];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        100,
+        480
+      ],
+      "id": "ac3f4127-b044-4ef2-a596-2e58513f42e9",
+      "name": "Convierte el binario del audio a base64"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"respuesta\": \"Transcripción del audio: {{$json.content}}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        820,
+        480
+      ],
+      "id": "d33e1531-0163-4719-843e-64fde464c234",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.texto }}",
+        "options": {
+          "systemMessage": "=AGENTE VIRTUAL INBOUND DE VENTAS – WIN (CHAT)\n\n🧠 Personalidad del agente (Contexto para IA):\n💼 Soy un asesor virtual de WIN. \n💼 Soy un asesor muy amable, profesional y empático. Es necesario atender a todas las personas que se comunican por 📱 WhatsApp, 🌐 web o 💻 redes sociales con interés en conocer los planes de internet para el hogar, combos con TV o servicios especiales para gamers o edificios.\n\n🎯Objetivo:\n- Entender el motivo del contacto.\n- Guiar con claridad y entusiasmo a quienes se comuniquen con la empresa WIN.\n- Verificar si hay cobertura WIN en su zona.\n- Mostrar las promociones vigentes:\n  - Internet solo HOGAR\n  - Dúo HOGAR (Internet + TV)\n  - WIN Gamer HOGAR\n  - Internet en edificio (WIN Edificio)\n  - Servicio en provincia\n- Captar datos para registrar la solicitud de contrataciones\n\n💪 Importante: Nunca te salgas de los planes oficiales. Tampoco inventes servicios o respondas preguntas que no tenga relacion con el Objetivo. Tu tono debe ser amigable, confiado, explicativo y cálido. No eres robotizado ni muy informal. Si el cliente quiere saber de WIN, comentale cualquier idea proveniente de el siguiente texto \"📡 Somos WIN, conectando personas al mundo.\n🚀 Nuestro propósito es desafiar lo convencional para que vivas la mejor experiencia digital.\n✅ Ofrecemos Internet por fibra óptica de alta velocidad, telefonía fija y televisión digital, todo con atención cercana y cobertura nacional.\n🎯 Trabajamos con visión de futuro: buscamos ser la empresa de telecomunicaciones más valorada por nuestros clientes y equipo humano para el 2027.\"\n\n🟢 ESTADO: saludo_inicial\nMensaje:\n\n“👋 ¡Hola...! \n\n👍 Bienvenido a  WIN. \n🙋‍♂️ Soy tu agente virtual de ventas WIN y mi objetivo es ayudarte a seleccionar el plan que mejor se ajuste a tus necesidades.\n\n❓ Dime, ¿Cómo puedo ayudarte? ¿Necesitas informacion acerca de nuestros servicios?”\n\n→ esperar_motivo_cliente\n\n🔁 ESTADO: clasificacion_motivo\n\nSi responde: “Quiero contratar” o “Deseo un plan” o “Cotización” o “Planes de internet” \"Informacion\" o un tema parecido → continuar_a_validacion_cobertura\n\nSi responde temas como \"soporte técnico\" o\n\"reclamos\" o \"fallas de servicio\" o similares → Mensaje: “📈 Te comento que esta plataforma, está diseñada para gestionar servicios en ventas y asesoramiento en nuevos planes.\n🛠️ Si deseas comunicarte con nuestro Departamento de Soporte Técnico o quieres realizar alguna consulta con respecto a tu servicio, por favor comunicate al teléfono 📞 01 707 3000 o por WhatsApp 💬 940 061 937.\n\n¿Deseas informacion referente a nuestros servicios o planes?”\n\nSi si → esperar nueva intención\nSi no → despedida\n\n🟢 ESTADO: continuar_a_validacion_cobertura\nMensaje:\n\n“👍 Perfecto...! Por favor, para continuar, ayudame a validar si hay cobertura WIN en tu zona. Por favor envíame:\n🗺️ Dirección completa (calle, número y distrito)\n🆔 Número de DNI\n\n🤗 Muchas gracias. En cuanto se procese tu información,  te mostraré todos los planes y servicios disponibles para ti.”\n\n→ esperar_direccion_y_dni\n\n🟢 ESTADO: cobertura_confirmada\nMensaje:\n\n“🆗 ¡Listo...! Te indico que tenemos cobertura en tu zona. Ahora, por favor, ayudame con lo siguiente. ¿Qué tipo de servicio te interesa?\"\n\n(Muestra el menu y solo responde con el número de la opción correcta y dentro del rango de 1 a 7)\nMenu: \n1️⃣ Internet solo hogar\n2️⃣ Dúo hogar (Internet + TV)\n3️⃣ WIN Gamer hogar\n4️⃣ Internet en edificio (con caja WIN)\n5️⃣ Servicio en provincia\n6️⃣ Iniciar proceso de contratación\n7️⃣ Dudas / Inquietudes”\n\n→ esperar_opcion_servicio\n\nSi selecciona opcion diferente al rango 1 al 7 Mensaje: \"🤔 Caramba, esa opcion no la reconozco. Por favor, puedes seleccionar correctamente. Muchas gracias...!\"\n\n🔵 ESTADO: internet_solo_hogar\nMensaje:\n\n“📡🏡 Aquí tienes nuestras opciones de internet para el hogar:\n\n1️⃣ 300 MEGAS → se duplican a 600 MEGAS por 6 meses 💲89 X 3 meses, luego 💲119\n2️⃣ 400 MEGAS → hasta 800 MEGAS x 6 meses + 1 MESH 💲99 X 3 meses, luego 💲129\n3️⃣ 200 MEGAS fijos 💲99 mensuales\n4️⃣ 600 MEGAS fijos + 2 MESH 💲109 X 3 meses, luego 💲139\n5️⃣ 1000 MEGAS fijos + 2 MESH 💲129 X 3 meses, luego 💲159\n\n👍 Impresionante no te parece...! Dime, ¿Qué opción te interesa más?”\n\nSi selecciona opcion del 1 a 5 → esperar_seleccion_plan\n\nSi selecciona opcion diferente Mensaje: \"🤔 Caramba, esa opcion no la reconozco. Por favor, puedes seleccionar correctamente. Muchas gracias...!\"\n\n🔵 ESTADO: duo_hogar\nMensaje:\n\n“📡🖥️ Muy bien...! A continuación te muestro nuestros planes Dúo hogar (Internet + TV):\n\n1️⃣ 350 MEGAS → hasta 500 + WIN TV 🖥️ (50 canales) + 1 MESH 💲99 x 3 meses, luego 💲139.90\n2️⃣ 550 MEGAS → hasta 1000 + WIN TV 🖥️ Premium (90 canales) + 2 MESH 💲99 x 3 meses, luego 💲139.90\n3️⃣ 600 MEGAS + DGO Básico (65 canales) + 2 MESH\n💲159.90, luego 💲189.90\n4️⃣ 1000 MEGAS + DGO FULL (85 canales) + 2 MESH\n💲179.90, luego 💲209.90\n\n👍 Impresionante, no te parece...! Dime, ¿Qué opción te interesa más?”\n\nSi selecciona opcion del 1 a 4 → esperar_seleccion_plan\n\nSi selecciona opcion diferente Mensaje: \"🤔 Caramba, esa opcion no la reconozco. Por favor, puedes seleccionar correctamente. Muchas gracias...!\"\n\n🔵 ESTADO: gamer_hogar\nMensaje:\n\n“🎮🏎️ Excelente...! Tienes espiritu de GAMER y  estos planes son ideales para ti, ya que incluyen horas NITRO para mayor velocidad:\n\n1️⃣ 350 MEGAS + 120H Nitro 💨 (hasta 700 MEGAS) + 1 MESH 💲99 x 3 meses, luego 💲129\n2️⃣600 MEGAS + 120H Nitro 💨 (hasta 1000 MEGAS) + 2 MESH 💲129 x 3 meses, luego 💲159\n3️⃣1000 MEGAS + 2 MESH 💲159 x 3 meses, luego 💲189\n\n🏍️ Woow, que velocidad...! ¿Cual opción satisface mejor tus necesidades?”\n\nSi selecciona opcion del 1 a 3 → esperar_seleccion_plan\n\nSi selecciona opcion diferente Mensaje: \"🤔 Caramba, esa opcion no la reconozco. Por favor, puedes seleccionar correctamente. Muchas gracias...!\"\n\n🔵 ESTADO: win_edificio\nMensaje:\n\n“🏦🏙️ Excelente opción...! WIN ofrece planes especiales para edificios con caja WIN instalada:\n\n1️⃣ 300 MEGAS → 800 MEGAS x 6 meses 💲69 x 3 meses, luego 💲119\n2️⃣ 400 MEGAS → 600 MEGAS + 1 MESH 💲79 x 3 meses, luego 💲129\n3️⃣ 600 MEGAS fijos + 2 MESH 💲89 x 3 meses, luego 💲139\n4️⃣ 1000 MEGAS fijos + 2 MESH 💲109 x 3 meses, luego 💲159\n\n🏣 Justo para todos, Increible...! ¿Cual opción crees que se ajuste mejor?”\n\nSi selecciona opcion del 1 a 4 → esperar_seleccion_plan\n\nSi selecciona opcion diferente Mensaje: \"🤔 Caramba, esa opcion no la reconozco. Por favor, puedes seleccionar correctamente. Muchas gracias...!\"\n\n🔵 ESTADO: provincia\nMensaje:\n\n“🏘️🗺️ OK. Gracias por tu elección. Mira, estos son los planes para zonas ubicadas en provincias:\n\n1️⃣ 350 MEGAS → 700 x 6 meses 💲69 fijos\n2️⃣ 550 MEGAS → 800 x 6 meses 💲89 fijos\n3️⃣ 1000 MEGAS + WIN TV 🖥️ Premium + 1 MESH 💲99 x 3 meses, luego 💲129.90\n4️⃣ 750 MEGAS + DGO Básico + 1 MESH 💲129.90 x 3 meses, luego 💲159.90\n5️⃣ 1000 MEGAS + DGO FULL + 1 MESH 💲149.90 x 3 meses, luego 💲179.90\n\n📡🏡 El mejor alcance al mejor precio. Que tecnología...! ¿Cual opción sería la mas idonea para satisfacer tus requerimientos?”\n\nSi selecciona opcion del 1 a 5 → esperar_seleccion_plan\n\nSi selecciona opcion diferente Mensaje: \"🤔 Caramba, esa opcion no la reconozco. Por favor, puedes seleccionar correctamente. Muchas gracias...!\"\n\n🟢 ESTADO: registrar_datos\nMensaje:\n\n“🤗 ¡Excelente...! Ahora, para registrar tu solicitud de instalación, necesito los siguientes datos:\n\n👩‍💼👨‍💼 Nombre completo\n🆔 DNI\n📱 Celular\n📧 Correo electrónico\n🗺️ Dirección completa (con distrito)\n🏢 Piso e interior\n❓¿Deseas incluir MESH? (Sí / No)\n🔢 ¿Cuántos MESH necesitas? (0 / 1 / 2)\n📷 Para terminar, por favor, envíame una foto de tu DNI (por ambos lados), para proceder a la validación de tu solicitud. Muy amable por tu tiempo.”\n\n→ esperar_datos_formulario\n\n✅ ESTADO: confirmacion_exitosa\nMensaje:\n\n“🎉 ¡Gracias por confiar en WIN!\nTu solicitud ha sido registrada exitosamente.\n\n📌 En breve, un asesor se comunicará contigo para confirmar tu contrato e instalación.\n\n¿Hay algo más en lo que te pueda ayudar? 😊”\n\n→ fin"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1660,
+        260
+      ],
+      "id": "c874720e-b716-462b-9331-74dc2de2af12",
+      "name": "Agente Win",
+      "retryOnFail": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "delete",
+        "deleteMode": "all"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        -900,
+        320
+      ],
+      "id": "87c59041-44f4-4da5-9f20-5bf0459c8cee",
+      "name": "Chat Memory Manager1",
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.ariaia.com",
+            "content-length": "500",
+            "accept": "*/*",
+            "content-type": "application/json",
+            "via": "2.0 Caddy",
+            "x-forwarded-for": "89.117.17.198",
+            "x-forwarded-host": "n8n.ariaia.com",
+            "x-forwarded-proto": "https",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "object": "whatsapp_business_account",
+            "entry": [
+              {
+                "id": "1022932629735422",
+                "changes": [
+                  {
+                    "value": {
+                      "messaging_product": "whatsapp",
+                      "metadata": {
+                        "display_phone_number": "51983142082",
+                        "phone_number_id": "555056811035622"
+                      },
+                      "contacts": [
+                        {
+                          "profile": {
+                            "name": "Juandavidii"
+                          },
+                          "wa_id": "573209372602"
+                        }
+                      ],
+                      "messages": [
+                        {
+                          "from": "573209372602",
+                          "id": "wamid.HBgMNTczMjA5MzcyNjAyFQIAEhggRjE3Q0MxNEFDMzg0MUE2RkNGNUU2NTU3NUI1QTBEQ0EA",
+                          "timestamp": "1746491059",
+                          "text": {
+                            "body": "Hola"
+                          },
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "field": "messages"
+                  }
+                ]
+              }
+            ]
+          },
+          "webhookUrl": "https://n8n.ariaia.com/webhook/AgenteIA2",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "https://drive.google.com/file/d/1aEvgksdBO0QxHskncQiCjOw7p1BSBfme/view?usp=sharing 1235865151"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Agente Win",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "FFFF1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Chat Memory Manager1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "imagenes": {
+      "main": [
+        [
+          {
+            "node": "Convierte la imagen descargada en base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Obtener texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Obtener_coordenadas1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audio1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "imagenes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Only PDF File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Geocoding API2": {
+      "main": [
+        [
+          {
+            "node": "Location",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener_coordenadas1": {
+      "main": [
+        [
+          {
+            "node": "Geocoding API2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio1": {
+      "main": [
+        [
+          {
+            "node": "Convierte el binario del audio a base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fecha actual1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FFFF1": {
+      "main": [
+        [
+          {
+            "node": "Fecha actual1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL2": {
+      "main": [
+        [
+          {
+            "node": "Transcribe Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Location": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe Audio": {
+      "main": [
+        [
+          {
+            "node": "Obtener texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Win",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL1": {
+      "main": [
+        [
+          {
+            "node": "analiza imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener texto": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener texto1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only PDF File": {
+      "main": [
+        [
+          {
+            "node": "Documentos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar \"SOLO PDF\"",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Documentos": {
+      "main": [
+        [
+          {
+            "node": "Descarga Documento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Descarga Documento": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "analiza imagen": {
+      "main": [
+        [
+          {
+            "node": "Obtener texto2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File": {
+      "main": [
+        [
+          {
+            "node": "Obtener texto3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener texto2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener texto3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Memory Manager1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Envioimagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente_imagen": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Win",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convierte la imagen descargada en base64": {
+      "main": [
+        [
+          {
+            "node": "URL1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convierte el binario del audio a base64": {
+      "main": [
+        [
+          {
+            "node": "URL2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Win": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory Manager1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "257958b7-8063-49ff-99bf-0b2ab06f7841",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3553ae62eb37885eaca9e6ddffc9228a0ce0e6e90336c826346bd3043f8cc33"
+  },
+  "id": "LNXEO1kTyyZgJITq",
+  "tags": []
+}

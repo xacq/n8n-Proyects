@@ -1,0 +1,4667 @@
+{
+  "name": "MotorFLash - Confirmación Datos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "MotorFLashDatos",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        -20
+      ],
+      "id": "7dbb7137-e65f-4bd1-a6d8-860763c05cfe",
+      "name": "Webhook",
+      "webhookId": "7c67a005-b30e-4bc6-a480-688fbc810559"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        440,
+        -20
+      ],
+      "id": "16474c71-f7d4-4bbb-b5a2-88369f882753",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1yJ4I-ewqKv78ud-5PrkagLaEGdtWxg8Et_ahK7GppTA/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yJ4I-ewqKv78ud-5PrkagLaEGdtWxg8Et_ahK7GppTA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nombre_completo": "={{ $json.nombre_completo }}",
+            "telefono": "={{ $json[\"teléfono\"] }}",
+            "correo": "={{ $json.correo }}",
+            "kilometraje_maximo": "={{ $json.kilometraje_maximo }}",
+            "marca_preferida": "={{ $json.marca_preferida }}",
+            "tipo_motor": "={{ $json.tipo_motor }}",
+            "presupuesto_maximo": "={{ $json.presupuesto_maximo }}",
+            "anio_maximo": "={{ $json.anio_maximo }}",
+            "modelo_interesado": "={{ $json.modelo_interesado }}",
+            "telefono origen": "={{ $json.telefonoOrigen }}"
+          },
+          "matchingColumns": [
+            "telefono origen"
+          ],
+          "schema": [
+            {
+              "id": "nombre_completo",
+              "displayName": "nombre_completo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefono origen",
+              "displayName": "telefono origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "kilometraje_maximo",
+              "displayName": "kilometraje_maximo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "marca_preferida",
+              "displayName": "marca_preferida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo_motor",
+              "displayName": "tipo_motor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "presupuesto_maximo",
+              "displayName": "presupuesto_maximo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "anio_maximo",
+              "displayName": "anio_maximo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "modelo_interesado",
+              "displayName": "modelo_interesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "financiacion",
+              "displayName": "financiacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "plazo compra",
+              "displayName": "plazo compra",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "quiere cita",
+              "displayName": "quiere cita",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "hora",
+              "displayName": "hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "da coche",
+              "displayName": "da coche",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "caracteristicas cohe",
+              "displayName": "caracteristicas cohe",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "envío de mail",
+              "displayName": "envío de mail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "verificación",
+              "displayName": "verificación",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        240,
+        -20
+      ],
+      "id": "3f6e567b-8f61-411b-850e-1c9f94960b66",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CWk1cfmKyWDzGM5i",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $('Webhook').first().json.body;\nconst args = data.args || {};\nconst intereses = args.intereses || {};\n\n// Limpiar número (eliminar +)\nconst toNumberLimpio = (data.call?.from_number || '').replace('+', '');\n\n// Concatenar el número y el contenido que escribió el cliente\nconst telefonoUsuario = args[\"telefono\"] || '';\nconst telefonoFinal = `${toNumberLimpio} - ${telefonoUsuario}`;\n\n// Corregir correo si viene escrito mal\nlet correo = args[\"correo\"] || '';\ncorreo = correo\n  .toLowerCase()\n  .replace(/\\s?arroba\\s?/gi, '@')\n  .replace(/\\s?punto\\s?(com)?/gi, '.com')\n  .replace(/\\s+/g, '');\n\n// Construimos resultado limpio\nconst resultado = {\n  nombre_completo: args[\"nombre_completo\"] || '',\n  correo: correo,\n  telefonoOrigen: toNumberLimpio,\n  teléfono: telefonoFinal,\n  ...intereses\n};\n\nreturn [\n  {\n    json: resultado\n  }\n];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        40,
+        -20
+      ],
+      "id": "b26f1a94-a78b-4620-b27f-cbb5f862188b",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/635588606313225/messages\n",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "={\n  \"Authorization\": \"Bearer EAAURZBNutzJgBOZBlG91j85ZAbZCIwBoBa9XIwj4kGkqtsKZCjwG2P1rO8kZAhIFJHLHq2kHMUp7Hqwi0FUT75ZAEaJf7JtVi5FihbREZB6fN7AGADdNup8IFPeN0OWBxIPVctyrVZCkRuEtGC5H4d95BKIUpbFCqBRjC7wgtZBT311FIhS3ZBJtAqEz1ED9WjpJRwTvgZDZD\",\n  \"Content-Type\": \"application/json\"\n}\n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $('Code1').item.json.extractedNumber }}\",\n  \"type\": \"image\",\n  \"image\": {\n    \"link\": \"{{ $json.cleanLink }}\",\n    \"caption\": \"Aquí está la imagen solicitada. ✅\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -140,
+        -20
+      ],
+      "id": "262490d8-b926-41dd-b321-77afa452fddf",
+      "name": "Envio de imagen",
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.gaia-sh.com",
+            "user-agent": "axios/1.7.7",
+            "content-length": "62220",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "n8n.gaia-sh.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "a469dbb2435a",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1750196421813,d=b5d762c469bc34c672771f38614f4cbd7bf5dac123ebd3b41f44af5b44c2cbf8"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "call": {
+              "call_id": "call_7c92b31da9b65559897ef112aa8",
+              "call_type": "phone_call",
+              "agent_id": "agent_0c0c7fc6049e0614e65de1a25e",
+              "agent_version": 6,
+              "call_status": "ongoing",
+              "start_timestamp": 1750196244696,
+              "transcript": "Agent: ¡Hola! Muchas gracias por comunicarte con MotorFlash 😊  \n¿Con quién tengo el gusto de hablar?\nUser: Buen día, habla con Juan David.\nAgent: Encantada, Juan David. ¿En qué te puedo ayudar hoy?\nUser: Mira, estoy interesado en un vehículo.\nAgent: Perfecto, Juan David. Para ayudarte a encontrar el coche ideal, te voy a hacer unas preguntas rápidas. ¿Te parece bien?\nUser: Me parece bien.\nAgent: Genial. Para empezar, ¿tienes alguna marca en mente o estás abierto a sugerencias?\nUser: Sugerencias.\nAgent: Perfecto. ¿Qué modelo te interesa, si ya tienes alguno pensado?\nUser: (inaudible speech)\nUser: Dos mil veintidós.\nAgent: Entiendo, entonces buscas un coche del año dos mil veintidós. Ahora, ¿prefieres algún tipo de motor? (gasolina, diésel, híbrido, \nAgent: eléctrico…)\nUser: ¿De gasolina?\nAgent: Perfecto, entonces buscas un coche de gasolina. Ahora, ¿cuál es tu presupuesto aproximado?\nUser: No, estoy abierta a opciones.\nAgent: Entiendo, entonces estás abierto a opciones en cuanto al presupuesto. ¿Hasta qué año de antigüedad te gustaría que tuviera el coche?\nUser: Son los dos años.\nAgent: Entendido, entonces buscas un coche de hasta dos años de antigüedad. Por último, ¿qué kilometraje máximo considerarías aceptable?\nUser: Unos cincuenta mil kilómetros.\nAgent: Gracias por toda la información, Juan David.Dame un instante mientras reviso el inventario para ver qué coches encajan con lo que estás buscando.\nUser: Vale.\nAgent: He encontrado algunas opciones que encajan bastante bien con lo que buscas. Te cuento una de ellas y me dices qué te parece, ¿vale?\n\nEs un Fiat \nUser: Vale\nAgent: Ibiza del año dos mil veintidós, con motor de gasolina. Tiene un recorrido de cuarenta y dos mil quinientos cuarenta y un kilómetros y su precio es de quince mil ochocientos euros.¿Te gustaría saber más sobre este coche o prefieres que te muestre otra alternativa?\nUser: Ese me parece bien.\nAgent: ¡Perfecto! Si te parece bien, podemos agendar una cita con uno de nuestros asesores para que te dé todos los detalles y te ayude a seguir con el proceso de compra.\n\n¿Me dices tu nombre completo, por favor?\nUser: Claro que sí, es Juan David García Amaya.\nAgent: Gracias, Juan David. Ahora, ¿me podrías dar un número de contacto al que prefieras que te escribamos o llamemos?\nUser: No, ese mismo número estaría bien.\nAgent: Perfecto, Juan David. ¿Y cuál sería tu correo electrónico para enviarte la información por email?\nUser: Claro, es Juan David I I arroba Hotmail punto com.\n",
+              "transcript_object": [
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Muchas gracias por comunicarte con MotorFlash 😊  \n¿Con quién tengo el gusto de hablar?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 1.556403564453125,
+                      "end": 2.268684326171875
+                    },
+                    {
+                      "word": " Muchas ",
+                      "start": 2.704350830078125,
+                      "end": 3.020140380859375
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 3.020140380859375,
+                      "end": 3.335929931640625
+                    },
+                    {
+                      "word": "por ",
+                      "start": 3.335929931640625,
+                      "end": 3.4885615234375
+                    },
+                    {
+                      "word": "comunicarte ",
+                      "start": 3.4885615234375,
+                      "end": 4.059614013671875
+                    },
+                    {
+                      "word": "con ",
+                      "start": 4.059614013671875,
+                      "end": 4.1815439453125
+                    },
+                    {
+                      "word": "MotorFlash ",
+                      "start": 4.1815439453125,
+                      "end": 4.711368408203125
+                    },
+                    {
+                      "word": "😊 ",
+                      "start": 4.711368408203125,
+                      "end": 4.89470166015625
+                    },
+                    {
+                      "word": " \n¿Con ",
+                      "start": 4.89470166015625,
+                      "end": 5.056982421875
+                    },
+                    {
+                      "word": "quién ",
+                      "start": 5.056982421875,
+                      "end": 5.271017578125
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 5.271017578125,
+                      "end": 5.363122802734375
+                    },
+                    {
+                      "word": "el ",
+                      "start": 5.363122802734375,
+                      "end": 5.668385986328125
+                    },
+                    {
+                      "word": "gusto ",
+                      "start": 5.668385986328125,
+                      "end": 5.74996484375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 5.74996484375,
+                      "end": 6.330666748046875
+                    },
+                    {
+                      "word": "hablar?",
+                      "start": 2.664,
+                      "end": 2.664
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Buen día, habla con Juan David.",
+                  "words": [
+                    {
+                      "word": "Buen ",
+                      "start": 7.96,
+                      "end": 8.2
+                    },
+                    {
+                      "word": "día, ",
+                      "start": 8.2,
+                      "end": 8.44
+                    },
+                    {
+                      "word": "habla ",
+                      "start": 8.44,
+                      "end": 8.68
+                    },
+                    {
+                      "word": "con ",
+                      "start": 8.68,
+                      "end": 8.84
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 8.84,
+                      "end": 9.16
+                    },
+                    {
+                      "word": "David.",
+                      "start": 9.16,
+                      "end": 9.66
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Encantada, Juan David. ¿En qué te puedo ayudar hoy?",
+                  "words": [
+                    {
+                      "word": "Encantada, ",
+                      "start": 11.597877197265625,
+                      "end": 12.12770166015625
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 12.12770166015625,
+                      "end": 12.320684326171875
+                    },
+                    {
+                      "word": "David.",
+                      "start": 12.320684326171875,
+                      "end": 12.8505087890625
+                    },
+                    {
+                      "word": " ¿En ",
+                      "start": 12.905475830078124,
+                      "end": 13.130037353515625
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 13.130037353515625,
+                      "end": 13.231791748046875
+                    },
+                    {
+                      "word": "te ",
+                      "start": 13.231791748046875,
+                      "end": 13.323019775390625
+                    },
+                    {
+                      "word": "puedo ",
+                      "start": 13.323019775390625,
+                      "end": 13.50635302734375
+                    },
+                    {
+                      "word": "ayudar ",
+                      "start": 13.50635302734375,
+                      "end": 13.873019775390626
+                    },
+                    {
+                      "word": "hoy?",
+                      "start": 13.873019775390626,
+                      "end": 14.41337060546875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Mira, estoy interesado en un vehículo.",
+                  "words": [
+                    {
+                      "word": "Mira, ",
+                      "start": 15.67,
+                      "end": 15.99
+                    },
+                    {
+                      "word": "estoy ",
+                      "start": 15.99,
+                      "end": 16.470000000000002
+                    },
+                    {
+                      "word": "interesado ",
+                      "start": 16.470000000000002,
+                      "end": 16.629999
+                    },
+                    {
+                      "word": "en ",
+                      "start": 16.629999,
+                      "end": 16.789999
+                    },
+                    {
+                      "word": "un ",
+                      "start": 16.789999,
+                      "end": 17.109998
+                    },
+                    {
+                      "word": "vehículo.",
+                      "start": 17.109998,
+                      "end": 17.609998
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Juan David. Para ayudarte a encontrar el coche ideal, te voy a hacer unas preguntas rápidas. ¿Te parece bien?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 20.101403564453125,
+                      "end": 20.62070166015625
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 20.62070166015625,
+                      "end": 20.80403515625
+                    },
+                    {
+                      "word": "David.",
+                      "start": 20.80403515625,
+                      "end": 21.38473681640625
+                    },
+                    {
+                      "word": " Para ",
+                      "start": 21.648350830078126,
+                      "end": 21.82203515625
+                    },
+                    {
+                      "word": "ayudarte ",
+                      "start": 21.82203515625,
+                      "end": 22.351859619140626
+                    },
+                    {
+                      "word": "a ",
+                      "start": 22.351859619140626,
+                      "end": 22.443087646484376
+                    },
+                    {
+                      "word": "encontrar ",
+                      "start": 22.443087646484376,
+                      "end": 23.04396484375
+                    },
+                    {
+                      "word": "el ",
+                      "start": 23.04396484375,
+                      "end": 23.258
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 23.258,
+                      "end": 23.665017578125
+                    },
+                    {
+                      "word": "ideal, ",
+                      "start": 23.665017578125,
+                      "end": 24.205368408203125
+                    },
+                    {
+                      "word": "te ",
+                      "start": 24.205368408203125,
+                      "end": 24.31677197265625
+                    },
+                    {
+                      "word": "voy ",
+                      "start": 24.31677197265625,
+                      "end": 24.439578857421875
+                    },
+                    {
+                      "word": "a ",
+                      "start": 24.439578857421875,
+                      "end": 24.479929931640626
+                    },
+                    {
+                      "word": "hacer ",
+                      "start": 24.479929931640626,
+                      "end": 24.724666748046875
+                    },
+                    {
+                      "word": "unas ",
+                      "start": 24.724666748046875,
+                      "end": 24.917649169921877
+                    },
+                    {
+                      "word": "preguntas ",
+                      "start": 24.917649169921877,
+                      "end": 25.34571923828125
+                    },
+                    {
+                      "word": "rápidas.",
+                      "start": 25.34571923828125,
+                      "end": 26.08870166015625
+                    },
+                    {
+                      "word": " ¿Te ",
+                      "start": 26.12166015625,
+                      "end": 26.3251689453125
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 26.3251689453125,
+                      "end": 26.63043212890625
+                    },
+                    {
+                      "word": "bien?",
+                      "start": 26.63043212890625,
+                      "end": 27.10937939453125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Me parece bien.",
+                  "words": [
+                    {
+                      "word": "Me ",
+                      "start": 28.26,
+                      "end": 28.5
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 28.5,
+                      "end": 28.740000000000002
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 28.740000000000002,
+                      "end": 29.16
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Genial. Para empezar, ¿tienes alguna marca en mente o estás abierto a sugerencias?",
+                  "words": [
+                    {
+                      "word": "Genial.",
+                      "start": 30.842350830078125,
+                      "end": 31.616912353515627
+                    },
+                    {
+                      "word": " Para ",
+                      "start": 32.26235083007813,
+                      "end": 32.4255087890625
+                    },
+                    {
+                      "word": "empezar, ",
+                      "start": 32.4255087890625,
+                      "end": 32.89392993164063
+                    },
+                    {
+                      "word": "¿tienes ",
+                      "start": 32.89392993164063,
+                      "end": 33.26059643554687
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 33.26059643554687,
+                      "end": 33.56673681640625
+                    },
+                    {
+                      "word": "marca ",
+                      "start": 33.56673681640625,
+                      "end": 33.81059643554688
+                    },
+                    {
+                      "word": "en ",
+                      "start": 33.81059643554688,
+                      "end": 33.92287719726563
+                    },
+                    {
+                      "word": "mente ",
+                      "start": 33.92287719726563,
+                      "end": 34.38077197265625
+                    },
+                    {
+                      "word": "o ",
+                      "start": 34.38077197265625,
+                      "end": 34.46235083007812
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 34.46235083007812,
+                      "end": 34.75796484375
+                    },
+                    {
+                      "word": "abierto ",
+                      "start": 34.75796484375,
+                      "end": 35.08340356445313
+                    },
+                    {
+                      "word": "a ",
+                      "start": 35.08340356445313,
+                      "end": 35.13428076171875
+                    },
+                    {
+                      "word": "sugerencias?",
+                      "start": 35.13428076171875,
+                      "end": 36.09217553710938
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sugerencias.",
+                  "words": [
+                    {
+                      "word": "Sugerencias.",
+                      "start": 37.229997,
+                      "end": 37.729997
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto. ¿Qué modelo te interesa, si ya tienes alguno pensado?",
+                  "words": [
+                    {
+                      "word": "Perfecto.",
+                      "start": 40.356877197265625,
+                      "end": 41.12091235351563
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 41.562350830078124,
+                      "end": 41.70533325195313
+                    },
+                    {
+                      "word": "modelo ",
+                      "start": 41.70533325195313,
+                      "end": 42.03077197265625
+                    },
+                    {
+                      "word": "te ",
+                      "start": 42.03077197265625,
+                      "end": 42.10270166015625
+                    },
+                    {
+                      "word": "interesa, ",
+                      "start": 42.10270166015625,
+                      "end": 42.57112280273437
+                    },
+                    {
+                      "word": "si ",
+                      "start": 42.57112280273437,
+                      "end": 42.71322802734375
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 42.71322802734375,
+                      "end": 42.8255087890625
+                    },
+                    {
+                      "word": "tienes ",
+                      "start": 42.8255087890625,
+                      "end": 43.110596435546874
+                    },
+                    {
+                      "word": "alguno ",
+                      "start": 43.110596435546874,
+                      "end": 43.415859619140626
+                    },
+                    {
+                      "word": "pensado?",
+                      "start": 43.415859619140626,
+                      "end": 44.17024560546875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "(inaudible speech)",
+                  "words": [
+                    {
+                      "word": "",
+                      "start": 45.66,
+                      "end": 45.66
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "Dos mil veintidós.",
+                  "words": [
+                    {
+                      "word": "Dos ",
+                      "start": 46.87,
+                      "end": 47.269999999999996
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 47.269999999999996,
+                      "end": 47.589998
+                    },
+                    {
+                      "word": "veintidós.",
+                      "start": 47.589998,
+                      "end": 48.089998
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, entonces buscas un coche del año dos mil veintidós. Ahora, ¿prefieres algún tipo de motor? (gasolina, diésel, híbrido, ",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 50.37670166015625,
+                      "end": 50.84512280273437
+                    },
+                    {
+                      "word": "entonces ",
+                      "start": 50.84512280273437,
+                      "end": 51.35389477539063
+                    },
+                    {
+                      "word": "buscas ",
+                      "start": 51.35389477539063,
+                      "end": 51.69073681640625
+                    },
+                    {
+                      "word": "un ",
+                      "start": 51.69073681640625,
+                      "end": 51.7714384765625
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 51.7714384765625,
+                      "end": 52.016175537109376
+                    },
+                    {
+                      "word": "del ",
+                      "start": 52.016175537109376,
+                      "end": 52.14863159179688
+                    },
+                    {
+                      "word": "año ",
+                      "start": 52.14863159179688,
+                      "end": 52.372315673828126
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 52.372315673828126,
+                      "end": 52.5354736328125
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 52.5354736328125,
+                      "end": 52.68810522460937
+                    },
+                    {
+                      "word": "veintidós.",
+                      "start": 52.68810522460937,
+                      "end": 53.441614013671874
+                    },
+                    {
+                      "word": " Ahora, ",
+                      "start": 53.48728515625,
+                      "end": 53.945179931640624
+                    },
+                    {
+                      "word": "¿prefieres ",
+                      "start": 53.945179931640624,
+                      "end": 54.353074462890625
+                    },
+                    {
+                      "word": "algún ",
+                      "start": 54.353074462890625,
+                      "end": 54.5767587890625
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 54.5767587890625,
+                      "end": 54.7907939453125
+                    },
+                    {
+                      "word": "de ",
+                      "start": 54.7907939453125,
+                      "end": 54.88202197265625
+                    },
+                    {
+                      "word": "motor?",
+                      "start": 54.88202197265625,
+                      "end": 55.41184643554688
+                    },
+                    {
+                      "word": " (gasolina, ",
+                      "start": 55.457017578125,
+                      "end": 56.129824462890625
+                    },
+                    {
+                      "word": "diésel, ",
+                      "start": 56.129824462890625,
+                      "end": 56.59824560546875
+                    },
+                    {
+                      "word": "híbrido, ",
+                      "start": 56.59824560546875,
+                      "end": 57.0464912109375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "eléctrico…)",
+                  "words": [
+                    {
+                      "word": "eléctrico…)",
+                      "start": 57.0464912109375,
+                      "end": 57.8605263671875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "¿De gasolina?",
+                  "words": [
+                    {
+                      "word": "¿De ",
+                      "start": 57.86,
+                      "end": 58.36
+                    },
+                    {
+                      "word": "gasolina?",
+                      "start": 59.254999999999995,
+                      "end": 59.754999999999995
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, entonces buscas un coche de gasolina. Ahora, ¿cuál es tu presupuesto aproximado?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 62.667877197265625,
+                      "end": 63.167
+                    },
+                    {
+                      "word": "entonces ",
+                      "start": 63.167,
+                      "end": 63.5845439453125
+                    },
+                    {
+                      "word": "buscas ",
+                      "start": 63.5845439453125,
+                      "end": 63.88015795898438
+                    },
+                    {
+                      "word": "un ",
+                      "start": 63.88015795898438,
+                      "end": 63.97138598632812
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 63.97138598632812,
+                      "end": 64.17489477539063
+                    },
+                    {
+                      "word": "de ",
+                      "start": 64.17489477539063,
+                      "end": 64.24682446289063
+                    },
+                    {
+                      "word": "gasolina.",
+                      "start": 64.24682446289063,
+                      "end": 65.06085961914063
+                    },
+                    {
+                      "word": " Ahora, ",
+                      "start": 65.11630932617187,
+                      "end": 65.39174780273437
+                    },
+                    {
+                      "word": "¿cuál ",
+                      "start": 65.39174780273437,
+                      "end": 65.65666015625
+                    },
+                    {
+                      "word": "es ",
+                      "start": 65.65666015625,
+                      "end": 65.75841455078125
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 65.75841455078125,
+                      "end": 65.88034423828125
+                    },
+                    {
+                      "word": "presupuesto ",
+                      "start": 65.88034423828125,
+                      "end": 66.44087060546875
+                    },
+                    {
+                      "word": "aproximado?",
+                      "start": 66.44087060546875,
+                      "end": 67.35753735351562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No, estoy abierta a opciones.",
+                  "words": [
+                    {
+                      "word": "No, ",
+                      "start": 69.05000000000001,
+                      "end": 69.29
+                    },
+                    {
+                      "word": "estoy ",
+                      "start": 69.29,
+                      "end": 69.69000000000001
+                    },
+                    {
+                      "word": "abierta ",
+                      "start": 69.69000000000001,
+                      "end": 69.850004
+                    },
+                    {
+                      "word": "a ",
+                      "start": 69.850004,
+                      "end": 70.01
+                    },
+                    {
+                      "word": "opciones.",
+                      "start": 70.01,
+                      "end": 70.44000000000001
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, entonces estás abierto a opciones en cuanto al presupuesto. ¿Hasta qué año de antigüedad te gustaría que tuviera el coche?",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 72.54670166015624,
+                      "end": 73.066
+                    },
+                    {
+                      "word": "entonces ",
+                      "start": 73.066,
+                      "end": 73.616
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 73.616,
+                      "end": 73.95196484375
+                    },
+                    {
+                      "word": "abierto ",
+                      "start": 73.95196484375,
+                      "end": 74.38003515625
+                    },
+                    {
+                      "word": "a ",
+                      "start": 74.38003515625,
+                      "end": 74.4405615234375
+                    },
+                    {
+                      "word": "opciones ",
+                      "start": 74.4405615234375,
+                      "end": 74.89933325195312
+                    },
+                    {
+                      "word": "en ",
+                      "start": 74.89933325195312,
+                      "end": 74.98091235351562
+                    },
+                    {
+                      "word": "cuanto ",
+                      "start": 74.98091235351562,
+                      "end": 75.21512280273437
+                    },
+                    {
+                      "word": "al ",
+                      "start": 75.21512280273437,
+                      "end": 75.31687719726563
+                    },
+                    {
+                      "word": "presupuesto.",
+                      "start": 75.31687719726563,
+                      "end": 76.223017578125
+                    },
+                    {
+                      "word": " ¿Hasta ",
+                      "start": 76.24085961914062,
+                      "end": 76.76015795898438
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 76.76015795898438,
+                      "end": 77.004017578125
+                    },
+                    {
+                      "word": "año ",
+                      "start": 77.004017578125,
+                      "end": 77.31015795898438
+                    },
+                    {
+                      "word": "de ",
+                      "start": 77.31015795898438,
+                      "end": 77.39173681640625
+                    },
+                    {
+                      "word": "antigüedad ",
+                      "start": 77.39173681640625,
+                      "end": 77.9715615234375
+                    },
+                    {
+                      "word": "te ",
+                      "start": 77.9715615234375,
+                      "end": 78.09436840820312
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 78.09436840820312,
+                      "end": 78.55226318359375
+                    },
+                    {
+                      "word": "que ",
+                      "start": 78.55226318359375,
+                      "end": 78.654017578125
+                    },
+                    {
+                      "word": "tuviera ",
+                      "start": 78.654017578125,
+                      "end": 78.9294560546875
+                    },
+                    {
+                      "word": "el ",
+                      "start": 78.9294560546875,
+                      "end": 79.05138598632813
+                    },
+                    {
+                      "word": "coche?",
+                      "start": 79.05138598632813,
+                      "end": 79.73384204101562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Son los dos años.",
+                  "words": [
+                    {
+                      "word": "Son ",
+                      "start": 81.05000000000001,
+                      "end": 81.37
+                    },
+                    {
+                      "word": "los ",
+                      "start": 81.37,
+                      "end": 81.61
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 81.61,
+                      "end": 82.01
+                    },
+                    {
+                      "word": "años.",
+                      "start": 82.01,
+                      "end": 82.51
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entendido, entonces buscas un coche de hasta dos años de antigüedad. Por último, ¿qué kilometraje máximo considerarías aceptable?",
+                  "words": [
+                    {
+                      "word": "Entendido, ",
+                      "start": 84.89687719726562,
+                      "end": 85.49775439453126
+                    },
+                    {
+                      "word": "entonces ",
+                      "start": 85.49775439453126,
+                      "end": 85.86442114257812
+                    },
+                    {
+                      "word": "buscas ",
+                      "start": 85.86442114257812,
+                      "end": 86.2205615234375
+                    },
+                    {
+                      "word": "un ",
+                      "start": 86.2205615234375,
+                      "end": 86.32231567382813
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 86.32231567382813,
+                      "end": 86.61792993164063
+                    },
+                    {
+                      "word": "de ",
+                      "start": 86.61792993164063,
+                      "end": 86.71003515625
+                    },
+                    {
+                      "word": "hasta ",
+                      "start": 86.71003515625,
+                      "end": 86.94424560546875
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 86.94424560546875,
+                      "end": 87.09687719726563
+                    },
+                    {
+                      "word": "años ",
+                      "start": 87.09687719726563,
+                      "end": 87.34073681640625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 87.34073681640625,
+                      "end": 87.40214038085938
+                    },
+                    {
+                      "word": "antigüedad.",
+                      "start": 87.40214038085938,
+                      "end": 88.22757885742188
+                    },
+                    {
+                      "word": " Por ",
+                      "start": 88.278892578125,
+                      "end": 88.52362939453126
+                    },
+                    {
+                      "word": "último, ",
+                      "start": 88.52362939453126,
+                      "end": 89.042927734375
+                    },
+                    {
+                      "word": "¿qué ",
+                      "start": 89.042927734375,
+                      "end": 89.39994506835937
+                    },
+                    {
+                      "word": "kilometraje ",
+                      "start": 89.39994506835937,
+                      "end": 89.97012060546875
+                    },
+                    {
+                      "word": "máximo ",
+                      "start": 89.97012060546875,
+                      "end": 90.3464365234375
+                    },
+                    {
+                      "word": "considerarías ",
+                      "start": 90.3464365234375,
+                      "end": 91.0394189453125
+                    },
+                    {
+                      "word": "aceptable?",
+                      "start": 91.0394189453125,
+                      "end": 91.90520825195313
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 9
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Unos cincuenta mil kilómetros.",
+                  "words": [
+                    {
+                      "word": "Unos ",
+                      "start": 93.71000500000001,
+                      "end": 93.95
+                    },
+                    {
+                      "word": "cincuenta ",
+                      "start": 93.95,
+                      "end": 94.45
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 94.67,
+                      "end": 94.83
+                    },
+                    {
+                      "word": "kilómetros.",
+                      "start": 94.83,
+                      "end": 95.33
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias por toda la información, Juan David.Dame un instante mientras reviso el inventario para ver qué coches encajan con lo que estás buscando.",
+                  "words": [
+                    {
+                      "word": "Gracias ",
+                      "start": 97.47487719726563,
+                      "end": 97.8415439453125
+                    },
+                    {
+                      "word": "por ",
+                      "start": 97.8415439453125,
+                      "end": 97.99417553710937
+                    },
+                    {
+                      "word": "toda ",
+                      "start": 97.99417553710937,
+                      "end": 98.13715795898437
+                    },
+                    {
+                      "word": "la ",
+                      "start": 98.13715795898437,
+                      "end": 98.20821044921875
+                    },
+                    {
+                      "word": "información, ",
+                      "start": 98.20821044921875,
+                      "end": 98.716982421875
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 98.716982421875,
+                      "end": 98.89066674804687
+                    },
+                    {
+                      "word": "David.",
+                      "start": 98.89066674804687,
+                      "end": 99.4204912109375
+                    },
+                    {
+                      "word": "Dame ",
+                      "start": 99.42885961914062,
+                      "end": 99.642017578125
+                    },
+                    {
+                      "word": "un ",
+                      "start": 99.642017578125,
+                      "end": 99.75429833984376
+                    },
+                    {
+                      "word": "instante ",
+                      "start": 99.75429833984376,
+                      "end": 100.24289477539062
+                    },
+                    {
+                      "word": "mientras ",
+                      "start": 100.24289477539062,
+                      "end": 100.54903515625
+                    },
+                    {
+                      "word": "reviso ",
+                      "start": 100.54903515625,
+                      "end": 100.85429833984375
+                    },
+                    {
+                      "word": "el ",
+                      "start": 100.85429833984375,
+                      "end": 100.96657885742188
+                    },
+                    {
+                      "word": "inventario ",
+                      "start": 100.96657885742188,
+                      "end": 101.46570166015626
+                    },
+                    {
+                      "word": "para ",
+                      "start": 101.46570166015626,
+                      "end": 101.67885961914062
+                    },
+                    {
+                      "word": "ver ",
+                      "start": 101.67885961914062,
+                      "end": 101.88324560546874
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 101.88324560546874,
+                      "end": 102.0455263671875
+                    },
+                    {
+                      "word": "coches ",
+                      "start": 102.0455263671875,
+                      "end": 102.44289477539063
+                    },
+                    {
+                      "word": "encajan ",
+                      "start": 102.44289477539063,
+                      "end": 102.85078955078124
+                    },
+                    {
+                      "word": "con ",
+                      "start": 102.85078955078124,
+                      "end": 102.9525439453125
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 102.9525439453125,
+                      "end": 103.05429833984375
+                    },
+                    {
+                      "word": "que ",
+                      "start": 103.05429833984375,
+                      "end": 103.13587719726563
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 103.13587719726563,
+                      "end": 103.37008764648438
+                    },
+                    {
+                      "word": "buscando.",
+                      "start": 103.37008764648438,
+                      "end": 104.14377197265625
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 10
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale.",
+                  "words": [
+                    {
+                      "word": "Vale.",
+                      "start": 105.46000000000001,
+                      "end": 105.96000000000001
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "He encontrado algunas opciones que encajan bastante bien con lo que buscas. Te cuento una de ellas y me dices qué te parece, ¿vale?\n\nEs un Fiat ",
+                  "words": [
+                    {
+                      "word": "He ",
+                      "start": 109.74387719726562,
+                      "end": 109.835982421875
+                    },
+                    {
+                      "word": "encontrado ",
+                      "start": 109.835982421875,
+                      "end": 110.28335083007812
+                    },
+                    {
+                      "word": "algunas ",
+                      "start": 110.28335083007812,
+                      "end": 110.64036840820313
+                    },
+                    {
+                      "word": "opciones ",
+                      "start": 110.64036840820313,
+                      "end": 111.07808764648438
+                    },
+                    {
+                      "word": "que ",
+                      "start": 111.07808764648438,
+                      "end": 111.15966674804687
+                    },
+                    {
+                      "word": "encajan ",
+                      "start": 111.15966674804687,
+                      "end": 111.535982421875
+                    },
+                    {
+                      "word": "bastante ",
+                      "start": 111.535982421875,
+                      "end": 111.97457885742188
+                    },
+                    {
+                      "word": "bien ",
+                      "start": 111.97457885742188,
+                      "end": 112.25966674804687
+                    },
+                    {
+                      "word": "con ",
+                      "start": 112.25966674804687,
+                      "end": 112.38159643554687
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 112.38159643554687,
+                      "end": 112.49387719726562
+                    },
+                    {
+                      "word": "que ",
+                      "start": 112.49387719726562,
+                      "end": 112.59563159179687
+                    },
+                    {
+                      "word": "buscas.",
+                      "start": 112.59563159179687,
+                      "end": 113.3184384765625
+                    },
+                    {
+                      "word": " Te ",
+                      "start": 113.372517578125,
+                      "end": 113.48479833984375
+                    },
+                    {
+                      "word": "cuento ",
+                      "start": 113.48479833984375,
+                      "end": 113.76988598632812
+                    },
+                    {
+                      "word": "una ",
+                      "start": 113.76988598632812,
+                      "end": 113.95321923828125
+                    },
+                    {
+                      "word": "de ",
+                      "start": 113.95321923828125,
+                      "end": 114.02427197265625
+                    },
+                    {
+                      "word": "ellas ",
+                      "start": 114.02427197265625,
+                      "end": 114.24883325195313
+                    },
+                    {
+                      "word": "y ",
+                      "start": 114.24883325195313,
+                      "end": 114.31988598632813
+                    },
+                    {
+                      "word": "me ",
+                      "start": 114.31988598632813,
+                      "end": 114.43216674804688
+                    },
+                    {
+                      "word": "dices ",
+                      "start": 114.43216674804688,
+                      "end": 114.78830712890625
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 114.78830712890625,
+                      "end": 114.90058764648437
+                    },
+                    {
+                      "word": "te ",
+                      "start": 114.90058764648437,
+                      "end": 115.00234204101562
+                    },
+                    {
+                      "word": "parece, ",
+                      "start": 115.00234204101562,
+                      "end": 115.3690087890625
+                    },
+                    {
+                      "word": "¿vale?",
+                      "start": 115.3690087890625,
+                      "end": 115.93918432617187
+                    },
+                    {
+                      "word": "\n\nEs ",
+                      "start": 115.98605932617187,
+                      "end": 116.21062060546875
+                    },
+                    {
+                      "word": "un ",
+                      "start": 116.21062060546875,
+                      "end": 116.312375
+                    },
+                    {
+                      "word": "Fiat ",
+                      "start": 116.312375,
+                      "end": 116.57728735351563
+                    }
+                  ],
+                  "metadata": {
+                    "interrupt_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale",
+                  "words": [
+                    {
+                      "word": "Vale",
+                      "start": 116.76999500000001,
+                      "end": 117.26999500000001
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Ibiza del año dos mil veintidós, con motor de gasolina. Tiene un recorrido de cuarenta y dos mil quinientos cuarenta y un kilómetros y su precio es de quince mil ochocientos euros.¿Te gustaría saber más sobre este coche o prefieres que te muestre otra alternativa?",
+                  "words": [
+                    {
+                      "word": "Ibiza ",
+                      "start": 116.57728735351563,
+                      "end": 117.01500659179688
+                    },
+                    {
+                      "word": "del ",
+                      "start": 117.01500659179688,
+                      "end": 117.1878134765625
+                    },
+                    {
+                      "word": "año ",
+                      "start": 117.1878134765625,
+                      "end": 117.39219946289063
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 117.39219946289063,
+                      "end": 117.56500659179687
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 117.56500659179687,
+                      "end": 117.71763818359375
+                    },
+                    {
+                      "word": "veintidós, ",
+                      "start": 117.71763818359375,
+                      "end": 118.54307666015625
+                    },
+                    {
+                      "word": "con ",
+                      "start": 118.54307666015625,
+                      "end": 118.68518212890625
+                    },
+                    {
+                      "word": "motor ",
+                      "start": 118.68518212890625,
+                      "end": 118.97026977539062
+                    },
+                    {
+                      "word": "de ",
+                      "start": 118.97026977539062,
+                      "end": 119.0518486328125
+                    },
+                    {
+                      "word": "gasolina.",
+                      "start": 119.0518486328125,
+                      "end": 119.89746264648437
+                    },
+                    {
+                      "word": " Tiene ",
+                      "start": 119.9205087890625,
+                      "end": 120.14507006835937
+                    },
+                    {
+                      "word": "un ",
+                      "start": 120.14507006835937,
+                      "end": 120.22664916992187
+                    },
+                    {
+                      "word": "recorrido ",
+                      "start": 120.22664916992187,
+                      "end": 120.66436840820313
+                    },
+                    {
+                      "word": "de ",
+                      "start": 120.66436840820313,
+                      "end": 120.77577197265624
+                    },
+                    {
+                      "word": "cuarenta ",
+                      "start": 120.77577197265624,
+                      "end": 121.19331567382812
+                    },
+                    {
+                      "word": "y ",
+                      "start": 121.19331567382812,
+                      "end": 121.26524560546875
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 121.26524560546875,
+                      "end": 121.438052734375
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 121.438052734375,
+                      "end": 121.59068432617188
+                    },
+                    {
+                      "word": "quinientos ",
+                      "start": 121.59068432617188,
+                      "end": 121.99857885742188
+                    },
+                    {
+                      "word": "cuarenta ",
+                      "start": 121.99857885742188,
+                      "end": 122.36524560546874
+                    },
+                    {
+                      "word": "y ",
+                      "start": 122.36524560546874,
+                      "end": 122.43629833984374
+                    },
+                    {
+                      "word": "un ",
+                      "start": 122.43629833984374,
+                      "end": 122.5275263671875
+                    },
+                    {
+                      "word": "kilómetros ",
+                      "start": 122.5275263671875,
+                      "end": 123.16963159179687
+                    },
+                    {
+                      "word": "y ",
+                      "start": 123.16963159179687,
+                      "end": 123.27138598632813
+                    },
+                    {
+                      "word": "su ",
+                      "start": 123.27138598632813,
+                      "end": 123.424017578125
+                    },
+                    {
+                      "word": "precio ",
+                      "start": 123.424017578125,
+                      "end": 123.80121044921874
+                    },
+                    {
+                      "word": "es ",
+                      "start": 123.80121044921874,
+                      "end": 123.91261401367187
+                    },
+                    {
+                      "word": "de ",
+                      "start": 123.91261401367187,
+                      "end": 124.01436840820313
+                    },
+                    {
+                      "word": "quince ",
+                      "start": 124.01436840820313,
+                      "end": 124.30033325195312
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 124.30033325195312,
+                      "end": 124.46261401367188
+                    },
+                    {
+                      "word": "ochocientos ",
+                      "start": 124.46261401367188,
+                      "end": 125.074017578125
+                    },
+                    {
+                      "word": "euros.",
+                      "start": 125.074017578125,
+                      "end": 125.6845439453125
+                    },
+                    {
+                      "word": "¿Te ",
+                      "start": 125.6967763671875,
+                      "end": 125.94063598632812
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 125.94063598632812,
+                      "end": 126.38888159179687
+                    },
+                    {
+                      "word": "saber ",
+                      "start": 126.38888159179687,
+                      "end": 126.70467114257812
+                    },
+                    {
+                      "word": "más ",
+                      "start": 126.70467114257812,
+                      "end": 126.95905712890625
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 126.95905712890625,
+                      "end": 127.27484643554688
+                    },
+                    {
+                      "word": "este ",
+                      "start": 127.27484643554688,
+                      "end": 127.529232421875
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 127.529232421875,
+                      "end": 128.04940795898438
+                    },
+                    {
+                      "word": "o ",
+                      "start": 128.04940795898438,
+                      "end": 128.1608115234375
+                    },
+                    {
+                      "word": "prefieres ",
+                      "start": 128.1608115234375,
+                      "end": 128.6397587890625
+                    },
+                    {
+                      "word": "que ",
+                      "start": 128.6397587890625,
+                      "end": 128.75203955078126
+                    },
+                    {
+                      "word": "te ",
+                      "start": 128.75203955078126,
+                      "end": 128.86344287109375
+                    },
+                    {
+                      "word": "muestre ",
+                      "start": 128.86344287109375,
+                      "end": 129.1897587890625
+                    },
+                    {
+                      "word": "otra ",
+                      "start": 129.1897587890625,
+                      "end": 129.35291674804688
+                    },
+                    {
+                      "word": "alternativa?",
+                      "start": 129.35291674804688,
+                      "end": 130.33010961914061
+                    }
+                  ],
+                  "metadata": {
+                    "interrupt_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Ese me parece bien.",
+                  "words": [
+                    {
+                      "word": "Ese ",
+                      "start": 131.89,
+                      "end": 132.13001
+                    },
+                    {
+                      "word": "me ",
+                      "start": 132.13001,
+                      "end": 132.37
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 132.37,
+                      "end": 132.60999999999999
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 132.60999999999999,
+                      "end": 133.10999999999999
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Perfecto! Si te parece bien, podemos agendar una cita con uno de nuestros asesores para que te dé todos los detalles y te ayude a seguir con el proceso de compra.\n\n¿Me dices tu nombre completo, por favor?",
+                  "words": [
+                    {
+                      "word": "¡Perfecto!",
+                      "start": 135.05070166015625,
+                      "end": 135.83491235351562
+                    },
+                    {
+                      "word": " Si ",
+                      "start": 137.34317553710937,
+                      "end": 137.47563159179688
+                    },
+                    {
+                      "word": "te ",
+                      "start": 137.47563159179688,
+                      "end": 137.56773681640624
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 137.56773681640624,
+                      "end": 137.8835263671875
+                    },
+                    {
+                      "word": "bien, ",
+                      "start": 137.8835263671875,
+                      "end": 138.13791235351562
+                    },
+                    {
+                      "word": "podemos ",
+                      "start": 138.13791235351562,
+                      "end": 138.56510522460937
+                    },
+                    {
+                      "word": "agendar ",
+                      "start": 138.56510522460937,
+                      "end": 138.99317553710938
+                    },
+                    {
+                      "word": "una ",
+                      "start": 138.99317553710938,
+                      "end": 139.15633325195313
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 139.15633325195313,
+                      "end": 139.42124560546876
+                    },
+                    {
+                      "word": "con ",
+                      "start": 139.42124560546876,
+                      "end": 139.60457885742187
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 139.60457885742187,
+                      "end": 139.7265087890625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 139.7265087890625,
+                      "end": 139.7975615234375
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 139.7975615234375,
+                      "end": 140.1238771972656
+                    },
+                    {
+                      "word": "asesores ",
+                      "start": 140.1238771972656,
+                      "end": 140.623
+                    },
+                    {
+                      "word": "para ",
+                      "start": 140.623,
+                      "end": 140.79580712890626
+                    },
+                    {
+                      "word": "que ",
+                      "start": 140.79580712890626,
+                      "end": 140.90808764648438
+                    },
+                    {
+                      "word": "te ",
+                      "start": 140.90808764648438,
+                      "end": 141.0405439453125
+                    },
+                    {
+                      "word": "dé ",
+                      "start": 141.0405439453125,
+                      "end": 141.22387719726564
+                    },
+                    {
+                      "word": "todos ",
+                      "start": 141.22387719726564,
+                      "end": 141.51861401367188
+                    },
+                    {
+                      "word": "los ",
+                      "start": 141.51861401367188,
+                      "end": 141.6510700683594
+                    },
+                    {
+                      "word": "detalles ",
+                      "start": 141.6510700683594,
+                      "end": 142.39492993164063
+                    },
+                    {
+                      "word": "y ",
+                      "start": 142.39492993164063,
+                      "end": 142.57826318359375
+                    },
+                    {
+                      "word": "te ",
+                      "start": 142.57826318359375,
+                      "end": 142.680017578125
+                    },
+                    {
+                      "word": "ayude ",
+                      "start": 142.680017578125,
+                      "end": 142.96510522460937
+                    },
+                    {
+                      "word": "a ",
+                      "start": 142.96510522460937,
+                      "end": 143.0265087890625
+                    },
+                    {
+                      "word": "seguir ",
+                      "start": 143.0265087890625,
+                      "end": 143.28089477539064
+                    },
+                    {
+                      "word": "con ",
+                      "start": 143.28089477539064,
+                      "end": 143.39317553710939
+                    },
+                    {
+                      "word": "el ",
+                      "start": 143.39317553710939,
+                      "end": 143.49492993164063
+                    },
+                    {
+                      "word": "proceso ",
+                      "start": 143.49492993164063,
+                      "end": 143.87124560546874
+                    },
+                    {
+                      "word": "de ",
+                      "start": 143.87124560546874,
+                      "end": 143.9835263671875
+                    },
+                    {
+                      "word": "compra.",
+                      "start": 143.9835263671875,
+                      "end": 144.61510522460938
+                    },
+                    {
+                      "word": "\n\n¿Me ",
+                      "start": 144.65995166015625,
+                      "end": 144.80205712890626
+                    },
+                    {
+                      "word": "dices ",
+                      "start": 144.80205712890626,
+                      "end": 145.0573200683594
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 145.0573200683594,
+                      "end": 145.1897763671875
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 145.1897763671875,
+                      "end": 145.4336359863281
+                    },
+                    {
+                      "word": "completo, ",
+                      "start": 145.4336359863281,
+                      "end": 145.88188159179688
+                    },
+                    {
+                      "word": "por ",
+                      "start": 145.88188159179688,
+                      "end": 146.03451318359376
+                    },
+                    {
+                      "word": "favor?",
+                      "start": 146.03451318359376,
+                      "end": 146.66609204101562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 11
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Claro que sí, es Juan David García Amaya.",
+                  "words": [
+                    {
+                      "word": "Claro ",
+                      "start": 149.09,
+                      "end": 149.32999999999998
+                    },
+                    {
+                      "word": "que ",
+                      "start": 149.32999999999998,
+                      "end": 149.41001
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 149.41001,
+                      "end": 149.64999999999998
+                    },
+                    {
+                      "word": "es ",
+                      "start": 149.64999999999998,
+                      "end": 149.89
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 149.89,
+                      "end": 150.05001
+                    },
+                    {
+                      "word": "David ",
+                      "start": 150.05001,
+                      "end": 150.45
+                    },
+                    {
+                      "word": "García ",
+                      "start": 150.45,
+                      "end": 150.69001
+                    },
+                    {
+                      "word": "Amaya.",
+                      "start": 150.69001,
+                      "end": 151.04
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias, Juan David. Ahora, ¿me podrías dar un número de contacto al que prefieras que te escribamos o llamemos?",
+                  "words": [
+                    {
+                      "word": "Gracias, ",
+                      "start": 152.79640356445313,
+                      "end": 153.213947265625
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 153.213947265625,
+                      "end": 153.38675439453124
+                    },
+                    {
+                      "word": "David.",
+                      "start": 153.38675439453124,
+                      "end": 153.91657885742188
+                    },
+                    {
+                      "word": " Ahora, ",
+                      "start": 154.52317553710938,
+                      "end": 155.26703515625
+                    },
+                    {
+                      "word": "¿me ",
+                      "start": 155.26703515625,
+                      "end": 155.5924736328125
+                    },
+                    {
+                      "word": "podrías ",
+                      "start": 155.5924736328125,
+                      "end": 156.1424736328125
+                    },
+                    {
+                      "word": "dar ",
+                      "start": 156.1424736328125,
+                      "end": 156.41791235351562
+                    },
+                    {
+                      "word": "un ",
+                      "start": 156.41791235351562,
+                      "end": 156.5705439453125
+                    },
+                    {
+                      "word": "número ",
+                      "start": 156.5705439453125,
+                      "end": 156.87580712890625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 156.87580712890625,
+                      "end": 156.9880876464844
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 156.9880876464844,
+                      "end": 157.50738598632813
+                    },
+                    {
+                      "word": "al ",
+                      "start": 157.50738598632813,
+                      "end": 157.60914038085937
+                    },
+                    {
+                      "word": "que ",
+                      "start": 157.60914038085937,
+                      "end": 157.7108947753906
+                    },
+                    {
+                      "word": "prefieras ",
+                      "start": 157.7108947753906,
+                      "end": 158.2205439453125
+                    },
+                    {
+                      "word": "que ",
+                      "start": 158.2205439453125,
+                      "end": 158.353
+                    },
+                    {
+                      "word": "te ",
+                      "start": 158.353,
+                      "end": 158.44422802734374
+                    },
+                    {
+                      "word": "escribamos ",
+                      "start": 158.44422802734374,
+                      "end": 159.03457885742188
+                    },
+                    {
+                      "word": "o ",
+                      "start": 159.03457885742188,
+                      "end": 159.15738598632814
+                    },
+                    {
+                      "word": "llamemos?",
+                      "start": 159.15738598632814,
+                      "end": 159.96177197265624
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 12
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No, ese mismo número estaría bien.",
+                  "words": [
+                    {
+                      "word": "No, ",
+                      "start": 162,
+                      "end": 162.16
+                    },
+                    {
+                      "word": "ese ",
+                      "start": 162.16,
+                      "end": 162.48
+                    },
+                    {
+                      "word": "mismo ",
+                      "start": 162.48,
+                      "end": 162.88
+                    },
+                    {
+                      "word": "número ",
+                      "start": 162.88,
+                      "end": 163.12
+                    },
+                    {
+                      "word": "estaría ",
+                      "start": 163.12,
+                      "end": 163.44
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 163.44,
+                      "end": 163.94
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Juan David. ¿Y cuál sería tu correo electrónico para enviarte la información por email?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 165.91940356445312,
+                      "end": 166.45887719726562
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 166.45887719726562,
+                      "end": 166.62203515625
+                    },
+                    {
+                      "word": "David.",
+                      "start": 166.62203515625,
+                      "end": 167.1615087890625
+                    },
+                    {
+                      "word": " ¿Y ",
+                      "start": 167.43135083007812,
+                      "end": 167.68661401367189
+                    },
+                    {
+                      "word": "cuál ",
+                      "start": 167.68661401367189,
+                      "end": 167.85942114257813
+                    },
+                    {
+                      "word": "sería ",
+                      "start": 167.85942114257813,
+                      "end": 168.12433325195312
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 168.12433325195312,
+                      "end": 168.23661401367187
+                    },
+                    {
+                      "word": "correo ",
+                      "start": 168.23661401367187,
+                      "end": 168.491
+                    },
+                    {
+                      "word": "electrónico ",
+                      "start": 168.491,
+                      "end": 169.14275439453124
+                    },
+                    {
+                      "word": "para ",
+                      "start": 169.14275439453124,
+                      "end": 169.34626318359375
+                    },
+                    {
+                      "word": "enviarte ",
+                      "start": 169.34626318359375,
+                      "end": 169.73310522460937
+                    },
+                    {
+                      "word": "la ",
+                      "start": 169.73310522460937,
+                      "end": 169.7945087890625
+                    },
+                    {
+                      "word": "información ",
+                      "start": 169.7945087890625,
+                      "end": 170.32433325195314
+                    },
+                    {
+                      "word": "por ",
+                      "start": 170.32433325195314,
+                      "end": 170.47696484375
+                    },
+                    {
+                      "word": "email?",
+                      "start": 170.47696484375,
+                      "end": 171.05766674804687
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 13
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Claro, es Juan David I I arroba Hotmail punto com.",
+                  "words": [
+                    {
+                      "word": "Claro, ",
+                      "start": 172.17999999999998,
+                      "end": 172.49999
+                    },
+                    {
+                      "word": "es ",
+                      "start": 172.49999,
+                      "end": 172.82
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 172.82,
+                      "end": 173.05999
+                    },
+                    {
+                      "word": "David ",
+                      "start": 173.05999,
+                      "end": 173.54
+                    },
+                    {
+                      "word": "I ",
+                      "start": 173.54,
+                      "end": 173.85998999999998
+                    },
+                    {
+                      "word": "I ",
+                      "start": 173.85998999999998,
+                      "end": 174.26
+                    },
+                    {
+                      "word": "arroba ",
+                      "start": 174.26,
+                      "end": 174.57998999999998
+                    },
+                    {
+                      "word": "Hotmail ",
+                      "start": 174.57998999999998,
+                      "end": 175.07998999999998
+                    },
+                    {
+                      "word": "punto ",
+                      "start": 175.13998999999998,
+                      "end": 175.29999999999998
+                    },
+                    {
+                      "word": "com.",
+                      "start": 175.29999999999998,
+                      "end": 175.73999999999998
+                    }
+                  ]
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Muchas gracias por comunicarte con MotorFlash 😊  \n¿Con quién tengo el gusto de hablar?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 1.556403564453125,
+                      "end": 2.268684326171875
+                    },
+                    {
+                      "word": " Muchas ",
+                      "start": 2.704350830078125,
+                      "end": 3.020140380859375
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 3.020140380859375,
+                      "end": 3.335929931640625
+                    },
+                    {
+                      "word": "por ",
+                      "start": 3.335929931640625,
+                      "end": 3.4885615234375
+                    },
+                    {
+                      "word": "comunicarte ",
+                      "start": 3.4885615234375,
+                      "end": 4.059614013671875
+                    },
+                    {
+                      "word": "con ",
+                      "start": 4.059614013671875,
+                      "end": 4.1815439453125
+                    },
+                    {
+                      "word": "MotorFlash ",
+                      "start": 4.1815439453125,
+                      "end": 4.711368408203125
+                    },
+                    {
+                      "word": "😊 ",
+                      "start": 4.711368408203125,
+                      "end": 4.89470166015625
+                    },
+                    {
+                      "word": " \n¿Con ",
+                      "start": 4.89470166015625,
+                      "end": 5.056982421875
+                    },
+                    {
+                      "word": "quién ",
+                      "start": 5.056982421875,
+                      "end": 5.271017578125
+                    },
+                    {
+                      "word": "tengo ",
+                      "start": 5.271017578125,
+                      "end": 5.363122802734375
+                    },
+                    {
+                      "word": "el ",
+                      "start": 5.363122802734375,
+                      "end": 5.668385986328125
+                    },
+                    {
+                      "word": "gusto ",
+                      "start": 5.668385986328125,
+                      "end": 5.74996484375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 5.74996484375,
+                      "end": 6.330666748046875
+                    },
+                    {
+                      "word": "hablar?",
+                      "start": 2.664,
+                      "end": 2.664
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Buen día, habla con Juan David.",
+                  "words": [
+                    {
+                      "word": "Buen ",
+                      "start": 7.96,
+                      "end": 8.2
+                    },
+                    {
+                      "word": "día, ",
+                      "start": 8.2,
+                      "end": 8.44
+                    },
+                    {
+                      "word": "habla ",
+                      "start": 8.44,
+                      "end": 8.68
+                    },
+                    {
+                      "word": "con ",
+                      "start": 8.68,
+                      "end": 8.84
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 8.84,
+                      "end": 9.16
+                    },
+                    {
+                      "word": "David.",
+                      "start": 9.16,
+                      "end": 9.66
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Encantada, Juan David. ¿En qué te puedo ayudar hoy?",
+                  "words": [
+                    {
+                      "word": "Encantada, ",
+                      "start": 11.597877197265625,
+                      "end": 12.12770166015625
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 12.12770166015625,
+                      "end": 12.320684326171875
+                    },
+                    {
+                      "word": "David.",
+                      "start": 12.320684326171875,
+                      "end": 12.8505087890625
+                    },
+                    {
+                      "word": " ¿En ",
+                      "start": 12.905475830078124,
+                      "end": 13.130037353515625
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 13.130037353515625,
+                      "end": 13.231791748046875
+                    },
+                    {
+                      "word": "te ",
+                      "start": 13.231791748046875,
+                      "end": 13.323019775390625
+                    },
+                    {
+                      "word": "puedo ",
+                      "start": 13.323019775390625,
+                      "end": 13.50635302734375
+                    },
+                    {
+                      "word": "ayudar ",
+                      "start": 13.50635302734375,
+                      "end": 13.873019775390626
+                    },
+                    {
+                      "word": "hoy?",
+                      "start": 13.873019775390626,
+                      "end": 14.41337060546875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Mira, estoy interesado en un vehículo.",
+                  "words": [
+                    {
+                      "word": "Mira, ",
+                      "start": 15.67,
+                      "end": 15.99
+                    },
+                    {
+                      "word": "estoy ",
+                      "start": 15.99,
+                      "end": 16.470000000000002
+                    },
+                    {
+                      "word": "interesado ",
+                      "start": 16.470000000000002,
+                      "end": 16.629999
+                    },
+                    {
+                      "word": "en ",
+                      "start": 16.629999,
+                      "end": 16.789999
+                    },
+                    {
+                      "word": "un ",
+                      "start": 16.789999,
+                      "end": 17.109998
+                    },
+                    {
+                      "word": "vehículo.",
+                      "start": 17.109998,
+                      "end": 17.609998
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Juan David. Para ayudarte a encontrar el coche ideal, te voy a hacer unas preguntas rápidas. ¿Te parece bien?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 20.101403564453125,
+                      "end": 20.62070166015625
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 20.62070166015625,
+                      "end": 20.80403515625
+                    },
+                    {
+                      "word": "David.",
+                      "start": 20.80403515625,
+                      "end": 21.38473681640625
+                    },
+                    {
+                      "word": " Para ",
+                      "start": 21.648350830078126,
+                      "end": 21.82203515625
+                    },
+                    {
+                      "word": "ayudarte ",
+                      "start": 21.82203515625,
+                      "end": 22.351859619140626
+                    },
+                    {
+                      "word": "a ",
+                      "start": 22.351859619140626,
+                      "end": 22.443087646484376
+                    },
+                    {
+                      "word": "encontrar ",
+                      "start": 22.443087646484376,
+                      "end": 23.04396484375
+                    },
+                    {
+                      "word": "el ",
+                      "start": 23.04396484375,
+                      "end": 23.258
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 23.258,
+                      "end": 23.665017578125
+                    },
+                    {
+                      "word": "ideal, ",
+                      "start": 23.665017578125,
+                      "end": 24.205368408203125
+                    },
+                    {
+                      "word": "te ",
+                      "start": 24.205368408203125,
+                      "end": 24.31677197265625
+                    },
+                    {
+                      "word": "voy ",
+                      "start": 24.31677197265625,
+                      "end": 24.439578857421875
+                    },
+                    {
+                      "word": "a ",
+                      "start": 24.439578857421875,
+                      "end": 24.479929931640626
+                    },
+                    {
+                      "word": "hacer ",
+                      "start": 24.479929931640626,
+                      "end": 24.724666748046875
+                    },
+                    {
+                      "word": "unas ",
+                      "start": 24.724666748046875,
+                      "end": 24.917649169921877
+                    },
+                    {
+                      "word": "preguntas ",
+                      "start": 24.917649169921877,
+                      "end": 25.34571923828125
+                    },
+                    {
+                      "word": "rápidas.",
+                      "start": 25.34571923828125,
+                      "end": 26.08870166015625
+                    },
+                    {
+                      "word": " ¿Te ",
+                      "start": 26.12166015625,
+                      "end": 26.3251689453125
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 26.3251689453125,
+                      "end": 26.63043212890625
+                    },
+                    {
+                      "word": "bien?",
+                      "start": 26.63043212890625,
+                      "end": 27.10937939453125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Me parece bien.",
+                  "words": [
+                    {
+                      "word": "Me ",
+                      "start": 28.26,
+                      "end": 28.5
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 28.5,
+                      "end": 28.740000000000002
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 28.740000000000002,
+                      "end": 29.16
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Genial. Para empezar, ¿tienes alguna marca en mente o estás abierto a sugerencias?",
+                  "words": [
+                    {
+                      "word": "Genial.",
+                      "start": 30.842350830078125,
+                      "end": 31.616912353515627
+                    },
+                    {
+                      "word": " Para ",
+                      "start": 32.26235083007813,
+                      "end": 32.4255087890625
+                    },
+                    {
+                      "word": "empezar, ",
+                      "start": 32.4255087890625,
+                      "end": 32.89392993164063
+                    },
+                    {
+                      "word": "¿tienes ",
+                      "start": 32.89392993164063,
+                      "end": 33.26059643554687
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 33.26059643554687,
+                      "end": 33.56673681640625
+                    },
+                    {
+                      "word": "marca ",
+                      "start": 33.56673681640625,
+                      "end": 33.81059643554688
+                    },
+                    {
+                      "word": "en ",
+                      "start": 33.81059643554688,
+                      "end": 33.92287719726563
+                    },
+                    {
+                      "word": "mente ",
+                      "start": 33.92287719726563,
+                      "end": 34.38077197265625
+                    },
+                    {
+                      "word": "o ",
+                      "start": 34.38077197265625,
+                      "end": 34.46235083007812
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 34.46235083007812,
+                      "end": 34.75796484375
+                    },
+                    {
+                      "word": "abierto ",
+                      "start": 34.75796484375,
+                      "end": 35.08340356445313
+                    },
+                    {
+                      "word": "a ",
+                      "start": 35.08340356445313,
+                      "end": 35.13428076171875
+                    },
+                    {
+                      "word": "sugerencias?",
+                      "start": 35.13428076171875,
+                      "end": 36.09217553710938
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sugerencias.",
+                  "words": [
+                    {
+                      "word": "Sugerencias.",
+                      "start": 37.229997,
+                      "end": 37.729997
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto. ¿Qué modelo te interesa, si ya tienes alguno pensado?",
+                  "words": [
+                    {
+                      "word": "Perfecto.",
+                      "start": 40.356877197265625,
+                      "end": 41.12091235351563
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 41.562350830078124,
+                      "end": 41.70533325195313
+                    },
+                    {
+                      "word": "modelo ",
+                      "start": 41.70533325195313,
+                      "end": 42.03077197265625
+                    },
+                    {
+                      "word": "te ",
+                      "start": 42.03077197265625,
+                      "end": 42.10270166015625
+                    },
+                    {
+                      "word": "interesa, ",
+                      "start": 42.10270166015625,
+                      "end": 42.57112280273437
+                    },
+                    {
+                      "word": "si ",
+                      "start": 42.57112280273437,
+                      "end": 42.71322802734375
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 42.71322802734375,
+                      "end": 42.8255087890625
+                    },
+                    {
+                      "word": "tienes ",
+                      "start": 42.8255087890625,
+                      "end": 43.110596435546874
+                    },
+                    {
+                      "word": "alguno ",
+                      "start": 43.110596435546874,
+                      "end": 43.415859619140626
+                    },
+                    {
+                      "word": "pensado?",
+                      "start": 43.415859619140626,
+                      "end": 44.17024560546875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "(inaudible speech)",
+                  "words": [
+                    {
+                      "word": "",
+                      "start": 45.66,
+                      "end": 45.66
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "Dos mil veintidós.",
+                  "words": [
+                    {
+                      "word": "Dos ",
+                      "start": 46.87,
+                      "end": 47.269999999999996
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 47.269999999999996,
+                      "end": 47.589998
+                    },
+                    {
+                      "word": "veintidós.",
+                      "start": 47.589998,
+                      "end": 48.089998
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, entonces buscas un coche del año dos mil veintidós. Ahora, ¿prefieres algún tipo de motor? (gasolina, diésel, híbrido, ",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 50.37670166015625,
+                      "end": 50.84512280273437
+                    },
+                    {
+                      "word": "entonces ",
+                      "start": 50.84512280273437,
+                      "end": 51.35389477539063
+                    },
+                    {
+                      "word": "buscas ",
+                      "start": 51.35389477539063,
+                      "end": 51.69073681640625
+                    },
+                    {
+                      "word": "un ",
+                      "start": 51.69073681640625,
+                      "end": 51.7714384765625
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 51.7714384765625,
+                      "end": 52.016175537109376
+                    },
+                    {
+                      "word": "del ",
+                      "start": 52.016175537109376,
+                      "end": 52.14863159179688
+                    },
+                    {
+                      "word": "año ",
+                      "start": 52.14863159179688,
+                      "end": 52.372315673828126
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 52.372315673828126,
+                      "end": 52.5354736328125
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 52.5354736328125,
+                      "end": 52.68810522460937
+                    },
+                    {
+                      "word": "veintidós.",
+                      "start": 52.68810522460937,
+                      "end": 53.441614013671874
+                    },
+                    {
+                      "word": " Ahora, ",
+                      "start": 53.48728515625,
+                      "end": 53.945179931640624
+                    },
+                    {
+                      "word": "¿prefieres ",
+                      "start": 53.945179931640624,
+                      "end": 54.353074462890625
+                    },
+                    {
+                      "word": "algún ",
+                      "start": 54.353074462890625,
+                      "end": 54.5767587890625
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 54.5767587890625,
+                      "end": 54.7907939453125
+                    },
+                    {
+                      "word": "de ",
+                      "start": 54.7907939453125,
+                      "end": 54.88202197265625
+                    },
+                    {
+                      "word": "motor?",
+                      "start": 54.88202197265625,
+                      "end": 55.41184643554688
+                    },
+                    {
+                      "word": " (gasolina, ",
+                      "start": 55.457017578125,
+                      "end": 56.129824462890625
+                    },
+                    {
+                      "word": "diésel, ",
+                      "start": 56.129824462890625,
+                      "end": 56.59824560546875
+                    },
+                    {
+                      "word": "híbrido, ",
+                      "start": 56.59824560546875,
+                      "end": 57.0464912109375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "eléctrico…)",
+                  "words": [
+                    {
+                      "word": "eléctrico…)",
+                      "start": 57.0464912109375,
+                      "end": 57.8605263671875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "¿De gasolina?",
+                  "words": [
+                    {
+                      "word": "¿De ",
+                      "start": 57.86,
+                      "end": 58.36
+                    },
+                    {
+                      "word": "gasolina?",
+                      "start": 59.254999999999995,
+                      "end": 59.754999999999995
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, entonces buscas un coche de gasolina. Ahora, ¿cuál es tu presupuesto aproximado?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 62.667877197265625,
+                      "end": 63.167
+                    },
+                    {
+                      "word": "entonces ",
+                      "start": 63.167,
+                      "end": 63.5845439453125
+                    },
+                    {
+                      "word": "buscas ",
+                      "start": 63.5845439453125,
+                      "end": 63.88015795898438
+                    },
+                    {
+                      "word": "un ",
+                      "start": 63.88015795898438,
+                      "end": 63.97138598632812
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 63.97138598632812,
+                      "end": 64.17489477539063
+                    },
+                    {
+                      "word": "de ",
+                      "start": 64.17489477539063,
+                      "end": 64.24682446289063
+                    },
+                    {
+                      "word": "gasolina.",
+                      "start": 64.24682446289063,
+                      "end": 65.06085961914063
+                    },
+                    {
+                      "word": " Ahora, ",
+                      "start": 65.11630932617187,
+                      "end": 65.39174780273437
+                    },
+                    {
+                      "word": "¿cuál ",
+                      "start": 65.39174780273437,
+                      "end": 65.65666015625
+                    },
+                    {
+                      "word": "es ",
+                      "start": 65.65666015625,
+                      "end": 65.75841455078125
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 65.75841455078125,
+                      "end": 65.88034423828125
+                    },
+                    {
+                      "word": "presupuesto ",
+                      "start": 65.88034423828125,
+                      "end": 66.44087060546875
+                    },
+                    {
+                      "word": "aproximado?",
+                      "start": 66.44087060546875,
+                      "end": 67.35753735351562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No, estoy abierta a opciones.",
+                  "words": [
+                    {
+                      "word": "No, ",
+                      "start": 69.05000000000001,
+                      "end": 69.29
+                    },
+                    {
+                      "word": "estoy ",
+                      "start": 69.29,
+                      "end": 69.69000000000001
+                    },
+                    {
+                      "word": "abierta ",
+                      "start": 69.69000000000001,
+                      "end": 69.850004
+                    },
+                    {
+                      "word": "a ",
+                      "start": 69.850004,
+                      "end": 70.01
+                    },
+                    {
+                      "word": "opciones.",
+                      "start": 70.01,
+                      "end": 70.44000000000001
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, entonces estás abierto a opciones en cuanto al presupuesto. ¿Hasta qué año de antigüedad te gustaría que tuviera el coche?",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 72.54670166015624,
+                      "end": 73.066
+                    },
+                    {
+                      "word": "entonces ",
+                      "start": 73.066,
+                      "end": 73.616
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 73.616,
+                      "end": 73.95196484375
+                    },
+                    {
+                      "word": "abierto ",
+                      "start": 73.95196484375,
+                      "end": 74.38003515625
+                    },
+                    {
+                      "word": "a ",
+                      "start": 74.38003515625,
+                      "end": 74.4405615234375
+                    },
+                    {
+                      "word": "opciones ",
+                      "start": 74.4405615234375,
+                      "end": 74.89933325195312
+                    },
+                    {
+                      "word": "en ",
+                      "start": 74.89933325195312,
+                      "end": 74.98091235351562
+                    },
+                    {
+                      "word": "cuanto ",
+                      "start": 74.98091235351562,
+                      "end": 75.21512280273437
+                    },
+                    {
+                      "word": "al ",
+                      "start": 75.21512280273437,
+                      "end": 75.31687719726563
+                    },
+                    {
+                      "word": "presupuesto.",
+                      "start": 75.31687719726563,
+                      "end": 76.223017578125
+                    },
+                    {
+                      "word": " ¿Hasta ",
+                      "start": 76.24085961914062,
+                      "end": 76.76015795898438
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 76.76015795898438,
+                      "end": 77.004017578125
+                    },
+                    {
+                      "word": "año ",
+                      "start": 77.004017578125,
+                      "end": 77.31015795898438
+                    },
+                    {
+                      "word": "de ",
+                      "start": 77.31015795898438,
+                      "end": 77.39173681640625
+                    },
+                    {
+                      "word": "antigüedad ",
+                      "start": 77.39173681640625,
+                      "end": 77.9715615234375
+                    },
+                    {
+                      "word": "te ",
+                      "start": 77.9715615234375,
+                      "end": 78.09436840820312
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 78.09436840820312,
+                      "end": 78.55226318359375
+                    },
+                    {
+                      "word": "que ",
+                      "start": 78.55226318359375,
+                      "end": 78.654017578125
+                    },
+                    {
+                      "word": "tuviera ",
+                      "start": 78.654017578125,
+                      "end": 78.9294560546875
+                    },
+                    {
+                      "word": "el ",
+                      "start": 78.9294560546875,
+                      "end": 79.05138598632813
+                    },
+                    {
+                      "word": "coche?",
+                      "start": 79.05138598632813,
+                      "end": 79.73384204101562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Son los dos años.",
+                  "words": [
+                    {
+                      "word": "Son ",
+                      "start": 81.05000000000001,
+                      "end": 81.37
+                    },
+                    {
+                      "word": "los ",
+                      "start": 81.37,
+                      "end": 81.61
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 81.61,
+                      "end": 82.01
+                    },
+                    {
+                      "word": "años.",
+                      "start": 82.01,
+                      "end": 82.51
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entendido, entonces buscas un coche de hasta dos años de antigüedad. Por último, ¿qué kilometraje máximo considerarías aceptable?",
+                  "words": [
+                    {
+                      "word": "Entendido, ",
+                      "start": 84.89687719726562,
+                      "end": 85.49775439453126
+                    },
+                    {
+                      "word": "entonces ",
+                      "start": 85.49775439453126,
+                      "end": 85.86442114257812
+                    },
+                    {
+                      "word": "buscas ",
+                      "start": 85.86442114257812,
+                      "end": 86.2205615234375
+                    },
+                    {
+                      "word": "un ",
+                      "start": 86.2205615234375,
+                      "end": 86.32231567382813
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 86.32231567382813,
+                      "end": 86.61792993164063
+                    },
+                    {
+                      "word": "de ",
+                      "start": 86.61792993164063,
+                      "end": 86.71003515625
+                    },
+                    {
+                      "word": "hasta ",
+                      "start": 86.71003515625,
+                      "end": 86.94424560546875
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 86.94424560546875,
+                      "end": 87.09687719726563
+                    },
+                    {
+                      "word": "años ",
+                      "start": 87.09687719726563,
+                      "end": 87.34073681640625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 87.34073681640625,
+                      "end": 87.40214038085938
+                    },
+                    {
+                      "word": "antigüedad.",
+                      "start": 87.40214038085938,
+                      "end": 88.22757885742188
+                    },
+                    {
+                      "word": " Por ",
+                      "start": 88.278892578125,
+                      "end": 88.52362939453126
+                    },
+                    {
+                      "word": "último, ",
+                      "start": 88.52362939453126,
+                      "end": 89.042927734375
+                    },
+                    {
+                      "word": "¿qué ",
+                      "start": 89.042927734375,
+                      "end": 89.39994506835937
+                    },
+                    {
+                      "word": "kilometraje ",
+                      "start": 89.39994506835937,
+                      "end": 89.97012060546875
+                    },
+                    {
+                      "word": "máximo ",
+                      "start": 89.97012060546875,
+                      "end": 90.3464365234375
+                    },
+                    {
+                      "word": "considerarías ",
+                      "start": 90.3464365234375,
+                      "end": 91.0394189453125
+                    },
+                    {
+                      "word": "aceptable?",
+                      "start": 91.0394189453125,
+                      "end": 91.90520825195313
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 9
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Unos cincuenta mil kilómetros.",
+                  "words": [
+                    {
+                      "word": "Unos ",
+                      "start": 93.71000500000001,
+                      "end": 93.95
+                    },
+                    {
+                      "word": "cincuenta ",
+                      "start": 93.95,
+                      "end": 94.45
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 94.67,
+                      "end": 94.83
+                    },
+                    {
+                      "word": "kilómetros.",
+                      "start": 94.83,
+                      "end": 95.33
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "tool_call_78b7f5",
+                  "name": "BuscaVehiculo",
+                  "arguments": "{\"kilometraje_maximo\":50000,\"marca_preferida\":\"indiferente\",\"tipo_motor\":\"gasolina\",\"presupuesto_maximo\":0,\"anio_maximo\":2022,\"modelo_interesado\":\"\"}"
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias por toda la información, Juan David.Dame un instante mientras reviso el inventario para ver qué coches encajan con lo que estás buscando.",
+                  "words": [
+                    {
+                      "word": "Gracias ",
+                      "start": 97.47487719726563,
+                      "end": 97.8415439453125
+                    },
+                    {
+                      "word": "por ",
+                      "start": 97.8415439453125,
+                      "end": 97.99417553710937
+                    },
+                    {
+                      "word": "toda ",
+                      "start": 97.99417553710937,
+                      "end": 98.13715795898437
+                    },
+                    {
+                      "word": "la ",
+                      "start": 98.13715795898437,
+                      "end": 98.20821044921875
+                    },
+                    {
+                      "word": "información, ",
+                      "start": 98.20821044921875,
+                      "end": 98.716982421875
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 98.716982421875,
+                      "end": 98.89066674804687
+                    },
+                    {
+                      "word": "David.",
+                      "start": 98.89066674804687,
+                      "end": 99.4204912109375
+                    },
+                    {
+                      "word": "Dame ",
+                      "start": 99.42885961914062,
+                      "end": 99.642017578125
+                    },
+                    {
+                      "word": "un ",
+                      "start": 99.642017578125,
+                      "end": 99.75429833984376
+                    },
+                    {
+                      "word": "instante ",
+                      "start": 99.75429833984376,
+                      "end": 100.24289477539062
+                    },
+                    {
+                      "word": "mientras ",
+                      "start": 100.24289477539062,
+                      "end": 100.54903515625
+                    },
+                    {
+                      "word": "reviso ",
+                      "start": 100.54903515625,
+                      "end": 100.85429833984375
+                    },
+                    {
+                      "word": "el ",
+                      "start": 100.85429833984375,
+                      "end": 100.96657885742188
+                    },
+                    {
+                      "word": "inventario ",
+                      "start": 100.96657885742188,
+                      "end": 101.46570166015626
+                    },
+                    {
+                      "word": "para ",
+                      "start": 101.46570166015626,
+                      "end": 101.67885961914062
+                    },
+                    {
+                      "word": "ver ",
+                      "start": 101.67885961914062,
+                      "end": 101.88324560546874
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 101.88324560546874,
+                      "end": 102.0455263671875
+                    },
+                    {
+                      "word": "coches ",
+                      "start": 102.0455263671875,
+                      "end": 102.44289477539063
+                    },
+                    {
+                      "word": "encajan ",
+                      "start": 102.44289477539063,
+                      "end": 102.85078955078124
+                    },
+                    {
+                      "word": "con ",
+                      "start": 102.85078955078124,
+                      "end": 102.9525439453125
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 102.9525439453125,
+                      "end": 103.05429833984375
+                    },
+                    {
+                      "word": "que ",
+                      "start": 103.05429833984375,
+                      "end": 103.13587719726563
+                    },
+                    {
+                      "word": "estás ",
+                      "start": 103.13587719726563,
+                      "end": 103.37008764648438
+                    },
+                    {
+                      "word": "buscando.",
+                      "start": 103.37008764648438,
+                      "end": 104.14377197265625
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 10
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale.",
+                  "words": [
+                    {
+                      "word": "Vale.",
+                      "start": 105.46000000000001,
+                      "end": 105.96000000000001
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_result",
+                  "tool_call_id": "tool_call_78b7f5",
+                  "content": "{\"output\":\"```json\\n[\\n  {\\n    \\\"marca\\\": \\\"Fiat\\\",\\n    \\\"modelo\\\": \\\"Ibiza\\\",\\n    \\\"tipo_motor\\\": \\\"Gasolina\\\",\\n    \\\"año\\\": 2022,\\n    \\\"kilometraje\\\": 42541,\\n    \\\"precio\\\": 15800\\n  },\\n  {\\n    \\\"marca\\\": \\\"Fiat\\\",\\n    \\\"modelo\\\": \\\"500\\\",\\n    \\\"tipo_motor\\\": \\\"Gasolina\\\",\\n    \\\"año\\\": 2022,\\n    \\\"kilometraje\\\": 51280,\\n    \\\"precio\\\": 12100\\n  },\\n  {\\n    \\\"marca\\\": \\\"Renault\\\",\\n    \\\"modelo\\\": \\\"Clio\\\",\\n    \\\"tipo_motor\\\": \\\"Gasolina\\\",\\n    \\\"año\\\": 2022,\\n    \\\"kilometraje\\\": 54673,\\n    \\\"precio\\\": 14700\\n  },\\n  {\\n    \\\"marca\\\": \\\"Toyota\\\",\\n    \\\"modelo\\\": \\\"Aygo\\\",\\n    \\\"tipo_motor\\\": \\\"Gasolina\\\",\\n    \\\"año\\\": 2022,\\n    \\\"kilometraje\\\": 47376,\\n    \\\"precio\\\": 19700\\n  },\\n  {\\n    \\\"marca\\\": \\\"Toyota\\\",\\n    \\\"modelo\\\": \\\"Yaris\\\",\\n    \\\"tipo_motor\\\": \\\"Gasolina\\\",\\n    \\\"año\\\": 2022,\\n    \\\"kilometraje\\\": 53466,\\n    \\\"precio\\\": 18300\\n  }\\n]\\n```\"}"
+                },
+                {
+                  "role": "agent",
+                  "content": "He encontrado algunas opciones que encajan bastante bien con lo que buscas. Te cuento una de ellas y me dices qué te parece, ¿vale?\n\nEs un Fiat ",
+                  "words": [
+                    {
+                      "word": "He ",
+                      "start": 109.74387719726562,
+                      "end": 109.835982421875
+                    },
+                    {
+                      "word": "encontrado ",
+                      "start": 109.835982421875,
+                      "end": 110.28335083007812
+                    },
+                    {
+                      "word": "algunas ",
+                      "start": 110.28335083007812,
+                      "end": 110.64036840820313
+                    },
+                    {
+                      "word": "opciones ",
+                      "start": 110.64036840820313,
+                      "end": 111.07808764648438
+                    },
+                    {
+                      "word": "que ",
+                      "start": 111.07808764648438,
+                      "end": 111.15966674804687
+                    },
+                    {
+                      "word": "encajan ",
+                      "start": 111.15966674804687,
+                      "end": 111.535982421875
+                    },
+                    {
+                      "word": "bastante ",
+                      "start": 111.535982421875,
+                      "end": 111.97457885742188
+                    },
+                    {
+                      "word": "bien ",
+                      "start": 111.97457885742188,
+                      "end": 112.25966674804687
+                    },
+                    {
+                      "word": "con ",
+                      "start": 112.25966674804687,
+                      "end": 112.38159643554687
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 112.38159643554687,
+                      "end": 112.49387719726562
+                    },
+                    {
+                      "word": "que ",
+                      "start": 112.49387719726562,
+                      "end": 112.59563159179687
+                    },
+                    {
+                      "word": "buscas.",
+                      "start": 112.59563159179687,
+                      "end": 113.3184384765625
+                    },
+                    {
+                      "word": " Te ",
+                      "start": 113.372517578125,
+                      "end": 113.48479833984375
+                    },
+                    {
+                      "word": "cuento ",
+                      "start": 113.48479833984375,
+                      "end": 113.76988598632812
+                    },
+                    {
+                      "word": "una ",
+                      "start": 113.76988598632812,
+                      "end": 113.95321923828125
+                    },
+                    {
+                      "word": "de ",
+                      "start": 113.95321923828125,
+                      "end": 114.02427197265625
+                    },
+                    {
+                      "word": "ellas ",
+                      "start": 114.02427197265625,
+                      "end": 114.24883325195313
+                    },
+                    {
+                      "word": "y ",
+                      "start": 114.24883325195313,
+                      "end": 114.31988598632813
+                    },
+                    {
+                      "word": "me ",
+                      "start": 114.31988598632813,
+                      "end": 114.43216674804688
+                    },
+                    {
+                      "word": "dices ",
+                      "start": 114.43216674804688,
+                      "end": 114.78830712890625
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 114.78830712890625,
+                      "end": 114.90058764648437
+                    },
+                    {
+                      "word": "te ",
+                      "start": 114.90058764648437,
+                      "end": 115.00234204101562
+                    },
+                    {
+                      "word": "parece, ",
+                      "start": 115.00234204101562,
+                      "end": 115.3690087890625
+                    },
+                    {
+                      "word": "¿vale?",
+                      "start": 115.3690087890625,
+                      "end": 115.93918432617187
+                    },
+                    {
+                      "word": "\n\nEs ",
+                      "start": 115.98605932617187,
+                      "end": 116.21062060546875
+                    },
+                    {
+                      "word": "un ",
+                      "start": 116.21062060546875,
+                      "end": 116.312375
+                    },
+                    {
+                      "word": "Fiat ",
+                      "start": 116.312375,
+                      "end": 116.57728735351563
+                    }
+                  ],
+                  "metadata": {
+                    "interrupt_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale",
+                  "words": [
+                    {
+                      "word": "Vale",
+                      "start": 116.76999500000001,
+                      "end": 117.26999500000001
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Ibiza del año dos mil veintidós, con motor de gasolina. Tiene un recorrido de cuarenta y dos mil quinientos cuarenta y un kilómetros y su precio es de quince mil ochocientos euros.¿Te gustaría saber más sobre este coche o prefieres que te muestre otra alternativa?",
+                  "words": [
+                    {
+                      "word": "Ibiza ",
+                      "start": 116.57728735351563,
+                      "end": 117.01500659179688
+                    },
+                    {
+                      "word": "del ",
+                      "start": 117.01500659179688,
+                      "end": 117.1878134765625
+                    },
+                    {
+                      "word": "año ",
+                      "start": 117.1878134765625,
+                      "end": 117.39219946289063
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 117.39219946289063,
+                      "end": 117.56500659179687
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 117.56500659179687,
+                      "end": 117.71763818359375
+                    },
+                    {
+                      "word": "veintidós, ",
+                      "start": 117.71763818359375,
+                      "end": 118.54307666015625
+                    },
+                    {
+                      "word": "con ",
+                      "start": 118.54307666015625,
+                      "end": 118.68518212890625
+                    },
+                    {
+                      "word": "motor ",
+                      "start": 118.68518212890625,
+                      "end": 118.97026977539062
+                    },
+                    {
+                      "word": "de ",
+                      "start": 118.97026977539062,
+                      "end": 119.0518486328125
+                    },
+                    {
+                      "word": "gasolina.",
+                      "start": 119.0518486328125,
+                      "end": 119.89746264648437
+                    },
+                    {
+                      "word": " Tiene ",
+                      "start": 119.9205087890625,
+                      "end": 120.14507006835937
+                    },
+                    {
+                      "word": "un ",
+                      "start": 120.14507006835937,
+                      "end": 120.22664916992187
+                    },
+                    {
+                      "word": "recorrido ",
+                      "start": 120.22664916992187,
+                      "end": 120.66436840820313
+                    },
+                    {
+                      "word": "de ",
+                      "start": 120.66436840820313,
+                      "end": 120.77577197265624
+                    },
+                    {
+                      "word": "cuarenta ",
+                      "start": 120.77577197265624,
+                      "end": 121.19331567382812
+                    },
+                    {
+                      "word": "y ",
+                      "start": 121.19331567382812,
+                      "end": 121.26524560546875
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 121.26524560546875,
+                      "end": 121.438052734375
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 121.438052734375,
+                      "end": 121.59068432617188
+                    },
+                    {
+                      "word": "quinientos ",
+                      "start": 121.59068432617188,
+                      "end": 121.99857885742188
+                    },
+                    {
+                      "word": "cuarenta ",
+                      "start": 121.99857885742188,
+                      "end": 122.36524560546874
+                    },
+                    {
+                      "word": "y ",
+                      "start": 122.36524560546874,
+                      "end": 122.43629833984374
+                    },
+                    {
+                      "word": "un ",
+                      "start": 122.43629833984374,
+                      "end": 122.5275263671875
+                    },
+                    {
+                      "word": "kilómetros ",
+                      "start": 122.5275263671875,
+                      "end": 123.16963159179687
+                    },
+                    {
+                      "word": "y ",
+                      "start": 123.16963159179687,
+                      "end": 123.27138598632813
+                    },
+                    {
+                      "word": "su ",
+                      "start": 123.27138598632813,
+                      "end": 123.424017578125
+                    },
+                    {
+                      "word": "precio ",
+                      "start": 123.424017578125,
+                      "end": 123.80121044921874
+                    },
+                    {
+                      "word": "es ",
+                      "start": 123.80121044921874,
+                      "end": 123.91261401367187
+                    },
+                    {
+                      "word": "de ",
+                      "start": 123.91261401367187,
+                      "end": 124.01436840820313
+                    },
+                    {
+                      "word": "quince ",
+                      "start": 124.01436840820313,
+                      "end": 124.30033325195312
+                    },
+                    {
+                      "word": "mil ",
+                      "start": 124.30033325195312,
+                      "end": 124.46261401367188
+                    },
+                    {
+                      "word": "ochocientos ",
+                      "start": 124.46261401367188,
+                      "end": 125.074017578125
+                    },
+                    {
+                      "word": "euros.",
+                      "start": 125.074017578125,
+                      "end": 125.6845439453125
+                    },
+                    {
+                      "word": "¿Te ",
+                      "start": 125.6967763671875,
+                      "end": 125.94063598632812
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 125.94063598632812,
+                      "end": 126.38888159179687
+                    },
+                    {
+                      "word": "saber ",
+                      "start": 126.38888159179687,
+                      "end": 126.70467114257812
+                    },
+                    {
+                      "word": "más ",
+                      "start": 126.70467114257812,
+                      "end": 126.95905712890625
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 126.95905712890625,
+                      "end": 127.27484643554688
+                    },
+                    {
+                      "word": "este ",
+                      "start": 127.27484643554688,
+                      "end": 127.529232421875
+                    },
+                    {
+                      "word": "coche ",
+                      "start": 127.529232421875,
+                      "end": 128.04940795898438
+                    },
+                    {
+                      "word": "o ",
+                      "start": 128.04940795898438,
+                      "end": 128.1608115234375
+                    },
+                    {
+                      "word": "prefieres ",
+                      "start": 128.1608115234375,
+                      "end": 128.6397587890625
+                    },
+                    {
+                      "word": "que ",
+                      "start": 128.6397587890625,
+                      "end": 128.75203955078126
+                    },
+                    {
+                      "word": "te ",
+                      "start": 128.75203955078126,
+                      "end": 128.86344287109375
+                    },
+                    {
+                      "word": "muestre ",
+                      "start": 128.86344287109375,
+                      "end": 129.1897587890625
+                    },
+                    {
+                      "word": "otra ",
+                      "start": 129.1897587890625,
+                      "end": 129.35291674804688
+                    },
+                    {
+                      "word": "alternativa?",
+                      "start": 129.35291674804688,
+                      "end": 130.33010961914061
+                    }
+                  ],
+                  "metadata": {
+                    "interrupt_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Ese me parece bien.",
+                  "words": [
+                    {
+                      "word": "Ese ",
+                      "start": 131.89,
+                      "end": 132.13001
+                    },
+                    {
+                      "word": "me ",
+                      "start": 132.13001,
+                      "end": 132.37
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 132.37,
+                      "end": 132.60999999999999
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 132.60999999999999,
+                      "end": 133.10999999999999
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Perfecto! Si te parece bien, podemos agendar una cita con uno de nuestros asesores para que te dé todos los detalles y te ayude a seguir con el proceso de compra.\n\n¿Me dices tu nombre completo, por favor?",
+                  "words": [
+                    {
+                      "word": "¡Perfecto!",
+                      "start": 135.05070166015625,
+                      "end": 135.83491235351562
+                    },
+                    {
+                      "word": " Si ",
+                      "start": 137.34317553710937,
+                      "end": 137.47563159179688
+                    },
+                    {
+                      "word": "te ",
+                      "start": 137.47563159179688,
+                      "end": 137.56773681640624
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 137.56773681640624,
+                      "end": 137.8835263671875
+                    },
+                    {
+                      "word": "bien, ",
+                      "start": 137.8835263671875,
+                      "end": 138.13791235351562
+                    },
+                    {
+                      "word": "podemos ",
+                      "start": 138.13791235351562,
+                      "end": 138.56510522460937
+                    },
+                    {
+                      "word": "agendar ",
+                      "start": 138.56510522460937,
+                      "end": 138.99317553710938
+                    },
+                    {
+                      "word": "una ",
+                      "start": 138.99317553710938,
+                      "end": 139.15633325195313
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 139.15633325195313,
+                      "end": 139.42124560546876
+                    },
+                    {
+                      "word": "con ",
+                      "start": 139.42124560546876,
+                      "end": 139.60457885742187
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 139.60457885742187,
+                      "end": 139.7265087890625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 139.7265087890625,
+                      "end": 139.7975615234375
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 139.7975615234375,
+                      "end": 140.1238771972656
+                    },
+                    {
+                      "word": "asesores ",
+                      "start": 140.1238771972656,
+                      "end": 140.623
+                    },
+                    {
+                      "word": "para ",
+                      "start": 140.623,
+                      "end": 140.79580712890626
+                    },
+                    {
+                      "word": "que ",
+                      "start": 140.79580712890626,
+                      "end": 140.90808764648438
+                    },
+                    {
+                      "word": "te ",
+                      "start": 140.90808764648438,
+                      "end": 141.0405439453125
+                    },
+                    {
+                      "word": "dé ",
+                      "start": 141.0405439453125,
+                      "end": 141.22387719726564
+                    },
+                    {
+                      "word": "todos ",
+                      "start": 141.22387719726564,
+                      "end": 141.51861401367188
+                    },
+                    {
+                      "word": "los ",
+                      "start": 141.51861401367188,
+                      "end": 141.6510700683594
+                    },
+                    {
+                      "word": "detalles ",
+                      "start": 141.6510700683594,
+                      "end": 142.39492993164063
+                    },
+                    {
+                      "word": "y ",
+                      "start": 142.39492993164063,
+                      "end": 142.57826318359375
+                    },
+                    {
+                      "word": "te ",
+                      "start": 142.57826318359375,
+                      "end": 142.680017578125
+                    },
+                    {
+                      "word": "ayude ",
+                      "start": 142.680017578125,
+                      "end": 142.96510522460937
+                    },
+                    {
+                      "word": "a ",
+                      "start": 142.96510522460937,
+                      "end": 143.0265087890625
+                    },
+                    {
+                      "word": "seguir ",
+                      "start": 143.0265087890625,
+                      "end": 143.28089477539064
+                    },
+                    {
+                      "word": "con ",
+                      "start": 143.28089477539064,
+                      "end": 143.39317553710939
+                    },
+                    {
+                      "word": "el ",
+                      "start": 143.39317553710939,
+                      "end": 143.49492993164063
+                    },
+                    {
+                      "word": "proceso ",
+                      "start": 143.49492993164063,
+                      "end": 143.87124560546874
+                    },
+                    {
+                      "word": "de ",
+                      "start": 143.87124560546874,
+                      "end": 143.9835263671875
+                    },
+                    {
+                      "word": "compra.",
+                      "start": 143.9835263671875,
+                      "end": 144.61510522460938
+                    },
+                    {
+                      "word": "\n\n¿Me ",
+                      "start": 144.65995166015625,
+                      "end": 144.80205712890626
+                    },
+                    {
+                      "word": "dices ",
+                      "start": 144.80205712890626,
+                      "end": 145.0573200683594
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 145.0573200683594,
+                      "end": 145.1897763671875
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 145.1897763671875,
+                      "end": 145.4336359863281
+                    },
+                    {
+                      "word": "completo, ",
+                      "start": 145.4336359863281,
+                      "end": 145.88188159179688
+                    },
+                    {
+                      "word": "por ",
+                      "start": 145.88188159179688,
+                      "end": 146.03451318359376
+                    },
+                    {
+                      "word": "favor?",
+                      "start": 146.03451318359376,
+                      "end": 146.66609204101562
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 11
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Claro que sí, es Juan David García Amaya.",
+                  "words": [
+                    {
+                      "word": "Claro ",
+                      "start": 149.09,
+                      "end": 149.32999999999998
+                    },
+                    {
+                      "word": "que ",
+                      "start": 149.32999999999998,
+                      "end": 149.41001
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 149.41001,
+                      "end": 149.64999999999998
+                    },
+                    {
+                      "word": "es ",
+                      "start": 149.64999999999998,
+                      "end": 149.89
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 149.89,
+                      "end": 150.05001
+                    },
+                    {
+                      "word": "David ",
+                      "start": 150.05001,
+                      "end": 150.45
+                    },
+                    {
+                      "word": "García ",
+                      "start": 150.45,
+                      "end": 150.69001
+                    },
+                    {
+                      "word": "Amaya.",
+                      "start": 150.69001,
+                      "end": 151.04
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias, Juan David. Ahora, ¿me podrías dar un número de contacto al que prefieras que te escribamos o llamemos?",
+                  "words": [
+                    {
+                      "word": "Gracias, ",
+                      "start": 152.79640356445313,
+                      "end": 153.213947265625
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 153.213947265625,
+                      "end": 153.38675439453124
+                    },
+                    {
+                      "word": "David.",
+                      "start": 153.38675439453124,
+                      "end": 153.91657885742188
+                    },
+                    {
+                      "word": " Ahora, ",
+                      "start": 154.52317553710938,
+                      "end": 155.26703515625
+                    },
+                    {
+                      "word": "¿me ",
+                      "start": 155.26703515625,
+                      "end": 155.5924736328125
+                    },
+                    {
+                      "word": "podrías ",
+                      "start": 155.5924736328125,
+                      "end": 156.1424736328125
+                    },
+                    {
+                      "word": "dar ",
+                      "start": 156.1424736328125,
+                      "end": 156.41791235351562
+                    },
+                    {
+                      "word": "un ",
+                      "start": 156.41791235351562,
+                      "end": 156.5705439453125
+                    },
+                    {
+                      "word": "número ",
+                      "start": 156.5705439453125,
+                      "end": 156.87580712890625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 156.87580712890625,
+                      "end": 156.9880876464844
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 156.9880876464844,
+                      "end": 157.50738598632813
+                    },
+                    {
+                      "word": "al ",
+                      "start": 157.50738598632813,
+                      "end": 157.60914038085937
+                    },
+                    {
+                      "word": "que ",
+                      "start": 157.60914038085937,
+                      "end": 157.7108947753906
+                    },
+                    {
+                      "word": "prefieras ",
+                      "start": 157.7108947753906,
+                      "end": 158.2205439453125
+                    },
+                    {
+                      "word": "que ",
+                      "start": 158.2205439453125,
+                      "end": 158.353
+                    },
+                    {
+                      "word": "te ",
+                      "start": 158.353,
+                      "end": 158.44422802734374
+                    },
+                    {
+                      "word": "escribamos ",
+                      "start": 158.44422802734374,
+                      "end": 159.03457885742188
+                    },
+                    {
+                      "word": "o ",
+                      "start": 159.03457885742188,
+                      "end": 159.15738598632814
+                    },
+                    {
+                      "word": "llamemos?",
+                      "start": 159.15738598632814,
+                      "end": 159.96177197265624
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 12
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No, ese mismo número estaría bien.",
+                  "words": [
+                    {
+                      "word": "No, ",
+                      "start": 162,
+                      "end": 162.16
+                    },
+                    {
+                      "word": "ese ",
+                      "start": 162.16,
+                      "end": 162.48
+                    },
+                    {
+                      "word": "mismo ",
+                      "start": 162.48,
+                      "end": 162.88
+                    },
+                    {
+                      "word": "número ",
+                      "start": 162.88,
+                      "end": 163.12
+                    },
+                    {
+                      "word": "estaría ",
+                      "start": 163.12,
+                      "end": 163.44
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 163.44,
+                      "end": 163.94
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Juan David. ¿Y cuál sería tu correo electrónico para enviarte la información por email?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 165.91940356445312,
+                      "end": 166.45887719726562
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 166.45887719726562,
+                      "end": 166.62203515625
+                    },
+                    {
+                      "word": "David.",
+                      "start": 166.62203515625,
+                      "end": 167.1615087890625
+                    },
+                    {
+                      "word": " ¿Y ",
+                      "start": 167.43135083007812,
+                      "end": 167.68661401367189
+                    },
+                    {
+                      "word": "cuál ",
+                      "start": 167.68661401367189,
+                      "end": 167.85942114257813
+                    },
+                    {
+                      "word": "sería ",
+                      "start": 167.85942114257813,
+                      "end": 168.12433325195312
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 168.12433325195312,
+                      "end": 168.23661401367187
+                    },
+                    {
+                      "word": "correo ",
+                      "start": 168.23661401367187,
+                      "end": 168.491
+                    },
+                    {
+                      "word": "electrónico ",
+                      "start": 168.491,
+                      "end": 169.14275439453124
+                    },
+                    {
+                      "word": "para ",
+                      "start": 169.14275439453124,
+                      "end": 169.34626318359375
+                    },
+                    {
+                      "word": "enviarte ",
+                      "start": 169.34626318359375,
+                      "end": 169.73310522460937
+                    },
+                    {
+                      "word": "la ",
+                      "start": 169.73310522460937,
+                      "end": 169.7945087890625
+                    },
+                    {
+                      "word": "información ",
+                      "start": 169.7945087890625,
+                      "end": 170.32433325195314
+                    },
+                    {
+                      "word": "por ",
+                      "start": 170.32433325195314,
+                      "end": 170.47696484375
+                    },
+                    {
+                      "word": "email?",
+                      "start": 170.47696484375,
+                      "end": 171.05766674804687
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 13
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Claro, es Juan David I I arroba Hotmail punto com.",
+                  "words": [
+                    {
+                      "word": "Claro, ",
+                      "start": 172.17999999999998,
+                      "end": 172.49999
+                    },
+                    {
+                      "word": "es ",
+                      "start": 172.49999,
+                      "end": 172.82
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 172.82,
+                      "end": 173.05999
+                    },
+                    {
+                      "word": "David ",
+                      "start": 173.05999,
+                      "end": 173.54
+                    },
+                    {
+                      "word": "I ",
+                      "start": 173.54,
+                      "end": 173.85998999999998
+                    },
+                    {
+                      "word": "I ",
+                      "start": 173.85998999999998,
+                      "end": 174.26
+                    },
+                    {
+                      "word": "arroba ",
+                      "start": 174.26,
+                      "end": 174.57998999999998
+                    },
+                    {
+                      "word": "Hotmail ",
+                      "start": 174.57998999999998,
+                      "end": 175.07998999999998
+                    },
+                    {
+                      "word": "punto ",
+                      "start": 175.13998999999998,
+                      "end": 175.29999999999998
+                    },
+                    {
+                      "word": "com.",
+                      "start": 175.29999999999998,
+                      "end": 175.73999999999998
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "tool_call_b6cf55",
+                  "name": "GuardarDatos",
+                  "arguments": "{\"nombre_completo\":\"Juan David García Amaya\",\"telefono\":\"Juan David I I\",\"intereses\":{\"kilometraje_maximo\":50000,\"marca_preferida\":\"indiferente\",\"tipo_motor\":\"gasolina\",\"presupuesto_maximo\":0,\"anio_maximo\":2022,\"modelo_interesado\":\"\"},\"correo\":\"Juan David I I arroba Hotmail punto com\"}"
+                }
+              ],
+              "public_log_url": "https://dxc03zgurdly9.cloudfront.net/74613d75a811d072738734897dd927430c6ba2be4a03b5b93c4c1edb49c0104c/public.log",
+              "latency": {},
+              "call_cost": {
+                "total_duration_unit_price": 0,
+                "product_costs": [],
+                "combined_cost": 0,
+                "total_duration_seconds": 0
+              },
+              "opt_out_sensitive_data_storage": false,
+              "opt_in_signed_url": false,
+              "from_number": "+951386791",
+              "to_number": "+34951386791",
+              "direction": "inbound"
+            },
+            "name": "GuardarDatos",
+            "args": {
+              "nombre_completo": "Juan David García Amaya",
+              "telefono": "3118175575",
+              "intereses": {
+                "kilometraje_maximo": 50000,
+                "marca_preferida": "indiferente",
+                "tipo_motor": "gasolina",
+                "presupuesto_maximo": 0,
+                "anio_maximo": 2022,
+                "modelo_interesado": ""
+              },
+              "correo": "Juan David I I arroba Hotmail punto com"
+            }
+          },
+          "webhookUrl": "https://n8n.gaia-sh.com/webhook/MotorFLashDatos",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Envio de imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envio de imagen": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0150a02b-6391-4ba5-b643-55733b9b2505",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a3553ae62eb37885eaca9e6ddffc9228a0ce0e6e90336c826346bd3043f8cc33"
+  },
+  "id": "2XRI5eJi03aWYmvL",
+  "tags": []
+}
