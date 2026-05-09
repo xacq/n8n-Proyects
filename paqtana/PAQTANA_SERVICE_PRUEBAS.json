@@ -1,0 +1,669 @@
+{
+  "name": "PAQTANA_SERVICE_PRUEBAS",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1780,
+        0
+      ],
+      "id": "ab4673a1-146b-429c-b668-14157547026a",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO CORDOVEZ'\n        WHEN T3.WhsName = 'CORDOVEZ GUAYAQUIL' THEN 'ALMACEN GENERAL GYE CORDOVEZ'\n    ELSE T3.WhsName\n    END AS \"location\",\n    T1.ItemCode AS \"code\",\n    T0.DocDate AS \"date\",\n    T1.Quantity AS \"quantity\"\nFROM [DB_CORDOVEZ_PROD].dbo.OINV T0\nJOIN [DB_CORDOVEZ_PROD].dbo.INV1 T1 ON T1.DocEntry = T0.DocEntry\nJOIN [DB_CORDOVEZ_PROD].dbo.OITM T2 ON T2.ItemCode = T1.ItemCode\nJOIN [DB_CORDOVEZ_PROD].dbo.OWHS T3 ON T3.WhsCode = T1.WhsCode\nWHERE \nT0.U_DOC_DECLARABLE = 'S' AND\nT0.DocDate  BETWEEN '2023-01-01' AND CAST(GETDATE() as DATE)\nAND  T3.WhsName IN ('ALMACÉN GENERAL UIO','CORDOVEZ GUAYAQUIL')\nOrder By T1.WhsCode, T1.ItemCode, T0.DocDate"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -60,
+        -540
+      ],
+      "id": "f9bbeb73-7935-4198-8a7a-c75372385588",
+      "name": "SALIDAS CORDOVEZ",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO VID'\n        WHEN T3.WhsName = 'VIDINTERNACIONAL GUAYAQUIL' THEN 'ALMACEN GENERAL GYE VID'\n    ELSE T3.WhsName\n    END AS \"location\",\n    T1.ItemCode AS \"code\",\n    T0.DocDate AS \"date\",\n    T1.Quantity AS \"quantity\"\nFROM [DB_VID_PROD].dbo.OINV T0\nJOIN [DB_VID_PROD].dbo.INV1 T1 ON T1.DocEntry = T0.DocEntry\nJOIN [DB_VID_PROD].dbo.OITM T2 ON T2.ItemCode = T1.ItemCode\nJOIN [DB_VID_PROD].dbo.OWHS T3 ON T3.WhsCode = T1.WhsCode\nWHERE \nT0.U_DOC_DECLARABLE = 'S' AND\nT0.DocDate  BETWEEN '2023-01-01' AND CAST(GETDATE() as DATE)\nAND  T3.WhsName IN ('ALMACÉN GENERAL UIO','VIDINTERNACIONAL GUAYAQUIL')\nOrder By T1.WhsCode, T1.ItemCode, T0.DocDate\n"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -60,
+        -340
+      ],
+      "id": "f143b0b2-5ec2-4ff2-9fb6-044c2dbcc80b",
+      "name": "SALIDAS VID",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO IMNAC'\n        WHEN T3.WhsName = 'IMNAC GUAYAQUIL' THEN 'ALMACEN GENERAL GYE IMNAC'\n    ELSE T3.WhsName\n    END AS \"location\",\n    T1.ItemCode AS \"code\",\n    T0.DocDate AS \"date\",\n    T1.Quantity AS \"quantity\"\nFROM [DB_IMNAC_PROD].dbo.OINV T0\nJOIN [DB_IMNAC_PROD].dbo.INV1 T1 ON T1.DocEntry = T0.DocEntry\nJOIN [DB_IMNAC_PROD].dbo.OITM T2 ON T2.ItemCode = T1.ItemCode\nJOIN [DB_IMNAC_PROD].dbo.OWHS T3 ON T3.WhsCode = T1.WhsCode\nWHERE \nT0.U_DOC_DECLARABLE = 'S' AND\nT0.DocDate  BETWEEN '2023-01-01' AND CAST(GETDATE() as DATE)\nAND \n  T3.WhsName IN ('ALMACÉN GENERAL UIO','IMNAC GUAYAQUIL')\nOrder By T1.WhsCode, T1.ItemCode, T0.DocDate\n"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -60,
+        -760
+      ],
+      "id": "afb5c713-4278-4582-9c4b-91bc2137a351",
+      "name": "SALIDAS IMNAC",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO CORDOVEZ'\n        WHEN T3.WhsName = 'CORDOVEZ GUAYAQUIL' THEN 'ALMACEN GENERAL GYE CORDOVEZ'\n    ELSE T3.WhsName\n    END AS \"location\",\n    T0.ItemCode          AS \"code\",\n    T0.ItemName          AS \"description\",\n    'finished'           AS \"materialType\",\n    CAST(T0.NumInBuy AS INT) AS \"multipleOrderQuantity\",\n    'USD'                AS \"currency\",\n    T0.AvgPrice          AS \"unitCost\",\n   CAST(T0.NumInBuy AS INT)     AS \"minimumOrderQuantity\",\n    'units'              AS \"unitOfMeasure\",\n    CAST(ISNULL(T9.U_DIAS_PRODUCCION, 0) AS INT) AS \"supplyLeadTime\",\n    T1.OnHand            AS \"onHandStock\",\n    CASE \n        -- Si el proveedor es PERNOD RICARD COLOMBIA S.A. o RUM TRADING INTERNACIONAL CORP, \n        -- mostrar transitStock en ALMACEN GENERAL GYE\n        WHEN (T8.SuppName = 'PRATAC S.A.' OR T8.SuppName = 'PERNOD RICARD COLOMBIA S.A.' OR T8.SuppName = 'RUM TRADING INTERNACIONAL CORP') \n             AND T3.WhsName = 'ALMACEN GENERAL GYE' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        -- Para los demás proveedores, mostrar transitStock en ALMACÉN GENERAL UIO\n        WHEN (T8.SuppName != 'PRATAC S.A.' AND T8.SuppName != 'PERNOD RICARD COLOMBIA S.A.' AND T8.SuppName != 'RUM TRADING INTERNACIONAL CORP') \n             AND T3.WhsName = 'ALMACÉN GENERAL UIO' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        ELSE 0\n    END AS \"transitStock\",\n    T1.IsCommited        AS \"openDemandOrders\",\n    T9.U_DIAS_TRANSITO AS transitDays,\n    T9.U_DIAS_NACIONALIZACION_PUERTO AS nationalGyeDays,\n    T9.U_DIAS_NACIONALIZACION_UIO AS nationalUioDays,\n    CASE \n        WHEN T8.CardCode = 'P20532416036' THEN 'P8300318491'\n        ELSE T8.CardCode\n    END AS CardCode,\n    CASE \n        WHEN T8.SuppName = 'PRATAC S.A.' THEN 'PERNOD RICARD COLOMBIA S.A.'\n        ELSE T8.SuppName\n    END AS SuppName\nFROM [DB_CORDOVEZ_PROD].dbo.OITM T0\nINNER JOIN [DB_CORDOVEZ_PROD].dbo.OITW T1 \n    ON T0.ItemCode = T1.ItemCode\nINNER JOIN [DB_CORDOVEZ_PROD].dbo.OITB T6 \n    ON T0.ItmsGrpCod = T6.ItmsGrpCod\nINNER JOIN [DB_CORDOVEZ_PROD].dbo.OWHS T3 \n    ON T1.WhsCode = T3.WhsCode\nCROSS JOIN [DB_CORDOVEZ_PROD].dbo.OADM T2\nLEFT JOIN (\n    SELECT \n        T7.ItemCode,\n        MAX(T8.DocEntry) AS LatestDocEntry\n    FROM [DB_CORDOVEZ_PROD].dbo.IPF1 T7\n    INNER JOIN [DB_CORDOVEZ_PROD].dbo.OIPF T8 \n        ON T7.DocEntry = T8.DocEntry\n    WHERE T8.DocDate > '2000-01-01'\n    GROUP BY T7.ItemCode\n) LatestIPF \n    ON T0.ItemCode = LatestIPF.ItemCode\nLEFT JOIN [DB_CORDOVEZ_PROD].dbo.OIPF T8 \n    ON LatestIPF.LatestDocEntry = T8.DocEntry\nLEFT JOIN [DB_CORDOVEZ_PROD].dbo.OCRD T9 ON (T8.CardCode  = T9.CardCode )\nWHERE  T1.WhsCode IN (\n SELECT WhsCode \n        FROM [DB_CORDOVEZ_PROD].dbo.OWHS \n        WHERE WhsName IN (\n            'ALMACÉN GENERAL UIO',\n            'CORDOVEZ GUAYAQUIL'\n        )\n    )\n    AND T0.validFor = 'Y'\n    AND T8.CardCode IS NOT NULL\nUNION ALL \nSELECT\n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO IMNAC'\n        WHEN T3.WhsName = 'IMNAC GUAYAQUIL' THEN 'ALMACEN GENERAL GYE IMNAC'\n    END AS \"location\",\n    T0.ItemCode          AS \"code\",\n    T0.ItemName          AS \"description\",\n    'finished'           AS \"materialType\",\n    CAST(T0.NumInBuy AS INT) AS \"multipleOrderQuantity\",\n    'USD'                AS \"currency\",\n    T0.AvgPrice          AS \"unitCost\",\n   CAST(T0.NumInBuy AS INT)     AS \"minimumOrderQuantity\",\n    'units'              AS \"unitOfMeasure\",\n    CAST(ISNULL(T9.U_DIAS_PRODUCCION, 0) AS INT) AS \"supplyLeadTime\",\n    T1.OnHand            AS \"onHandStock\",\n    CASE \n        -- Si el proveedor es PERNOD RICARD COLOMBIA S.A. o RUM TRADING INTERNACIONAL CORP, \n        -- mostrar transitStock en IMNAC GUAYAQUIL\n        WHEN (T8.SuppName = 'PRATAC S.A.' OR T8.SuppName = 'PERNOD RICARD COLOMBIA S.A.' OR T8.SuppName = 'RUM TRADING INTERNACIONAL CORP') \n             AND T3.WhsName = 'IMNAC GUAYAQUIL' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        -- Para los demás proveedores, mostrar transitStock en ALMACÉN GENERAL UIO\n        WHEN (T8.SuppName != 'PRATAC S.A.' AND T8.SuppName != 'PERNOD RICARD COLOMBIA S.A.' AND T8.SuppName != 'RUM TRADING INTERNACIONAL CORP') \n             AND T3.WhsName = 'ALMACÉN GENERAL UIO' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        ELSE 0\n    END AS \"transitStock\",\n    T1.IsCommited        AS \"openDemandOrders\",\n    T9.U_DIAS_TRANSITO AS transitDays,\n    T9.U_DIAS_NACIONALIZACION_PUERTO AS nationalGyeDays,\n    T9.U_DIAS_NACIONALIZACION_UIO AS nationalUioDays,\n    CASE \n        WHEN T8.CardCode = 'P20532416036' THEN 'P8300318491'\n        ELSE T8.CardCode\n    END AS CardCode,\n    CASE \n        WHEN T8.SuppName = 'PRATAC S.A.' THEN 'PERNOD RICARD COLOMBIA S.A.'\n        ELSE T8.SuppName\n    END AS SuppName\nFROM [DB_IMNAC_PROD].dbo.OITM T0\nINNER JOIN [DB_IMNAC_PROD].dbo.OITW T1 \n    ON T0.ItemCode = T1.ItemCode\nINNER JOIN [DB_IMNAC_PROD].dbo.OITB T6 \n    ON T0.ItmsGrpCod = T6.ItmsGrpCod\nINNER JOIN [DB_IMNAC_PROD].dbo.OWHS T3 \n    ON T1.WhsCode = T3.WhsCode\nCROSS JOIN [DB_IMNAC_PROD].dbo.OADM T2\nLEFT JOIN (\n    SELECT \n        T7.ItemCode,\n        MAX(T8.DocEntry) AS LatestDocEntry\n    FROM [DB_IMNAC_PROD].dbo.IPF1 T7\n    INNER JOIN [DB_IMNAC_PROD].dbo.OIPF T8 \n        ON T7.DocEntry = T8.DocEntry\n    WHERE T8.DocDate > '2000-01-01'\n    GROUP BY T7.ItemCode\n) LatestIPF \n    ON T0.ItemCode = LatestIPF.ItemCode\nLEFT JOIN [DB_IMNAC_PROD].dbo.OIPF T8 \n    ON LatestIPF.LatestDocEntry = T8.DocEntry\nLEFT JOIN [DB_IMNAC_PROD].dbo.OCRD T9 ON (T8.CardCode  = T9.CardCode )\nWHERE  T1.WhsCode IN (\n SELECT WhsCode \n        FROM [DB_IMNAC_PROD].dbo.OWHS \n        WHERE WhsName IN (\n            'ALMACÉN GENERAL UIO',\n            'IMNAC GUAYAQUIL'\n        )\n    )\n    AND T0.validFor = 'Y'\n    AND T8.CardCode IS NOT NULL\nUNION ALL\nSELECT\n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO VID'\n        WHEN T3.WhsName = 'VIDINTERNACIONAL GUAYAQUIL' THEN 'ALMACEN GENERAL GYE VID'\n    END AS \"location\",\n    T0.ItemCode          AS \"code\",\n    T0.ItemName          AS \"description\",\n    'finished'           AS \"materialType\",\n    CAST(T0.NumInBuy AS INT) AS \"multipleOrderQuantity\",\n    'USD'                AS \"currency\",\n    T0.AvgPrice          AS \"unitCost\",\n   CAST(T0.NumInBuy AS INT)     AS \"minimumOrderQuantity\",\n    'units'              AS \"unitOfMeasure\",\n    CAST(ISNULL(T9.U_DIAS_PRODUCCION, 0) AS INT) AS \"supplyLeadTime\",\n    T1.OnHand            AS \"onHandStock\",\n    CASE \n        -- Si el proveedor es PERNOD RICARD COLOMBIA S.A. o RUM TRADING INTERNACIONAL CORP, \n        -- mostrar transitStock en VIDINTERNACIONAL GUAYAQUIL\n        WHEN (T8.SuppName = 'PRATAC S.A.' OR T8.SuppName = 'PERNOD RICARD COLOMBIA S.A.' OR T8.SuppName = 'RUM TRADING INTERNACIONAL CORP') \n             AND T3.WhsName = 'VIDINTERNACIONAL GUAYAQUIL' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        -- Para los demás proveedores, mostrar transitStock en ALMACÉN GENERAL UIO\n        WHEN (T8.SuppName != 'PRATAC S.A.' AND T8.SuppName != 'PERNOD RICARD COLOMBIA S.A.' AND T8.SuppName != 'RUM TRADING INTERNACIONAL CORP') \n             AND T3.WhsName = 'ALMACÉN GENERAL UIO' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        ELSE 0\n    END AS \"transitStock\",\n    T1.IsCommited        AS \"openDemandOrders\",\n    T9.U_DIAS_TRANSITO AS transitDays,\n    T9.U_DIAS_NACIONALIZACION_PUERTO AS nationalGyeDays,\n    T9.U_DIAS_NACIONALIZACION_UIO AS nationalUioDays,\n    CASE \n        WHEN T8.CardCode = 'P20532416036' THEN 'P8300318491'\n        ELSE T8.CardCode\n    END AS CardCode,\n    CASE \n        WHEN T8.SuppName = 'PRATAC S.A.' THEN 'PERNOD RICARD COLOMBIA S.A.'\n        ELSE T8.SuppName\n    END AS SuppName\nFROM [DB_VID_PROD].dbo.OITM T0\nINNER JOIN [DB_VID_PROD].dbo.OITW T1 \n    ON T0.ItemCode = T1.ItemCode\nINNER JOIN [DB_VID_PROD].dbo.OITB T6 \n    ON T0.ItmsGrpCod = T6.ItmsGrpCod\nINNER JOIN [DB_VID_PROD].dbo.OWHS T3 \n    ON T1.WhsCode = T3.WhsCode\nCROSS JOIN [DB_VID_PROD].dbo.OADM T2\nLEFT JOIN (\n    SELECT \n        T7.ItemCode,\n        MAX(T8.DocEntry) AS LatestDocEntry\n    FROM [DB_VID_PROD].dbo.IPF1 T7\n    INNER JOIN [DB_VID_PROD].dbo.OIPF T8 \n        ON T7.DocEntry = T8.DocEntry\n    WHERE T8.DocDate > '2000-01-01'\n    GROUP BY T7.ItemCode\n) LatestIPF \n    ON T0.ItemCode = LatestIPF.ItemCode\nLEFT JOIN [DB_VID_PROD].dbo.OIPF T8 \n    ON LatestIPF.LatestDocEntry = T8.DocEntry\nLEFT JOIN [DB_VID_PROD].dbo.OCRD T9 ON (T8.CardCode  = T9.CardCode )\nWHERE  T1.WhsCode IN (\n SELECT WhsCode \n        FROM [DB_VID_PROD].dbo.OWHS \n        WHERE WhsName IN (\n            'ALMACÉN GENERAL UIO',\n            'VIDINTERNACIONAL GUAYAQUIL'\n    )\n)\n    AND T0.validFor = 'Y'\n    AND T8.CardCode IS NOT NULL\nUNION ALL\nSELECT\n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO REV'\n        WHEN T3.WhsName = 'REVECUADOR GUAYAQUIL' THEN 'ALMACEN GENERAL GYE REV'\n    END AS \"location\",\n    T0.ItemCode          AS \"code\",\n    T0.ItemName          AS \"description\",\n    'finished'           AS \"materialType\",\n    CAST(T0.NumInBuy AS INT) AS \"multipleOrderQuantity\",\n    'USD'                AS \"currency\",\n    T0.AvgPrice          AS \"unitCost\",\n    CAST(T0.NumInBuy AS INT)     AS \"minimumOrderQuantity\",\n    'units'              AS \"unitOfMeasure\",\n    CAST(ISNULL(T9.U_DIAS_PRODUCCION, 0) AS INT) AS \"supplyLeadTime\",\n    T1.OnHand            AS \"onHandStock\",\n    CASE \n        -- Si el proveedor es PERNOD RICARD COLOMBIA S.A. o RUM TRADING INTERNACIONAL CORP, \n        -- mostrar transitStock en REVECUADOR GUAYAQUIL\n        WHEN (T8.SuppName = 'PRATAC S.A.' OR T8.SuppName = 'PERNOD RICARD COLOMBIA S.A.' OR T8.SuppName = 'RUM TRADING INTERNACIONAL CORP') \n             AND T3.WhsName = 'REVECUADOR GUAYAQUIL' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        -- Para los demás proveedores, mostrar transitStock en ALMACÉN GENERAL UIO\n        WHEN (T8.SuppName != 'PRATAC S.A.' AND T8.SuppName != 'PERNOD RICARD COLOMBIA S.A.' AND T8.SuppName != 'RUM TRADING INTERNACIONAL CORP') \n             AND T3.WhsName = 'ALMACÉN GENERAL UIO' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        ELSE 0\n    END AS \"transitStock\",\n    T1.IsCommited        AS \"openDemandOrders\",\n    T9.U_DIAS_TRANSITO AS transitDays,\n    T9.U_DIAS_NACIONALIZACION_PUERTO AS nationalGyeDays,\n    T9.U_DIAS_NACIONALIZACION_UIO AS nationalUioDays,\n    CASE \n        WHEN T8.CardCode = 'P20532416036' THEN 'P8300318491'\n        ELSE T8.CardCode\n    END AS CardCode,\n    CASE \n        WHEN T8.SuppName = 'PRATAC S.A.' THEN 'PERNOD RICARD COLOMBIA S.A.'\n        ELSE T8.SuppName\n    END AS SuppName\nFROM [DB_REVECUADOR_PROD].dbo.OITM T0\nLEFT JOIN [DB_REVECUADOR_PROD].dbo.OITW T1 \n    ON T0.ItemCode = T1.ItemCode\nLEFT JOIN [DB_REVECUADOR_PROD].dbo.OITB T6 \n    ON T0.ItmsGrpCod = T6.ItmsGrpCod\n JOIN [DB_REVECUADOR_PROD].dbo.OWHS T3 \n    ON T1.WhsCode = T3.WhsCode\nCROSS JOIN [DB_REVECUADOR_PROD].dbo.OADM T2\nLEFT JOIN (\n    SELECT \n        T7.ItemCode,\n        MAX(T8.DocEntry) AS LatestDocEntry\n    FROM [DB_REVECUADOR_PROD].dbo.IPF1 T7\n    INNER JOIN [DB_REVECUADOR_PROD].dbo.OIPF T8 \n        ON T7.DocEntry = T8.DocEntry\n    WHERE T8.DocDate > '2000-01-01'\n    GROUP BY T7.ItemCode\n) LatestIPF \n    ON T0.ItemCode = LatestIPF.ItemCode\nLEFT JOIN [DB_REVECUADOR_PROD].dbo.OIPF T8 \n    ON LatestIPF.LatestDocEntry = T8.DocEntry\nLEFT JOIN [DB_REVECUADOR_PROD].dbo.OCRD T9 ON (T8.CardCode  = T9.CardCode )\nWHERE  T1.WhsCode IN (\n SELECT WhsCode \n        FROM [DB_REVECUADOR_PROD].dbo.OWHS \n        WHERE WhsName IN (\n            'ALMACÉN GENERAL UIO',\n            'REVECUADOR GUAYAQUIL'\n        )\n    )\n    AND T0.validFor = 'Y'\n    AND T8.CardCode IS NOT NULL\nUNION ALL\nSELECT\n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO REV'\n        WHEN T3.WhsName = 'REVECUADOR GUAYAQUIL' THEN 'ALMACEN GENERAL GYE REV'\n    END AS \"location\",\n    T0.ItemCode          AS \"code\",\n    T0.ItemName          AS \"description\",\n    'finished'           AS \"materialType\",\n    CAST(T0.NumInBuy AS INT) AS \"multipleOrderQuantity\",\n    'USD'                AS \"currency\",\n    T0.AvgPrice          AS \"unitCost\",\n    CAST(T0.NumInBuy AS INT)     AS \"minimumOrderQuantity\",\n    'units'              AS \"unitOfMeasure\",\n    '0' AS \"supplyLeadTime\",\n    T1.OnHand            AS \"onHandStock\",\n    CASE \n        -- Esta consulta parece ser especial (XAFEL S.A), pero aplicamos la misma lógica\n        -- Si el proveedor fuera PERNOD RICARD COLOMBIA S.A. o RUM TRADING INTERNACIONAL CORP, \n        -- mostrar transitStock en REVECUADOR GUAYAQUIL, sino en ALMACÉN GENERAL UIO\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN \n            ISNULL((SELECT SUM(p1.Quantity * p1.NumPerMsr) \n                    FROM [DB_CORDOVEZ_PROD].dbo.POR1 p1\n                    LEFT JOIN [DB_CORDOVEZ_PROD].dbo.OPOR op ON op.DocEntry = p1.DocEntry \n                    WHERE op.DocStatus = 'O' AND op.Series = '94' AND p1.ItemCode = T0.ItemCode), 0)\n        ELSE 0\n    END AS \"transitStock\",\n    T1.IsCommited        AS \"openDemandOrders\",\n    '0' AS transitDays,\n    '0' AS nationalGyeDays,\n    '0' AS nationalUioDays,\n    'P0000000000' AS CardCode,\n    'XAFEL S.A' AS SuppName\nFROM [DB_REVECUADOR_PROD].dbo.OITM T0\nLEFT JOIN [DB_REVECUADOR_PROD].dbo.OITW T1 \n    ON T0.ItemCode = T1.ItemCode\nLEFT JOIN [DB_REVECUADOR_PROD].dbo.OITB T6 \n    ON T0.ItmsGrpCod = T6.ItmsGrpCod\n JOIN [DB_REVECUADOR_PROD].dbo.OWHS T3 \n    ON T1.WhsCode = T3.WhsCode\nCROSS JOIN [DB_REVECUADOR_PROD].dbo.OADM T2\nWHERE  T1.WhsCode IN (\n SELECT WhsCode \n        FROM [DB_REVECUADOR_PROD].dbo.OWHS \n        WHERE WhsName IN (\n            'ALMACÉN GENERAL UIO',\n            'REVECUADOR GUAYAQUIL'\n        )\n    )\n    AND T0.validFor = 'Y'\n"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -1380,
+        -360
+      ],
+      "id": "448838a3-9ae3-4178-b60c-f66d23ff4ad8",
+      "name": "TOTAL STOCKS",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Sección del flujo que permite la recuperacion de datos a traves del acceso a SQL Server sujeto a un Cron  ",
+        "height": 1900,
+        "width": 1520,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1900,
+        -920
+      ],
+      "typeVersion": 1,
+      "id": "6170905e-343f-4f7d-b96e-c9de834eca73",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.paqtana.com/v2/org/cvl/master_inventory",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -540,
+        -80
+      ],
+      "id": "20c35a59-9f14-4a03-be45-e43995633118",
+      "name": "HTTP Request PUT",
+      "notesInFlow": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "d2sKBry8BHvFrKlv",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const WORKPACE = '4vmu';\nconst data = [];\n/** @type {{[key: string]: any}} */\nconst uniqueMap = {};\nconsole.log('----')\nconsole.log($input.all())\nconsole.log('----')\nconsole.log($input.all().length);\nfor (const item of $input.all()) {\n  const key = item['json']['location'] + '::' + item['json']['code'];\n  if (!uniqueMap[key]) {\n    const newItem = {\n      location: item['json']['location'],\n      code: item['json']['code'],\n      description: item['json']['description'],\n      materialType: 'finished',\n      multipleOrderQuantity: item['json']['multipleOrderQuantity'],\n      currency: 'USD',\n      unitCost: item['json']['unitCost'],\n      minimumOrderQuantity: item['json']['minimumOrderQuantity'],\n      unitOfMeasure: 'units',\n      supplyLeadTime: item['json']['supplyLeadTime'],\n      onHandStock: item['json']['onHandStock'],\n      transitStock: item['json']['transitStock'],\n      openDemandOrders: item['json']['openDemandOrders'],\n      additionalColumns: [\n        {\n          name: 'supplierName',\n          content: item['json']['SuppName'],\n        },\n        {\n          name: 'supplierCode',\n          content: item['json']['CardCode'],\n        },\n        {\n          name: 'nationalUioDays',\n          content: item['json']['nationalUioDays'],\n        },\n        {\n          name: 'nationalGyeDays',\n          content: item['json']['nationalGyeDays'],\n        },\n        {\n          name: 'transitDays',\n          content: item['json']['transitDays'],\n        },\n      ],\n      workspaceCode: WORKPACE,\n    };\n\n    uniqueMap[key] = newItem;\n  } else {\n    uniqueMap[key].onHandStock += item['json']['onHandStock'];\n    uniqueMap[key].transitStock += item['json']['transitStock'];\n    uniqueMap[key].openDemandOrders += item['json']['openDemandOrders'];\n  }\n}\n\ndata.push(...Object.values(uniqueMap));\n\nreturn {data: data}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -780,
+        -80
+      ],
+      "id": "3a6e9b9c-5906-4196-bcb6-60443d2e43f2",
+      "name": "Script para manejo de formato JSON"
+    },
+    {
+      "parameters": {
+        "content": "## Sección del flujo que aplica Sentencias SQL para extraer la informacion requerida de las bases de datos",
+        "height": 1900,
+        "width": 560,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -300,
+        -920
+      ],
+      "typeVersion": 1,
+      "id": "1b763ead-7dca-4392-91e4-e920d49e21ff",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Sección del flujo que aplica Sentencias SQL para extraer la informacion requerida de las bases de datos",
+        "height": 860,
+        "width": 980
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        380,
+        -340
+      ],
+      "typeVersion": 1,
+      "id": "5e66a637-8a3d-4981-842b-bccd39303811",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const WORKSPACECODE  = '4vmu';\nfunction transformData(originalArray) {\n    const grouped = originalArray.reduce((acc, item) => {\n        const key = `${item.location}-${item.code}`;\n        \n        if (!acc[key]) {\n            acc[key] = {\n                location: item.location,\n                code: item.code,\n                items: []\n            };\n        }\n        \n        acc[key].items.push({\n            date: item.date.split('T')[0],\n            quantity: item.quantity\n        });\n        \n        return acc;\n    }, {});\n    \n    const result = {\n        data: Object.values(grouped).map(group => {\n            group.items.sort((a, b) => new Date(a.date) - new Date(b.date));\n            \n            return {\n                location: group.location,\n                code: group.code,\n                dates: group.items.map(item => item.date),\n                quantities: group.items.map(item => item.quantity),\n                workspaceCode:WORKSPACECODE\n            };\n        })\n    };\n    \n    return result;\n}\nconst base_data = $input.all().map(i => i.json);\nreturn transformData(base_data);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        0
+      ],
+      "id": "257593aa-4b49-4d40-bce8-91afd25609d8",
+      "name": "Formato a los resultados recibidos"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.paqtana.com/v2/org/cvl/historical_demand",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "auto_calculate",
+              "value": "True"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        0
+      ],
+      "id": "936f5a4f-1aba-4ae2-be54-eb2c62cf31b8",
+      "name": "HTTP Request POST hacia el server destino",
+      "notesInFlow": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "d2sKBry8BHvFrKlv",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "escaner@vinesa.com.ec",
+        "toEmail": "Eduardo Villota <evillota@vinesa.com.ec>,Alex Santacrux <sistemas@vinesa.com.ec>",
+        "subject": "Migración terminada",
+        "html": " <!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Migración Exitosa</title>\n  <style>\n    body {\n      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif;\n      background: #f8fafc;\n      margin: 0;\n      padding: 2rem;\n    }\n    .container {\n      max-width: 768px;\n      margin: 2rem auto;\n      background: linear-gradient(to bottom right, #ffffff, #f1f5f9, #f3f4f6);\n      padding: 2rem;\n      border-radius: 1rem;\n      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);\n      border: 1px solid #e5e7eb;\n    }\n    .header {\n      display: flex;\n      align-items: center;\n      gap: 0.75rem;\n      margin-bottom: 1.5rem;\n    }\n    .icon {\n      background-color: #dcfce7;\n      color: #16a34a;\n      padding: 0.75rem;\n      border-radius: 9999px;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n    }\n    .title {\n      font-size: 1.875rem;\n      font-weight: 800;\n      color: #1f2937;\n    }\n    .paragraph {\n      color: #374151;\n      font-size: 1.125rem;\n      line-height: 1.75rem;\n      margin-bottom: 1.5rem;\n    }\n    .highlight {\n      font-weight: 600;\n      color: #111827;\n    }\n    .highlight-alt {\n      color: #4f46e5;\n    }\n    .section {\n      display: grid;\n      grid-template-columns: 1fr;\n      gap: 2rem;\n    }\n    @media (min-width: 768px) {\n      .section {\n        grid-template-columns: 1fr 1fr;\n      }\n    }\n    .box h2 {\n      font-size: 1.25rem;\n      font-weight: 600;\n      color: #1f2937;\n      margin-bottom: 0.5rem;\n    }\n    .list {\n      list-style: disc;\n      padding-left: 1.25rem;\n      color: #4b5563;\n    }\n    .item {\n      background: white;\n      padding: 0.75rem;\n      border-radius: 0.5rem;\n      margin-bottom: 0.5rem;\n      border: 1px solid #f3f4f6;\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);\n    }\n    .footer {\n      margin-top: 2rem;\n      text-align: right;\n      font-size: 0.875rem;\n      color: #6b7280;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <div class=\"icon\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n          <path d=\"M5 13l4 4L19 7\" />\n        </svg>\n      </div>\n      <h1 class=\"title\">Migración completada con éxito</h1>\n    </div>\n\n    <p class=\"paragraph\">\n      Se ha completado correctamente la migración desde SAP de la empresa \n      <span class=\"highlight\">GRUPO CVL</span> hacia los servidores de \n      <span class=\"highlight highlight-alt\">Paqtana</span>. A continuación, se detalla la información migrada:\n    </p>\n\n    <div class=\"section\">\n      <div class=\"box\">\n        <h2>📦 Detalle de Stocks</h2>\n        <ul class=\"list\">\n          <li class=\"item\">AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.</li>\n          <li class=\"item\">IMANC IMPORTADORA NACIONAL CIA LTDA</li>\n          <li class=\"item\">VIDINTERNACIONAL S.A.</li>\n<li class=\"item\">REVECUADOR S.A.</li>\n        </ul>\n      </div>\n      <div class=\"box\">\n        <h2>🚚 Salidas de Stocks</h2>\n        <ul class=\"list\">\n          <li class=\"item\">AGENCIAS Y REPRESENTACIONES CORDOVEZ S.A.</li>\n          <li class=\"item\">IMANC IMPORTADORA NACIONAL CIA LTDA</li>\n          <li class=\"item\">VIDINTERNACIONAL S.A.</li>\n<li class=\"item\">REVECUADOR S.A.</li>\n<li class=\"item\">ALMAGRO</li>\n        </ul>\n      </div>\n    </div>\n\n    <div class=\"footer\">\n      © 2025 CVL · Todos los derechos reservados\n    </div>\n  </div>\n</body>\n</html>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1700,
+        0
+      ],
+      "id": "6ce74b59-ffc4-48cb-b6f3-57d14f80834e",
+      "name": "Manejo de notificaciones por Email",
+      "webhookId": "3ff4b09b-24b4-4cd6-9b80-1f1c9dc944ba",
+      "credentials": {
+        "smtp": {
+          "id": "dbktQxxwcUZ6P9mm",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Sección del flujo que replica  la acción a través de notificación por correo electrónico",
+        "height": 400,
+        "width": 440,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1520,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "0636f903-d480-48ce-9046-79f8d3d989d5",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    CASE\n        WHEN T3.WhsName = 'ALMACÉN GENERAL UIO' THEN 'ALMACEN GENERAL UIO REV'\n        WHEN T3.WhsName = 'REVECUADOR GUAYAQUIL' THEN 'ALMACEN GENERAL GYE REV'\n    ELSE T3.WhsName\n    END AS \"location\",\n    T1.ItemCode AS \"code\",\n    T0.DocDate AS \"date\",\n    T1.Quantity AS \"quantity\"\nFROM [DB_REVECUADOR_PROD].dbo.OINV T0\nJOIN [DB_REVECUADOR_PROD].dbo.INV1 T1 ON T1.DocEntry = T0.DocEntry\nJOIN [DB_REVECUADOR_PROD].dbo.OITM T2 ON T2.ItemCode = T1.ItemCode\nJOIN [DB_REVECUADOR_PROD].dbo.OWHS T3 ON T3.WhsCode = T1.WhsCode\nWHERE \nT0.U_DOC_DECLARABLE = 'S' AND\nT0.DocDate  BETWEEN '2023-01-01' AND CAST(GETDATE() as DATE)\nAND  T3.WhsName IN ('ALMACÉN GENERAL UIO','REVECUADOR GUAYAQUIL')\nOrder By T1.WhsCode, T1.ItemCode, T0.DocDate"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -60,
+        -120
+      ],
+      "id": "228c562d-e8fd-4a95-8cfc-f497bbda250e",
+      "name": "SALIDAS REVECUADOR",
+      "credentials": {
+        "microsoftSql": {
+          "id": "VoFTWCV9pJvU7ip5",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1000,
+        -100
+      ],
+      "id": "4761d2d8-b233-4d80-9d30-845777f8fec6",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "url": "http://179.49.60.158:5001/reportes/activos/api/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1380,
+        -140
+      ],
+      "id": "928da99b-1724-4e09-a4fd-d723d94945f9",
+      "name": "HTTP Request ALMAGRO CORDOVEZ"
+    },
+    {
+      "parameters": {
+        "url": "http://179.49.60.158:5002/reportes/activos/api/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1380,
+        80
+      ],
+      "id": "50796b77-a56b-4086-a4c1-d63852913cd1",
+      "name": "HTTP Request1 ALMAGRO IMNAC"
+    },
+    {
+      "parameters": {
+        "url": "http://179.49.60.158:5003/reportes/activos/api/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1380,
+        300
+      ],
+      "id": "a4e88fb6-b8d5-4952-b32e-2038795031b0",
+      "name": "HTTP Request ALMAGRO VID"
+    },
+    {
+      "parameters": {
+        "url": "http://179.49.60.158:5001/reportes/procesos-activos/api/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -60,
+        140
+      ],
+      "id": "216d7e7a-d946-4277-b4a0-b7d49dca7a0e",
+      "name": "HTTP Request SALIDAS CORDOVEZ"
+    },
+    {
+      "parameters": {
+        "url": "http://179.49.60.158:5002/reportes/procesos-activos/api/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -60,
+        360
+      ],
+      "id": "c045282d-5354-49ec-bdfc-59793425355e",
+      "name": "HTTP Request SALIDAS IMNAC"
+    },
+    {
+      "parameters": {
+        "url": "http://179.49.60.158:5003/reportes/procesos-activos/api/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -60,
+        600
+      ],
+      "id": "ffe77259-2ee5-48f3-9345-5ac96bf24a6d",
+      "name": "HTTP Request SALIDAS VID"
+    }
+  ],
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-06-05T23:20:31.260-04:00",
+          "Readable date": "June 5th 2025, 11:20:31 pm",
+          "Readable time": "11:20:31 pm",
+          "Day of week": "Thursday",
+          "Year": "2025",
+          "Month": "June",
+          "Day of month": "05",
+          "Hour": "23",
+          "Minute": "20",
+          "Second": "31",
+          "Timezone": "America/New_York (UTC-04:00)"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1 ALMAGRO IMNAC",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request ALMAGRO CORDOVEZ",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TOTAL STOCKS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request ALMAGRO VID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SALIDAS CORDOVEZ": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SALIDAS VID": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SALIDAS IMNAC": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TOTAL STOCKS": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request PUT": {
+      "main": [
+        [
+          {
+            "node": "SALIDAS CORDOVEZ",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SALIDAS IMNAC",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SALIDAS VID",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SALIDAS REVECUADOR",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request SALIDAS CORDOVEZ",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request SALIDAS IMNAC",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request SALIDAS VID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Script para manejo de formato JSON": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request PUT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formato a los resultados recibidos": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request POST hacia el server destino",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request POST hacia el server destino": {
+      "main": [
+        [
+          {
+            "node": "Manejo de notificaciones por Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manejo de notificaciones por Email": {
+      "main": [
+        []
+      ]
+    },
+    "SALIDAS REVECUADOR": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Script para manejo de formato JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request ALMAGRO CORDOVEZ": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request1 ALMAGRO IMNAC": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "HTTP Request ALMAGRO VID": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "HTTP Request SALIDAS CORDOVEZ": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request SALIDAS IMNAC": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request SALIDAS VID": {
+      "main": [
+        [
+          {
+            "node": "Formato a los resultados recibidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "315e3139-1f59-4e2b-b611-2a4e685e61c4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7f356bb595c2c28dbe2d37bde19505221eb88b9272e8312aa6eda63c8d614fec"
+  },
+  "id": "d4EHcFPYKgIfPIlB",
+  "tags": []
+}
